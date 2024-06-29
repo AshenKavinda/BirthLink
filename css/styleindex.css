@@ -17,11 +17,6 @@ body {
 }
 
 .imgContainer {
-    /*
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;*/
     position: relative;
     overflow: hidden;
 }
@@ -49,11 +44,6 @@ body {
 
 
 .midPanel {
-    /*
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;*/
     width: 35vw;
     height: 80vh;
     margin-left: 20vw;
