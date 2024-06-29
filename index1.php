@@ -109,13 +109,13 @@ if (array_key_exists('SigninSubmit',$_POST)) {
               <div class="row mb-3">
                 <label for="inputEmail3" class="col-form-label">Email</label>
                 <div class="">
-                <input name="username" type="text" class="form-control form-control-lg" id="inputEmail3" placeholder="Email">
+                <input name="username" type="text" class="form-control form-control-lg" id="inputEmail3" placeholder="Email" required>
                 </div>
               </div>
               <div class="row mb-3">
                 <label for="inputPassword3" class="col-form-label">Password</label>
                 <div class="">
-                  <input name="password" type="password" class="form-control form-control-lg" id="inputPassword3" placeholder="Password" >
+                  <input name="password" type="password" class="form-control form-control-lg" id="inputPassword3" placeholder="Password" required>
                   <a href="http://" class="float-end text-decoration-none fontSizeSignInFogot" style="color: #7E30E1;">fogot password?</a>
                   <a href="http://" class="float-start text-decoration-none fontSizeSignIn" style="color: #e13030;"><?= $invalid ;?></a>
                 </div>
