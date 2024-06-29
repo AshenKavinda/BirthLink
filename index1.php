@@ -94,8 +94,8 @@ if (array_key_exists('SigninSubmit',$_POST)) {
                 <span style="font-size: 1.5vw;">Little Miracles, Big Smiles</span>
               </p>
             </div>
-            <div class="h-100 imgContainer">
-              <img src="img/mother.png" alt="Mother Image">
+            <div class="h-100 w-100 d-flex flex-column align-items-center justify-content-center position-relative overflow-hidden imgContainer">
+              <img src="img/coverImg.png" alt="Mother Image">
             </div>
           </div>
         </div>
