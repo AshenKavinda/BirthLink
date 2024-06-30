@@ -90,7 +90,7 @@ if (array_key_exists('SigninSubmit',$_POST)) {
           <div id="rightPanelContent" class="d-flex flex-column justify-content-between h-100">
             <div class="mx-5 mt-2">
               <p>
-                <span style="font-size: 5vw; letter-spacing: 0.5rem; font-weight: 600;">BirthLink</span><br>
+                <span style="font-size: 5vw; font-weight: 600;">BirthLink</span><br>
                 <span style="font-size: 1.5vw;">Little Miracles, Big Smiles</span>
               </p>
             </div>
