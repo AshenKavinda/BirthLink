@@ -14,16 +14,20 @@ class SignIn {
         $vEmail = mysqli_real_escape_string($this->db->getConnection(),$username);
         $vPassword = mysqli_real_escape_string($this->db->getConnection(),$password);
         
-        $quary = "select * from userData where email = '$vEmail' and password = '$vPassword' " ;
+        $quary = "select * from userData where email = '$vEmail'" ;
         if (mysqli_query($this->db->getConnection(),$quary)) {
             $result = mysqli_query($this->db->getConnection(),$quary);
-            if (mysqli_num_rows($result)>=1) {
-                return 1 ;
+            if (mysqli_num_rows($result)>0) {
+                $row = mysqli_fetch_row($result);
+                if (password_verify($vPassword,$row[2])) {
+                    return 1 ;
+                }
+                else
+                {
+                    return 0 ;
+                }
             }
-            else
-            {
-                return 0 ;
-            }
+            
         }
         else
         {
