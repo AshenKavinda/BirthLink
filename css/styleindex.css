@@ -53,6 +53,10 @@ body {
     transition: 1s;
 }
 
+.signup-midpanel {
+    display: none;
+}
+
 .fontSizeSignIn {
     font-size: 1.2vw;
 }
@@ -202,6 +206,10 @@ body {
         background-color: #fff;
         box-shadow: -2px 4px 4px 0px rgba(0, 0, 0, 0.25);
         transition: 1s;
+    }
+
+    .signup-midpanel {
+        display: block;
     }
 
     .fontSizeSignIn {

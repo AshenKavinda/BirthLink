@@ -121,6 +121,9 @@ if (array_key_exists('SigninSubmit',$_POST)) {
                 </div>
               </div>
               <button name="SigninSubmit" type="submit" class="btn w-100 py-2 fontSizeSignIn" style="background-color: #7E30E1;font-weight: 700;color: #fff;">Sign in</button>
+              <div class="mt-3 signup-midpanel">
+                <span>Don't have an account? <a href="http://" style="font-weight: 600; color: #7E30E1;text-decoration: none;">Sign-Up</a></span>
+              </div>
             </form>
     
           </div>
