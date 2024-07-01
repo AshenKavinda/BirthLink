@@ -4,7 +4,7 @@ class DB {
 
     public function __construct()
     {
-        $this->conn = mysqli_connect('localhost','root','','finalTest');
+        //$this->conn = mysqli_connect('localhost','root','','finalTest');
         //$this->conn = mysqli_connect('fdb1029.awardspace.net','4500285_birthlink','apiBLink#1','4500285_birthlink');
     }
 

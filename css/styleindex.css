@@ -53,6 +53,12 @@ body {
     transition: 1s;
 }
 
+.hedder {
+    font-size: 4vw;
+    color: #7E30E1;
+    font-weight: 700;
+}
+
 .signup-midpanel {
     display: none;
 }
@@ -201,11 +207,14 @@ body {
         align-items: center;
         justify-content: center;
         width: 80vw;
-        height: 60vh;
+        max-height: 535px;
         margin-left: 0;
         background-color: #fff;
         box-shadow: -2px 4px 4px 0px rgba(0, 0, 0, 0.25);
         transition: 1s;
+    }
+    .hedder {
+        font-size: 40px;
     }
 
     .signup-midpanel {
