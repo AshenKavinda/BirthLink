@@ -14,12 +14,14 @@ class SignIn {
         $vEmail = mysqli_real_escape_string($this->db->getConnection(),$username);
         $vPassword = mysqli_real_escape_string($this->db->getConnection(),$password);
         
-        $quary = "select * from userData where email = '$vEmail'" ;
+        //$quary = "select * from userData where email = '$vEmail'" ;
+        $quary = "select * from usercredentials where email = '$vEmail'" ;
         if (mysqli_query($this->db->getConnection(),$quary)) {
             $result = mysqli_query($this->db->getConnection(),$quary);
             if (mysqli_num_rows($result)>0) {
                 $row = mysqli_fetch_row($result);
-                if (password_verify($vPassword,$row[2])) {
+                echo $row[3];
+                if (password_verify($vPassword,$row[3])) {
                     return 1 ;
                 }
                 else
@@ -45,7 +47,8 @@ class SignIn {
     public function getuIDByEmail($username)
     {
         $email = mysqli_real_escape_string($this->db->getConnection(),$username);
-        $quary = "select uID from userData where email = '$email'" ;
+        //$quary = "select uID from userData where email = '$email'" ;
+        $quary = "select uID from usercredentials where email = '$email'" ;
         if (mysqli_query($this->db->getConnection(),$quary)) {
             $result = mysqli_query($this->db->getConnection(),$quary);
             $row = mysqli_fetch_row($result);
