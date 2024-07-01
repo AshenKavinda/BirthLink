@@ -112,7 +112,7 @@ if (array_key_exists('SigninSubmit',$_POST)) {
                 
                 <div class="d-flex flex-column align-content-center justify-content-center gap-2">
 
-                  <div class="hedder text-center w-100">Welcome!</div>
+                  <div class="text-center w-100" style="font-size: 4vw;color: #7E30E1;font-weight: 700;">Welcome!</div>
 
                   <div class="row">
                     <label for="inputEmail3" class="col-form-label">Email</label>

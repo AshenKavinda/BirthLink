@@ -11,16 +11,17 @@ function lordImage() {
   setTimeout(function (){
         document.getElementById('rightPanelContent').style.opacity = '1' ;
       document.getElementById("rightPanelContent").innerHTML = `
-            <div id="rightPanelContent" class="d-flex flex-column justify-content-between h-100">
+          <div id="rightPanelContent" class="d-flex flex-column justify-content-between h-100">
             <div class="mx-5 mt-2">
               <p>
-                <span style="font-size: 5vw;font-weight: 600;">BirthLink</span><br>
+                <span style="font-size: 5vw; font-weight: 600;">BirthLink</span><br>
                 <span style="font-size: 1.5vw;">Little Miracles, Big Smiles</span>
               </p>
             </div>
-            <div class="h-100 w-100 d-flex flex-column align-items-center justify-content-center imgContainer">
+            <div class="h-100 w-100 d-flex flex-column align-items-center justify-content-center position-relative overflow-hidden imgContainer">
               <img src="img/coverImg.png" alt="Mother Image">
-            </div>`;
+            </div>
+          </div>`;
 
       document.getElementById("rightPanel").className = "rightPanels2";
       
@@ -57,7 +58,7 @@ function SignUp() {
 function resetmidPanel() {
     document.getElementById('midPanel').className = "midPanel";
     document.getElementById('midPanel').innerHTML = `
-        <div class="w-100 h-100 position-relative overflow-hidden">
+          <div class="w-100 h-100 position-relative overflow-hidden">
 
             <div class="p-5 d-flex flex-column justify-content-center w-100 h-100 fontSizeSignIn">
               
@@ -65,7 +66,7 @@ function resetmidPanel() {
                 
                 <div class="d-flex flex-column align-content-center justify-content-center gap-2">
 
-                  <div class="hedder text-center w-100">Welcome!</div>
+                  <div class="midpanelHedder text-center w-100" style="font-size: 4vw;color: #7E30E1;font-weight: 700;">Welcome!</div>
 
                   <div class="row">
                     <label for="inputEmail3" class="col-form-label">Email</label>
@@ -104,7 +105,7 @@ function resetmidPanel() {
 
             </div>
 
-          </div> `;
+          </div>`;
     document.getElementById('btn1').classList.remove("gray-0");
     document.getElementById('btn1').classList.add("gray-100");
 }
