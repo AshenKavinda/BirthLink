@@ -4,8 +4,8 @@ class DB {
 
     public function __construct()
     {
-        //$this->conn = mysqli_connect('localhost','root','','finalTest');
-        $this->conn = mysqli_connect('sql12.freesqldatabase.com','sql12717496','iAkyESjta3','sql12717496');
+        $this->conn = mysqli_connect('localhost','root','','birthlink');
+        //$this->conn = mysqli_connect('sql12.freesqldatabase.com','sql12717496','iAkyESjta3','sql12717496');
     }
 
     public function getConnection()
