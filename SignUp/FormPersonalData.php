@@ -11,11 +11,15 @@
     <div class="d-flex flex-column align-items-center justify-content-center w-100 h-100">
       <div class="p-4 m-3 rounded-4 w-50 shadow" style="background-color: rgb(255, 255, 255);color: rgb(122, 122, 122);font-weight: 700;">
 
-        <form class="row g-2" action="passDataToVerify.php" id="formPersonalData" name="formPersonalData" method="post">
-          <div class="text-center">
-            <samp class="" style="font-family:Arial, Helvetica, sans-serif;font-weight: 700;font-size: 2rem;">Sign-up</samp>
+        <form class="row g-2" action="createpersonalDataSesstion.php" id="formPersonalData" name="formPersonalData" method="post">
+          <!--hedder-->
+          <div class="text-center mb-4">
+            <samp class="" style="font-family:Arial, Helvetica, sans-serif;font-weight: 700;font-size: 2rem;">Personal Details</samp>
           </div>
+
+          <!--form body-->
           <div class="col-12">
+
             <div class="row g-2">
               <div class="col-md-6 input-group-sm">
                 <label for="first-name" class="form-label">First Name</label>
@@ -27,14 +31,17 @@
               </div>
             </div>
           </div>
+
           <div class="col-md-12 input-group-sm">
               <label for="first-name" class="form-label">NIC</label>
               <input type="text" class="form-control" name="NIC" id="NIC">
           </div>
+
           <div class="col-md-6 input-group-sm">
             <label for="inputEmail4" class="form-label">Email</label>
             <input type="email" class="form-control" name="email" id="email">
           </div>
+
           <div class="col-md-6 input-group-sm">
             <label for="inputEmail4" class="form-label">Phone No</label>
             <input type="number" class="form-control" name="phone" id="phone">
@@ -44,18 +51,22 @@
             <label for="inputAddress" class="form-label">Address</label>
             <input type="text" class="form-control" name="inputAddress" id="inputAddress" placeholder="1234 Main St">
           </div>
+
           <div class="col-12 input-group-sm">
             <label for="inputAddress2" class="form-label">Address 2</label>
             <input type="text" class="form-control" name="inputAddress2" id="inputAddress2" placeholder="Apartment, studio, or floor">
           </div>
+
           <div class="col-md-6 input-group-sm">
             <label for="inputCity" class="form-label">City</label>
             <input type="text" class="form-control" name="inputCity" id="inputCity">
           </div>
+
           <div class="col-md-2 input-group-sm">
             <label for="inputZip" class="form-label">Zip</label>
             <input type="text" class="form-control" name="inputZip" id="inputZip">
           </div>
+
           <div class="col-12 input-group-sm">
             <div class="form-check">
               <input class="form-check-input" type="checkbox" id="checkbox">
@@ -64,15 +75,18 @@
               </label>
             </div>
           </div>
+
           <div class="col-12 d-flex justify-content-end">
             <button type="submit" name="submit" class="btn btn-primary px-5 border-0" style="font-weight: 700;background-color: blueviolet;" >NEXT</button>
           </div>
+
         </form>
       </div>
 
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <script>
+      //form validation
       document.getElementById('formPersonalData').addEventListener('submit',function(event){
         event.preventDefault();
         var firstName = document.getElementById('firstName');

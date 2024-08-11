@@ -2,6 +2,7 @@
 session_start();
 
 if (isset($_POST['submit'])) {
+    //create data array and assign data from FormPersonalData
     $dataArr = array(
         "fName" => $_POST['firstName'],
         "lName" => $_POST['lastName'],
@@ -16,14 +17,13 @@ if (isset($_POST['submit'])) {
         "otp" => ""
     );
 
-    if (isset($_SESSION['personalData'])) {
-        unset($_SESSION['personalData']);
-    }
-    $_SESSION['personalData'] = $dataArr;
-    
 
+    if (isset($_SESSION['personalData'])) {
+        unset($_SESSION['personalData']); //if the personalData session alredy exsist, unseting it
+    }
+    $_SESSION['personalData'] = $dataArr; //assaing data array to session named personalData
     
-    header('location: FormVerify.php');  
+    header('location: FormSetPassword.php');  
 }
 
 ?>
