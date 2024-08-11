@@ -3,7 +3,6 @@ session_start();
 require_once("../classes/User.class.php");
 $user = new User();
 
-    $_SESSION['personalData']['password'] = $_POST['password'];
     if ($_SESSION['personalData']['otp']==$_POST['otp']) {
         if (isset($_SESSION['personalData'])) {
             $fName = $_SESSION['personalData']['fName'];
@@ -16,17 +15,17 @@ $user = new User();
             $result = $user->addUser($fName,$lName,$nic,$phone,$email,$address,$password);
             if ($result) {
                 unset($_SESSION['personalData']);
-                header("location: ../index1.php?successful");
+                header("location: messageSingUpSuccessful.html");
             }
             else {
                 echo "Something Went Wrong!<br>";
-                echo "<a href='personalData.php'>Please try again</a>";
+                echo "<a href='FormPersonalData.php'>Please try again</a>";
             }
         }
         
     }
     else {
-        header("location: FormVerify.php?reSend&otp");
+        header("location: FormVerifyEmail.php?otpSended&invaliedotp");
     }
 
 ?>

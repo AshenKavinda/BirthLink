@@ -53,7 +53,7 @@
             </div>
             
             <div class="mt-3">
-              <span>Don't have an account? <a href="SignUp/personalData.php" style="font-weight: 600;font-size: 16px; color: #7E30E1;text-decoration: none;">Sign-Up</a></span>
+              <span>Don't have an account? <a href="SignUp/FormPersonalData.php" style="font-weight: 600;font-size: 16px; color: #7E30E1;text-decoration: none;">Sign-Up</a></span>
             </div>
           </form>
         </div>
