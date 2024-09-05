@@ -7,6 +7,12 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="stylesheet" href="signup.css">
   </head>
+  <style>
+    body {
+            width: 100vw;
+            height: 100vh;
+    }
+  </style>
   <body style="background-color:#E2E2E2;">
     <div class="d-flex flex-column align-items-center justify-content-center w-100 h-100">
       <div class="p-4 m-3 rounded-4 w-50 shadow" style="background-color: rgb(255, 255, 255);color: rgb(122, 122, 122);font-weight: 700;">
