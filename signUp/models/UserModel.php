@@ -1,12 +1,10 @@
 <?php
-require_once('DB.class.php');
-class User {
-
+class UserModel {
     private $db ;
 
-    public function __construct()
+    public function __construct($db)
     {
-        $this->db = new DB ;
+        $this->db = $db ;
     }
 
     public function validateUser($username,$password)
@@ -66,8 +64,11 @@ class User {
             $cotactNo = mysqli_real_escape_string($this->db->getConnection(),$cotactNo);
             $email = mysqli_real_escape_string($this->db->getConnection(),$email);
             $address = mysqli_real_escape_string($this->db->getConnection(),$address);
-            $password = mysqli_real_escape_string($this->db->getConnection(),$password);
-            $quary = "INSERT INTO `user`(`fName`, `lName`, `nic`, `contactNo`, `email`, `address`, `password`) VALUES ('$fname','$lname','$nic','$cotactNo','$email','$address','$password')" ;
+            $password =mysqli_real_escape_string($this->db->getConnection(),$password);
+
+            //$password =password_hash(mysqli_real_escape_string($this->db->getConnection(),$password),PASSWORD_DEFAULT);
+
+            $quary = "INSERT INTO `user`(`fName`, `lName`, `nic`, `contactNo`, `email`, `address`, `password`,`type`) VALUES ('$fname','$lname','$nic','$cotactNo','$email','$address','$password','mother')" ;
             $result = mysqli_query($this->db->getConnection(),$quary);
             if ($result) {
                 return true;

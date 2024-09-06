@@ -4,8 +4,8 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Bootstrap demo</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <link rel="stylesheet" href="signup.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   </head>
   <style>
     body {
@@ -15,9 +15,8 @@
   </style>
   <body style="background-color:#E2E2E2;">
     <div class="d-flex flex-column align-items-center justify-content-center w-100 h-100">
+      
       <div class="p-4 m-3 rounded-4 w-50 shadow" style="background-color: rgb(255, 255, 255);color: rgb(122, 122, 122);font-weight: 700;">
-
-        <form class="row g-2" action="createpersonalDataSesstion.php" id="formPersonalData" name="formPersonalData" method="post">
           <!--hedder-->
           <div class="text-center mb-4">
             <samp class="" style="font-family:Arial, Helvetica, sans-serif;font-weight: 700;font-size: 2rem;">Personal Details</samp>
@@ -83,85 +82,107 @@
           </div>
 
           <div class="col-12 d-flex justify-content-end">
-            <button type="submit" name="submit" class="btn btn-primary px-5 border-0" style="font-weight: 700;background-color: blueviolet;" >NEXT</button>
+            <button id="btnNext" class="btn btn-primary px-5 border-0" style="font-weight: 700;background-color: blueviolet;" onclick="createPerson()">NEXT</button>
           </div>
-
-        </form>
       </div>
 
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <script>
-      //form validation
-      document.getElementById('formPersonalData').addEventListener('submit',function(event){
-        event.preventDefault();
-        var firstName = document.getElementById('firstName');
-        var lastName = document.getElementById('lastName');
-        var NIC = document.getElementById('NIC');
-        var email = document.getElementById('email');
-        var phone = document.getElementById('phone');
-        var inputAddress = document.getElementById('inputAddress');
-        var inputAddress2 = document.getElementById('inputAddress2');
-        var inputCity = document.getElementById('inputCity');
-        var inputZip = document.getElementById('inputZip');
-        var Checkbox = document.getElementById('checkbox');
 
-        if (firstName.value.trim() === "") {
-          alert("First name can not be empty.");
-          firstName.focus();
+      function createPerson() {
+        if (validateInputFeild()) {
+          $.ajax({
+            url: '../controllers/SignUpController.php',
+            method: 'post',
+            data: {
+              action: 'createUserSession',
+              firstName: $('#firstName').val().trim(),
+              lastName: $('#lastName').val().trim(),
+              NIC: $('#NIC').val().trim(),
+              email: $('#email').val().trim(),
+              phone: $('#phone').val().trim(),
+              inputAddress: $('#inputAddress').val().trim(),
+              inputAddress2: $('#inputAddress2').val().trim(),
+              inputCity: $('#inputCity').val().trim(),
+              inputZip: $('#inputZip').val().trim()
+            },
+            success: function(response) {
+              $('body').fadeOut(1000, function() { // 1000ms = 1 second
+                window.location.href = 'FormSetPassword.php?email='+response; // Redirect after fade out
+              });
+            }
+          });
+        }
+      }
+
+      function validateInputFeild() {
+      
+        var firstName = $('#firstName').val().trim();
+        var lastName = $('#lastName').val().trim();
+        var NIC = $('#NIC').val().trim();
+        var email = $('#email').val().trim();
+        var phone = $('#phone').val().trim();
+        var inputAddress = $('#inputAddress').val().trim();
+        var inputAddress2 = $('#inputAddress2').val().trim();
+        var inputCity = $('#inputCity').val().trim();
+        var inputZip = $('#inputZip').val().trim();
+        var Checkbox = $('#checkbox').is(':checked');
+
+        if (firstName === "") {
+          alert("First name cannot be empty.");
+          $('#firstName').focus();
           return false;
         }
-        if (lastName.value.trim() === "") {
-          alert("Last name can not be empty.");
-          lastName.focus();
+        if (lastName === "") {
+          alert("Last name cannot be empty.");
+          $('#lastName').focus();
           return false;
         }
-        if (NIC.value.trim() === "") {
-          alert("NIC can not be empty.");
-          NIC.focus();
+        if (NIC === "") {
+          alert("NIC cannot be empty.");
+          $('#NIC').focus();
           return false;
         }
-        if (phone.value.trim() === "") {
-          alert("Phone number can not be empty.");
-          phone.focus();
+        if (phone === "") {
+          alert("Phone number cannot be empty.");
+          $('#phone').focus();
           return false;
         }
-        if (isNaN(phone.value.trim())) {
-          alert("Phone number shuld be numaric");
-          phone.focus();
+        if (isNaN(phone)) {
+          alert("Phone number should be numeric.");
+          $('#phone').focus();
           return false;
         }
-        if (inputAddress.value.trim() === "" ) {
-          alert("Address can not be empty.");
-          inputAddress.focus();
+        if (inputAddress === "") {
+          alert("Address cannot be empty.");
+          $('#inputAddress').focus();
           return false;
         }
-        if (inputAddress2.value.trim() === "" ) {
-          alert("Address 2 can not be empty.");
-          inputAddress2.focus();
+        if (inputAddress2 === "") {
+          alert("Address 2 cannot be empty.");
+          $('#inputAddress2').focus();
           return false;
         }
-        if (inputCity.value.trim() === "" ) {
-          alert("City can not be empty.");
-          inputCity.focus();
+        if (inputCity === "") {
+          alert("City cannot be empty.");
+          $('#inputCity').focus();
           return false;
         }
-        if (inputZip.value.trim() === "" ) {
-          alert("ZIP can not be empty.");
-          inputZip.focus();
+        if (inputZip === "") {
+          alert("ZIP cannot be empty.");
+          $('#inputZip').focus();
           return false;
         }
-        if (!Checkbox.checked) {
-          alert("Please check");
-          Check.focus();
+        if (!Checkbox) {
+          alert("Please check the checkbox.");
+          $('#checkbox').focus();
           return false;
         }
 
-        this.removeEventListener('submit',arguments.callee);
-        this.submit();
-        
+        return true;
+      }
 
-      });
     </script>
   </body>
 </html>
