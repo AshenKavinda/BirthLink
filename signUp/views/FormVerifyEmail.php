@@ -21,12 +21,12 @@ if (isset($_GET['otp'])) {
             background-color:#E2E2E2;
         }
 
-        a.disabled {
+        .disabled {
           pointer-events: none;
           color: gray;
         }
 
-        a.enabled {
+        .enabled {
           pointer-events: visible;
           color: blue;
         }
@@ -55,7 +55,7 @@ if (isset($_GET['otp'])) {
             <div class="col-md-5">
                 <div class="row">
                 <div class="col-md-6">
-                    <a href="sendotp.php" id="sendotp">Resend-otp</a>
+                    <div id="sendotp">Resend-otp</div>
                 </div>
                 <div class="col-md-4">
                     <span id="time" style="color: rgb(228, 17, 17);"></span>
@@ -81,7 +81,7 @@ if (isset($_GET['otp'])) {
             </div>
         </div>
         <div class="d-flex justify-content-end">
-            <button onclick="verifyOTP()" class="btn px-4 btn-primary border-0" style="font-weight: 700;background-color: blueviolet;color: aliceblue;">Sign-In</button>
+            <button onclick="verifyOTP()" id="btnSignIn" class="btn px-4 btn-primary border-0" style="font-weight: 700;background-color: blueviolet;color: aliceblue;">Sign-In</button>
         </div>
       
       </div>
@@ -99,7 +99,23 @@ if (isset($_GET['otp'])) {
         return true;
       }
 
+      function downCount() {
+        var limit = 5 ;
+        document.getElementById('sendotp').setAttribute("class","disabled");
+        
+        var timer = setInterval(function(){
+        limit--;
+        document.getElementById('time').innerText = limit+"s";
+        if (limit === 0) {
+            document.getElementById('time').innerText = limit+"s";
+            document.getElementById('sendotp').setAttribute("class","enabled");
+            clearInterval(timer);
+        }
+        },1000);
+      }
+
       function verifyOTP() {
+        $('#btnSignIn').addClass('disabled');
         if (validateInputFeild()) {
           $.ajax({
           url:'../controllers/SignUpController.php',
@@ -112,6 +128,7 @@ if (isset($_GET['otp'])) {
             if (responce == "wrong-otp") {
               alert(responce);
               $('#otp').val('');
+              $('#btnSignIn').removeClass('disabled');
             }
             else {
               $('body').fadeOut(1000, function() { // 1000ms = 1 second

@@ -94,7 +94,7 @@ function sendOTP() {
 }
 
 function verifyOTP() {
-    if ($_SESSION['personalData']) {
+    if (isset($_SESSION['personalData'])) {
         $otp = $_POST['otp'];
         $ootp = $_SESSION['personalData']['otp'];
         if ((string)$ootp===(string)$otp) {
@@ -120,6 +120,9 @@ function verifyOTP() {
         }else {
             echo "wrong-otp";
         }
+    }
+    else {
+        echo "wrong-otp";
     }
 }
 
