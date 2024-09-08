@@ -21,21 +21,21 @@ class UserModel {
                     $row = mysqli_fetch_row($result);
                     //echo $row[7];                   
                     if (password_verify($vPassword,$row[7])) {
-                        return true ;
+                        return "200" ;
                     }
                     else
                     {
-                        return false ;
+                        return "404" ;
                     }
                 }
                 
             }
             else
             {
-                return false;
+                return "404";
             }
-        } catch (\Throwable $th) {
-            throw $th;
+        } catch (Exception $th) {
+            return "400";
         }
 
     }
@@ -64,9 +64,9 @@ class UserModel {
             $cotactNo = mysqli_real_escape_string($this->db->getConnection(),$cotactNo);
             $email = mysqli_real_escape_string($this->db->getConnection(),$email);
             $address = mysqli_real_escape_string($this->db->getConnection(),$address);
-            $password =mysqli_real_escape_string($this->db->getConnection(),$password);
+            //$password =mysqli_real_escape_string($this->db->getConnection(),$password);
 
-            //$password =password_hash(mysqli_real_escape_string($this->db->getConnection(),$password),PASSWORD_DEFAULT);
+            $password =password_hash(mysqli_real_escape_string($this->db->getConnection(),$password),PASSWORD_DEFAULT);
 
             $quary = "INSERT INTO `user`(`fName`, `lName`, `nic`, `contactNo`, `email`, `address`, `password`,`type`) VALUES ('$fname','$lname','$nic','$cotactNo','$email','$address','$password','mother')" ;
             $result = mysqli_query($this->db->getConnection(),$quary);
@@ -76,8 +76,77 @@ class UserModel {
             else {
                 return false;
             }
-        } catch (\Throwable $th) {
+        } catch (Exception $th) {
             throw $th;
+        }
+    }
+
+    public function verifyEmail($email) {
+        try {
+            $quary = "select * from user where email = '$email'";
+            $result = mysqli_query($this->db->getConnection(),$quary);
+            if ($result) {
+                if (mysqli_num_rows($result)>0) {
+                    return true;
+                }
+                else {
+                    return false;
+                }
+            }
+        } catch (Exception $th) {
+            return false;
+        }
+
+    }
+
+    public function setToken($email) {
+        try {
+            $token = mt_rand(10000,99999);
+            $quary = "update user set token = $token where email = '$email'";
+            $result =  mysqli_query($this->db->getConnection(),$quary);
+            if ($result) {
+                return $token;
+            }else {
+                return false;
+            }
+        } catch (Exception $th) {
+            return false;
+        }
+    }
+
+    public function matchToken($email,$token) {
+        try {
+            $quary = "select * from user where email = '$email'";
+            $result = mysqli_query($this->db->getConnection(),$quary);
+            if ($result) {
+                if ($data = mysqli_fetch_assoc($result)) {
+                    if ($token  === $data['token']) {
+                        return true;
+                    }
+                    else {
+                        return false;
+                    }
+                }
+            }
+        } catch (Exception $th) {
+            return false;
+        }
+    }
+
+    public function updatePasswordByEmail($email,$password) {
+        try {
+            $hashPassword = password_hash($password,PASSWORD_DEFAULT);
+            $quary = "update user set password = '$hashPassword' where email = '$email'";
+            $result = mysqli_query($this->db->getConnection(),$quary);
+            if ($result) {
+                return true;
+            }
+            else {
+                return false;
+            }
+
+        } catch (Exception $th) {
+            return false;
         }
     }
 }

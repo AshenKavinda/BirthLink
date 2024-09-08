@@ -9,8 +9,9 @@
   </head>
   <style>
     body {
-            width: 100vw;
-            height: 100vh;
+      width: 100vw;
+      height: 100vh;
+      overflow-x: hidden;
     }
   </style>
   <body style="background-color:#E2E2E2;">
@@ -93,7 +94,7 @@
       function createPerson() {
         if (validateInputFeild()) {
           $.ajax({
-            url: '../controllers/SignUpController.php',
+            url: 'SignUpController.php',
             method: 'post',
             data: {
               action: 'createUserSession',
@@ -109,7 +110,7 @@
             },
             success: function(response) {
               $('body').fadeOut(1000, function() { // 1000ms = 1 second
-                window.location.href = 'FormSetPassword.php?email='+response; // Redirect after fade out
+                window.location.href = 'FormSetPassword.html'; // Redirect after fade out
               });
             }
           });

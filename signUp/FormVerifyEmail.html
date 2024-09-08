@@ -1,10 +1,3 @@
-<?php
-if (isset($_GET['otp'])) {
-  echo $_GET['otp'];
-}
-
-?>
-
 <!doctype html>
 <html lang="en">
   <head>
@@ -27,6 +20,7 @@ if (isset($_GET['otp'])) {
         }
 
         .enabled {
+          cursor: pointer;
           pointer-events: visible;
           color: blue;
         }
@@ -42,12 +36,6 @@ if (isset($_GET['otp'])) {
             </div>
             <div class="col-md-5 d-flex flex-column align-items-center justify-content-center">
                 <span class="" id="alart">Check phone number</span>
-                <?php if(isset($_GET['invaliedotp'])) : ?>
-                    <script>
-                    document.getElementById('alart').innerText = "OTP is Incorrect";
-                    document.getElementById('alart').style.color = "red";
-                    </script>
-                <?php endif; ?>
             </div>
         </div>
         <div class="row mb-3">
@@ -55,26 +43,10 @@ if (isset($_GET['otp'])) {
             <div class="col-md-5">
                 <div class="row">
                 <div class="col-md-6">
-                    <div id="sendotp">Resend-otp</div>
+                    <div onclick="sendOTP()" id="sendotp" class="enabled">Resend-otp</div>
                 </div>
                 <div class="col-md-4">
                     <span id="time" style="color: rgb(228, 17, 17);"></span>
-                    <?php if (isset($_GET['otpSended'])) : //implement count down function?>
-                    <script>
-                        var limit = 5 ;
-                        document.getElementById('sendotp').setAttribute("class","disabled");
-                        
-                        var timer = setInterval(function(){
-                        limit--;
-                        document.getElementById('time').innerText = limit+"s";
-                        if (limit === 0) {
-                            document.getElementById('time').innerText = limit+"s";
-                            document.getElementById('sendotp').setAttribute("class","enabled");
-                            clearInterval(timer);
-                        }
-                        },1000);
-                    </script>
-                    <?php endif; ?>
                 </div>
                     
                 </div>
@@ -87,6 +59,11 @@ if (isset($_GET['otp'])) {
       </div>
     </div>
     <script>
+      $(document).ready(function(){
+        $('#sendotp').removeClass('enabled');
+        $('#sendotp').addClass('disabled');
+        sendOTP();
+      });
       //form validation
       function validateInputFeild() {
         var otp = document.getElementById('otp');
@@ -101,8 +78,6 @@ if (isset($_GET['otp'])) {
 
       function downCount() {
         var limit = 5 ;
-        document.getElementById('sendotp').setAttribute("class","disabled");
-        
         var timer = setInterval(function(){
         limit--;
         document.getElementById('time').innerText = limit+"s";
@@ -114,18 +89,38 @@ if (isset($_GET['otp'])) {
         },1000);
       }
 
+      function sendOTP() {
+        $('#sendotp').removeClass('enabled');
+        $('#sendotp').addClass('disabled');
+        $.ajax({
+          url: 'SignUpController.php',
+          method:'post',
+          data: {
+            action: 'sendOTP',
+            data: true
+          },
+          success: function(response) {
+            console.log(response);
+            downCount();
+          },
+          error: function() {
+            alert("error 404");
+          }
+        });
+      }
+
       function verifyOTP() {
         $('#btnSignIn').addClass('disabled');
         if (validateInputFeild()) {
           $.ajax({
-          url:'../controllers/SignUpController.php',
+          url:'SignUpController.php',
           method: 'post',
           data: {
             action: 'verifyOTP',
             otp: $('#otp').val().trim()
           },
           success: function(responce) {
-            if (responce == "wrong-otp") {
+            if (responce.trim() == "wrong-otp") {
               alert(responce);
               $('#otp').val('');
               $('#btnSignIn').removeClass('disabled');
