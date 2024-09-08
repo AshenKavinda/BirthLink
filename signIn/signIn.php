@@ -1,19 +1,22 @@
 <?php
-require_once('classes/DB.class.php');
-require_once('classes/User.class.php');
+require_once '../utils/DB.php';
+require_once '../models/UserModel.php';
 session_start();
-$signIn = new User() ;
+$db = new DB(); 
+$signIn = new UserModel($db) ;
 if (isset($_POST['username']) && isset($_POST['password'])) {
+  echo $_POST['username'];
+  echo $_POST['password'];
   $result = $signIn->validateUser($_POST['username'],$_POST['password']);
-  if ($result == true) {
+  if ($result == "200") {
     $uID = $signIn->getuIDByEmail($_POST['username']);
     if ($uID != 2) {
       $_SESSION['uID'] = $uID;
     }
-    header('Location: test.php');
+    header('Location: ../test.php');
   }
   else {
-    header('Location: index1.php?invalied');
+    header('Location: FormSignIn.php?invalied');
   }
 
 }
