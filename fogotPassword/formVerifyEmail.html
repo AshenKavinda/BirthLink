@@ -80,6 +80,7 @@
         if (limit === 0) {
             document.getElementById('time').innerText = limit+"s";
             document.getElementById('sendotp').setAttribute("class","enabled");
+            $('#sendotp').text("Resend-OTP");
             clearInterval(timer);
         }
         },1000);
@@ -92,11 +93,9 @@
           url: 'fogotPasswordController.php',
           method:'post',
           data: {
-            action: 'sendOTP',
-            data: true
+            action: 'sendOTP'
           },
-          success: function(response) {
-            console.log(response);
+          success: function() {
             downCount();
           },
           error: function() {

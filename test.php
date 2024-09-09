@@ -16,7 +16,8 @@
 //   echo "fail";
 // }
 
-$result = $model->matchToken("kavindahemarathna321@gmail.com",12121212);
+$result = $model->matchToken("kavindahemarathna321@gmail.com",944243);
+echo $result;
 
 
 ?>

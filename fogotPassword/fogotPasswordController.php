@@ -28,7 +28,7 @@ function verifyEmail() {
                 http_response_code(200);
             }
             else {
-                http_response_code(404);
+                throw new Exception();
             }
         }
     } catch (Exception $th) {
@@ -52,7 +52,7 @@ function createFogotSession() {
             $_SESSION['fogot'] = $data;
             http_response_code(200);
         } else {
-            http_response_code(400);
+            throw new Exception();
         }
         
     } catch (Exception $th) {
@@ -63,6 +63,36 @@ function createFogotSession() {
 function getUsername() {
     if (isset($_SESSION['fogot']['email'])) {
         echo $_SESSION['fogot']['email'];
+    }
+}
+
+function confirm() {
+    
+    try {
+        if (isset($_POST['password']) && isset($_SESSION['fogot']['token'])) {
+            global $model;
+            $token = $_SESSION['fogot']['token'];
+            $email = $_SESSION['fogot']['email'];
+            $password = $_POST['password'];
+            if ($model->matchToken($email,$token)) {
+                $result = $model->updatePasswordByEmail($email,$password);
+                if ($result) {
+                    if ($model->setToken($_SESSION['fogot']['email'])>1) {
+                        unset($_SESSION['fogot']);
+                        http_response_code(200);
+                    } else {
+                        throw new Exception();
+                    }
+                }else {
+                    throw new Exception();
+                } 
+            }
+            else {
+                throw new Exception();
+            }
+        }
+    } catch (Exception $th) {
+        http_response_code(400);
     }
 }
 
@@ -81,13 +111,12 @@ function sendOTP() {
             if ($mailer->send($email,$subject,$massege)) {
                 $_SESSION['fogot']['otp'] = $otp; 
                 http_response_code(200);
-                echo $_SESSION['fogot']['otp'];
             }
             else {
-                http_response_code(400);
+                throw new Exception();
             }
         }else {
-            http_response_code(400);
+            throw new Exception();
         }
     } catch (Exception $th) {
         http_response_code(400);
@@ -109,7 +138,7 @@ function verifyOTP() {
                 http_response_code(200);
             }
             else{
-                http_response_code(400);
+                throw new Exception();
             }
             
         }else {
