@@ -21,39 +21,48 @@ class UserModel {
                     $row = mysqli_fetch_row($result);
                     //echo $row[7];                   
                     if (password_verify($vPassword,$row[7])) {
-                        return "200" ;
+                        return true ;
                     }
                     else
                     {
-                        return "404" ;
+                        throw new Exception();
                     }
+                }else {
+                    throw new Exception();
                 }
-                
             }
             else
             {
-                return "404";
+                throw new Exception();
             }
         } catch (Exception $th) {
-            return "400";
+            return false;
         }
-
     }
 
-    public function getuIDByEmail($username)
+    public function getUserByEmail($email)
     {
-        $email = mysqli_real_escape_string($this->db->getConnection(),$username);
-        //$quary = "select uID from userData where email = '$email'" ;
-        $quary = "select uID from user where email = '$email'" ;
-        if (mysqli_query($this->db->getConnection(),$quary)) {
-            $result = mysqli_query($this->db->getConnection(),$quary);
-            $row = mysqli_fetch_row($result);
-            return $row[0] ;
+        try {
+            $email = mysqli_real_escape_string($this->db->getConnection(),$email);
+            $quary = "select * from user where email = '$email'" ;
+            if (mysqli_query($this->db->getConnection(),$quary)) {
+                $result = mysqli_query($this->db->getConnection(),$quary);
+                if ($result) {
+                    $row = mysqli_fetch_assoc($result);
+                    return $row;
+                }
+                else {
+                    throw new Exception();
+                }
+            } 
+            else
+            {
+                throw new Exception();
+            }
+        } catch (Exception $th) {
+            return false;
         }
-        else
-        {
-            return 2 ;
-        }
+        
     }
 
     public function addUser($fname,$lname,$nic,$cotactNo,$email,$address,$password) {
@@ -74,7 +83,7 @@ class UserModel {
                 return true;
             }
             else {
-                return false;
+                throw new Exception();
             }
         } catch (Exception $th) {
             throw $th;
@@ -90,7 +99,7 @@ class UserModel {
                     return true;
                 }
                 else {
-                    return false;
+                    throw new Exception();
                 }
             }
         } catch (Exception $th) {
@@ -107,7 +116,7 @@ class UserModel {
             if ($result) {
                 return $token;
             }else {
-                return false;
+                throw new Exception();
             }
         } catch (Exception $th) {
             return false;
@@ -120,13 +129,17 @@ class UserModel {
             $result = mysqli_query($this->db->getConnection(),$quary);
             if ($result) {
                 if ($data = mysqli_fetch_assoc($result)) {
-                    if ($token  === $data['token']) {
+                    if ((string)$token  === $data['token']) {
                         return true;
                     }
                     else {
-                        return false;
+                        throw new Exception();
                     }
+                } else {
+                    throw new Exception();
                 }
+            }else {
+                throw new Exception();
             }
         } catch (Exception $th) {
             return false;
@@ -142,7 +155,7 @@ class UserModel {
                 return true;
             }
             else {
-                return false;
+                throw new Exception();
             }
 
         } catch (Exception $th) {

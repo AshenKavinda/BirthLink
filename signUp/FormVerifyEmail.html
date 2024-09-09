@@ -30,8 +30,8 @@
     <div class="d-flex flex-column align-items-center justify-content-center w-100 h-100">
       <div class="w-50 p-5 rounded-4 shadow" style="background-color: #fff;color: rgb(122, 122, 122);font-weight: 700;">
         <div class="row mb-3">
-            <label for="inputPassword3" class="col-md-3 col-form-label">OTP</label>
-            <div class="col-md-4">
+            <label for="inputPassword3" class="col-md-2 col-form-label">OTP</label>
+            <div class="col-md-5">
                 <input type="text" class="form-control" id="otp" name="otp">
             </div>
             <div class="col-md-5 d-flex flex-column align-items-center justify-content-center">
@@ -39,11 +39,11 @@
             </div>
         </div>
         <div class="row mb-3">
-            <div class="col-md-3"></div>
+            <div class="col-md-2"></div>
             <div class="col-md-5">
                 <div class="row">
                 <div class="col-md-6">
-                    <div onclick="sendOTP()" id="sendotp" class="enabled">Resend-otp</div>
+                    <div onclick="sendOTP()" id="sendotp" class="enabled">Send-otp</div>
                 </div>
                 <div class="col-md-4">
                     <span id="time" style="color: rgb(228, 17, 17);"></span>
@@ -59,11 +59,6 @@
       </div>
     </div>
     <script>
-      $(document).ready(function(){
-        $('#sendotp').removeClass('enabled');
-        $('#sendotp').addClass('disabled');
-        sendOTP();
-      });
       //form validation
       function validateInputFeild() {
         var otp = document.getElementById('otp');
@@ -84,6 +79,8 @@
         if (limit === 0) {
             document.getElementById('time').innerText = limit+"s";
             document.getElementById('sendotp').setAttribute("class","enabled");
+            $('#sendotp').text("Resend-OTP");
+            $('#time').text("");
             clearInterval(timer);
         }
         },1000);
@@ -96,11 +93,9 @@
           url: 'SignUpController.php',
           method:'post',
           data: {
-            action: 'sendOTP',
-            data: true
+            action: 'sendOTP'
           },
-          success: function(response) {
-            console.log(response);
+          success: function() {
             downCount();
           },
           error: function() {
@@ -110,27 +105,30 @@
       }
 
       function verifyOTP() {
-        $('#btnSignIn').addClass('disabled');
         if (validateInputFeild()) {
-          $.ajax({
-          url:'SignUpController.php',
-          method: 'post',
-          data: {
-            action: 'verifyOTP',
-            otp: $('#otp').val().trim()
-          },
-          success: function(responce) {
-            if (responce.trim() == "wrong-otp") {
-              alert(responce);
-              $('#otp').val('');
-              $('#btnSignIn').removeClass('disabled');
+            $('#btnSignIn').addClass('disabled');
+            $.ajax({
+            url:'SignUpController.php',
+            method: 'post',
+            data: {
+              action: 'verifyOTP',
+              otp: $('#otp').val().trim()
+            },
+            success: function(responce) {
+              if (responce.trim() == "wrong-otp") {
+                alert(responce);
+                $('#otp').val('');
+                $('#btnSignIn').removeClass('disabled');
+              }
+              else {
+                $('body').fadeOut(1000, function() { // 1000ms = 1 second
+                  window.location.href = 'messageSingUpSuccessful.html'; // Redirect after fade out
+                });
+              }
+            },
+            error: function() {
+              alert('somethig went wrong!Plase try again later.');
             }
-            else {
-              $('body').fadeOut(1000, function() { // 1000ms = 1 second
-                window.location.href = 'messageSingUpSuccessful.html'; // Redirect after fade out
-              });
-            }
-          }
           });
         }
       }
