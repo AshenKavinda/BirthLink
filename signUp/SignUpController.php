@@ -1,10 +1,8 @@
 <?php
 session_start();
-require_once '../utils/DB.php';
-require_once '../models/UserModel.php';
+require_once '../models/Mother.php';
 require_once '../utils/Mailer.class.php';
-$db = new DB();
-$model = new UserModel($db);
+$mother = new Mother();
 $mailer = new Mailer();
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -25,8 +23,8 @@ function verify() {
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $email = $_POST['email'];
         $password = $_POST['password'];
-        global $model;
-        $result = $model->validateUser($email,$password);
+        global $user;
+        $result = $user->validateUser($email,$password);
         if ($result === true) {
             http_response_code(200);
             echo json_encode(['success' => true]);
@@ -49,7 +47,7 @@ function createUserSession() {
             "address" => $_POST['inputAddress'],
             "address2" => $_POST['inputAddress2'],
             "city" => $_POST['inputCity'],
-            "zip" => $_POST['inputZip'],
+            "bday" => $_POST['bday'],
             "password" => "",
             "otp" => ""
         );
@@ -143,11 +141,12 @@ function verifyOTP() {
                 $nic = $_SESSION['personalData']['nic'];
                 $email = $_SESSION['personalData']['email'];
                 $phone = $_SESSION['personalData']['phone'];
-                $address = $_SESSION['personalData']['address'].", ".$_SESSION['personalData']['address2'].", ".$_SESSION['personalData']['city'].", ".$_SESSION['personalData']['zip'];
+                $address = $_SESSION['personalData']['address'].", ".$_SESSION['personalData']['address2'].", ".$_SESSION['personalData']['city'];
                 $password = $_SESSION['personalData']['password'];
-                global $model;
-                $result = $model->addUser($fName,$lName,$nic,$phone,$email,$address,$password);
-                if ($result) {
+                $bDay = $_SESSION['personalData']['bday'];
+                global $mother;
+                $result = $mother->addUser($fName,$lName,$nic,$phone,$email,$address,$password,$bDay);
+                if ($result!= false) {
                     unset($_SESSION['personalData']);
                     http_response_code(200);
                 }
