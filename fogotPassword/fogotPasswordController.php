@@ -1,10 +1,10 @@
 <?php
 session_start();
 require_once '../utils/DB.php';
-require_once '../models/UserModel.php';
+require_once '../models/User.php';
 require_once '../utils/Mailer.class.php';
 $db = new DB();
-$model = new UserModel($db);
+$user = new User($db);
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Get the action (function name) from the request
@@ -22,9 +22,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 function verifyEmail() {
     try {
         if (isset($_POST['email'])) {
-            global $model;
+            global $user;
             
-            if ($model->verifyEmail($_POST['email'])===true) {
+            if ($user->verifyEmail($_POST['email'])===true) {
                 http_response_code(200);
             }
             else {
@@ -70,14 +70,14 @@ function confirm() {
     
     try {
         if (isset($_POST['password']) && isset($_SESSION['fogot']['token'])) {
-            global $model;
+            global $user;
             $token = $_SESSION['fogot']['token'];
             $email = $_SESSION['fogot']['email'];
             $password = $_POST['password'];
-            if ($model->matchToken($email,$token)) {
-                $result = $model->updatePasswordByEmail($email,$password);
+            if ($user->matchToken($email,$token)) {
+                $result = $user->updatePasswordByEmail($email,$password);
                 if ($result) {
-                    if ($model->setToken($_SESSION['fogot']['email'])>1) {
+                    if ($user->setToken($_SESSION['fogot']['email'])>1) {
                         unset($_SESSION['fogot']);
                         http_response_code(200);
                     } else {
@@ -129,8 +129,8 @@ function verifyOTP() {
         $otp = $_POST['otp'];
         $ootp = $_SESSION['fogot']['otp'];
         if ((string)$ootp===(string)$otp) {
-            global $model;
-            $result = $model->setToken($_SESSION['fogot']['email']);
+            global $user;
+            $result = $user->setToken($_SESSION['fogot']['email']);
             if ($result != false) {
                 $_SESSION['fogot']['token'] = $result;
             }

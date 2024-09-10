@@ -1,9 +1,9 @@
 <?php
 require_once '../utils/DB.php';
-require_once '../models/UserModel.php';
+require_once '../models/User.php';
 session_start();
 $db = new DB(); 
-$model = new UserModel($db) ;
+$user = new User($db) ;
 
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -22,10 +22,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 function signIn() {
   try {
     if (isset($_POST['username']) && isset($_POST['password'])) {
-      global $model;
-      $result = $model->validateUser($_POST['username'],$_POST['password']);
+      global $user;
+      $result = $user->validateUser($_POST['username'],$_POST['password']);
       if ($result) {
-        $row = $model->getUserByEmail($_POST['username']);
+        $row = $user->getUserByEmail($_POST['username']);
         if ($row != false) {
           $_SESSION['uID'] = $row['uID'];
           $type = $row['type'];
