@@ -1,10 +1,11 @@
 <?php
-class UserModel {
-    private $db ;
+require_once __DIR__ . '/../utils/DB.php';
+class User {
+    protected $db ;
 
-    public function __construct($db)
+    public function __construct()
     {
-        $this->db = $db ;
+        $this->db = new DB() ;
     }
 
     public function validateUser($username,$password)
@@ -65,7 +66,7 @@ class UserModel {
         
     }
 
-    public function addUser($fname,$lname,$nic,$cotactNo,$email,$address,$password) {
+    public function addUser($fname,$lname,$nic,$cotactNo,$email,$address,$password,$type) {
         try {
             $fname = mysqli_real_escape_string($this->db->getConnection(),$fname);
             $lname = mysqli_real_escape_string($this->db->getConnection(),$lname);
@@ -73,20 +74,21 @@ class UserModel {
             $cotactNo = mysqli_real_escape_string($this->db->getConnection(),$cotactNo);
             $email = mysqli_real_escape_string($this->db->getConnection(),$email);
             $address = mysqli_real_escape_string($this->db->getConnection(),$address);
+            $type = mysqli_real_escape_string($this->db->getConnection(),$type);
             //$password =mysqli_real_escape_string($this->db->getConnection(),$password);
 
             $password =password_hash(mysqli_real_escape_string($this->db->getConnection(),$password),PASSWORD_DEFAULT);
 
-            $quary = "INSERT INTO `user`(`fName`, `lName`, `nic`, `contactNo`, `email`, `address`, `password`,`type`) VALUES ('$fname','$lname','$nic','$cotactNo','$email','$address','$password','mother')" ;
+            $quary = "INSERT INTO `user`(`fName`, `lName`, `nic`, `contactNo`, `email`, `address`, `password`,`type`) VALUES ('$fname','$lname','$nic','$cotactNo','$email','$address','$password','$type')" ;
             $result = mysqli_query($this->db->getConnection(),$quary);
             if ($result) {
-                return true;
+                return mysqli_insert_id($this->db->getConnection());
             }
             else {
                 throw new Exception();
             }
         } catch (Exception $th) {
-            throw $th;
+            return false;
         }
     }
 
