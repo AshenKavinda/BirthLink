@@ -4,17 +4,31 @@ class DB {
 
     public function __construct()
     {
-        $this->conn = mysqli_connect('localhost','root','','birthlink');
+        try {
+            $this->conn = mysqli_connect('localhost','root','','birthlink');
+        } catch (\Throwable $th) {
+            die('<h1>DB Connection Fail</h1> ' . mysqli_connect_error());
+        }
+        
     }
 
     public function getConnection()
     {
-        if (mysqli_connect_errno()) {
-            die('<h1>DB Connection Fail</h1> ' . mysqli_connect_error());
+        try {
+            if (!mysqli_connect_errno()) {
+                return $this->conn;
+            }
+        } catch (\Throwable $th) {
+            throw new Exception($th->getMessage());
         }
-        else
-        {
-            return $this->conn;
+        
+    }
+
+    public function closeConnection() {
+        try {
+            $this->conn->close();
+        } catch (\Throwable $th) {
+            throw new Exception($th->getMessage());
         }
     }
 }
