@@ -131,14 +131,14 @@
         let url = new URL(window.location.href);
         let params = new URLSearchParams(url.search);
         
-        let pID = params.get('pid');
-        if (pID != null) {
+        let bID = params.get('bid');
+        if (bID != null) {
             $.ajax({
             url: 'noteController.php',
             method:'post',
             data: {
               action: "displayNoteSection",
-              pID: pID
+              bID: bID
             },
             success: function(respose) {
               $('#noteSection').html(respose);
@@ -151,7 +151,7 @@
           });
         }
         else {
-          alert("PID not found!");
+          alert("BID not found!");
         }
         
       } 
@@ -161,14 +161,14 @@
           let url = new URL(window.location.href);
           let params = new URLSearchParams(url.search);
           
-          let pID = params.get('pid');
-          if (pID != null) {
+          let bID = params.get('bid');
+          if (bID != null) {
               $.ajax({
               url: 'noteController.php',
               method:'post',
               data: {
                 action: "add",
-                pID: pID,
+                bID: bID,
                 dID: $("#combo").val(),
                 date: $("#datepicker").val()
               },

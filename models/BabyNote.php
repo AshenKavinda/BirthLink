@@ -5,16 +5,17 @@ class BabyNote {
 
     public function __construct()
     {
-        $this->db = new DB() ;
+        $this->db = new DB();
     }
 
-    public function displayByPID($pID) {
+    public function displayBybID($bID) {
         try {
-            $quary = "select np.slID, d.`name` , d.`discription` , np.`date` from noteBaby np inner join disease d on np.dID = d.dID where np.pID = ?";
-            $stmt = 
-            $result = mysqli_query($this->db->getConnection(),$quary);
-            if ($result) {
-                if (mysqli_num_rows($result) > 0) {
+            $quary = "select nb.slID, d.`name` , d.`discription` , nb.`date` from noteBaby nb inner join disease d on nb.dID = d.dID where nb.bID = ?";
+            $stmt = $this->db->getConnection()->prepare($quary);
+            $stmt->bind_param("i",$bID);
+            if ($stmt->execute()) {
+                $result = $stmt->get_result();
+                if ($result->num_rows > 0) {
                     return $result;
                 }
                 else {
@@ -28,11 +29,12 @@ class BabyNote {
         }
     }
 
-    public function add($pID,$dID,$date) {
+    public function add($bID,$dID,$date) {
         try {
-            $quary = "insert into notePreg(pID, dID, `date`) values($pID,$dID,'$date')";
-            $result = mysqli_query($this->db->getConnection(),$quary);
-            if ($result) {
+            $quary = "insert into noteBaby(bID, dID, `date`) values(?,?,?)";
+            $stmt = $this->db->getConnection()->prepare($quary);
+            $stmt->bind_param("iis",$bID,$dID,$date);
+            if ($stmt->execute()) {
                 return true;
             }else {
                 throw new Exception("Mysql quary unsuccessful!");
@@ -44,9 +46,10 @@ class BabyNote {
 
     public function delete($slID) {
         try {
-            $quary = "delete from notePreg where slID = $slID";
-            $result = mysqli_query($this->db->getConnection(),$quary);
-            if ($result) {
+            $quary = "delete from noteBaby where slID = ?";
+            $stmt = $this->db->getConnection()->prepare($quary);
+            $stmt->bind_param("i",$slID);
+            if ($stmt->execute()) {
                 return true;
             }else {
                 throw new Exception("Mysql quary unsuccessful!");
