@@ -1,6 +1,6 @@
 <?php
-require_once '../../models/PregnancyNote.php';
-$pregnancyNote = new PregnancyNote();
+require_once '../../models/BabyNote.php';
+$babyNote = new BabyNote();
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Get the action (function name) from the request
@@ -17,9 +17,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 function displayNoteSection() {
     try {
-        if (isset($_POST['pID'])) {
-            global $pregnancyNote;
-            $result = $pregnancyNote->displayByPID($_POST['pID']);
+        if (isset($_POST['bID'])) {
+            global $babyNote;
+            $result = $babyNote->displayBybID($_POST['bID']);
             $table = '<div class="accordion accordion-flush" id="accordionFlushExample">';
             $index = 1; // Initialize a counter to create unique IDs
             while ($row = mysqli_fetch_assoc($result)) {
@@ -56,9 +56,9 @@ function displayNoteSection() {
 
 function add() {
     try {
-        if (isset($_POST['pID']) && isset($_POST['dID']) && isset($_POST['date'])) {
-            global $pregnancyNote;
-            $result = $pregnancyNote->add($_POST['pID'],$_POST['dID'],$_POST['date']);
+        if (isset($_POST['bID']) && isset($_POST['dID']) && isset($_POST['date'])) {
+            global $babyNote;
+            $result = $babyNote->add($_POST['bID'],$_POST['dID'],$_POST['date']);
             if ($result) {
                 http_response_code(200);
                 exit();
@@ -78,8 +78,8 @@ function add() {
 function deleteItem() {
     try {
         if (isset($_POST['slID'])) {
-            global $pregnancyNote;
-            $result = $pregnancyNote->delete($_POST['slID']);
+            global $babyNote;
+            $result = $babyNote->delete($_POST['slID']);
             if ($result) {
                 http_response_code(200);
                 exit();
