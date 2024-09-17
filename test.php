@@ -24,16 +24,26 @@
 //     echo $th;
 //  }
 
-require_once 'utils/Mailer.class.php';
-$mailer = new Mailer();
-$emails= 'kavindahemarathna321@gmail.com,adeeshananayakkara27@gmail.com,mchanuka72@gmail.com';
-$mailer->send($emails,"Helloooooo","pakaya");
+// require_once 'utils/Mailer.class.php';
+// $mailer = new Mailer();
+// $emails= 'kavindahemarathna321@gmail.com,adeeshananayakkara27@gmail.com,mchanuka72@gmail.com';
+// $mailer->send($emails,"Helloooooo","pakaya");
 
-if ($mailer) {
+// if ($mailer) {
+//     echo "ok";
+// }else {
+//     echo "no";
+// }
+
+require_once 'models/Weight.php';
+$weight = new Weight();
+
+$result = $weight->add(1,3.5);
+
+if ($result) {
     echo "ok";
 }else {
     echo "no";
 }
-
 
 ?>
