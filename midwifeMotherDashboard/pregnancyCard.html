@@ -33,9 +33,19 @@
         .card {
             margin-bottom: 10px;
         }
+        .babyCard-container{
+            margin-bottom: 20px;
+        }
     </style>
 </head>
 <body>
+
+    <div class="container card-container">
+        <div class="row" id="babyCard-container">
+
+
+        </div>
+    </div>
 
     <div class="container card-container">
         <div class="row" id="card-container">
@@ -78,9 +88,18 @@
     <script>
         $(document).ready(function(){
 
+            displayBabyCards();
             displayPregCards();
-
+            
         });
+
+        function displayBabyCards()
+        {
+            let url = new URL(window.location.href);
+            let paras = new URLSearchParams(url.search);
+
+
+        }
 
         function displayPregCards()
         {
