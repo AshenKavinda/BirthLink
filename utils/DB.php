@@ -11,7 +11,7 @@ class DB {
         }
         
     }
-
+    
     public function getConnection()
     {
         try {
