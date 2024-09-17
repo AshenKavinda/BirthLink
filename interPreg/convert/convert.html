@@ -16,7 +16,7 @@
             </button>
             <button class="btn btn-danger mx-3" onclick="clearTable()">Clear</button>
             
-            <button class="btn btn-primary ms-auto" onclick="">Confirm</button>
+            <button class="btn btn-primary ms-auto" onclick="confirm()">Confirm</button>
             
         </div>
         
@@ -136,7 +136,26 @@
                     var respose = JSON.parse(xhr.responseText);
                     var errorMessage = respose.error || "An unknown error occurred.";
                     alert("Error: "+errorMessage);
-              }
+                }
+            });
+        }
+
+        function confirm() {
+            $.ajax({
+                url: 'convertController.php',
+                method: 'post',
+                data: {
+                    action: 'addDatabase',
+                },
+                success: function() {
+                    alert("Added successfuly");
+                    clearTable();
+                },
+                error: function(xhr,status,error) {
+                    var respose = JSON.parse(xhr.responseText);
+                    var errorMessage = respose.error || "An unknown error occurred.";
+                    alert("Error: "+errorMessage);
+                }
             });
         }
 
@@ -160,6 +179,8 @@
                         },
                         success: function() {
                             displayTable();
+                            clearInputFeild();
+
                         },
                         error: function(xhr,status,error) {
                             var respose = JSON.parse(xhr.responseText);

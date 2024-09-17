@@ -1,5 +1,7 @@
 <?php
 session_start();
+require_once '../../models/baby.php';
+$baby = new baby();
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Get the action (function name) from the request
@@ -65,6 +67,31 @@ function displaySesstion() {
             http_response_code(200);
             echo $html;
             exit();
+        }
+    } catch (\Throwable $th) {
+        http_response_code(400);
+        echo json_encode(array('error' => $th->getMessage()));
+        exit();
+    }
+}
+
+function addDatabase() {
+    try {
+        if (isset($_SESSION['baby'])) {
+            foreach ($_SESSION['baby'] as $index => $item) {
+                $pid = $item['pID'];
+                $bDay = $item['bDay'];
+                $birthNo = $item['birthNo'];
+                $gender = $item['gender'];
+                global $baby;
+                $result = $baby->add($pid,$bDay,$birthNo,$gender);
+                if (!$result) {
+                    throw new Exception("Database error!");
+                }
+            }
+            http_response_code(200);
+        } else {
+            throw new Exception("System Error!");
         }
     } catch (\Throwable $th) {
         http_response_code(400);
