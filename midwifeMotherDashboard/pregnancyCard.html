@@ -21,6 +21,8 @@
             align-items: center;
             justify-content: center;
             cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+
         }
         .modal-dialog {
             display: flex;
@@ -36,6 +38,41 @@
         .babyCard-container{
             margin-bottom: 20px;
         }
+        .card {
+        position: relative;
+        overflow: hidden;
+        background-size: cover; 
+        background-position: right bottom; 
+        background-repeat: no-repeat; 
+        background-size: 50% 50%;
+        box-shadow: 0 4px 8px rgba(224, 20, 194, 0.2);
+   
+        }
+
+        @media (max-width: 768px) {
+        .card {
+        position: relative;
+        overflow: hidden;
+        background-size: cover;     
+        }
+        }
+
+        .card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.3); /* Black overlay with 30% opacity */
+            z-index: 1;
+        }
+
+        .card-body {
+            position: relative;
+            z-index: 2; /* Ensure the text is above the overlay */
+        }
+
     </style>
 </head>
 <body>
@@ -47,13 +84,6 @@
         </div>
     </div>
 
-    <div class="container card-container">
-        <div class="row" id="card-container">
-
-        </div>
-    </div>
-
-  
     <div class="plus-btn" data-toggle="modal" data-target="#pregnancyModal">
         +
     </div>
@@ -89,19 +119,10 @@
         $(document).ready(function(){
 
             displayBabyCards();
-            displayPregCards();
-            
+           
         });
 
         function displayBabyCards()
-        {
-            let url = new URL(window.location.href);
-            let paras = new URLSearchParams(url.search);
-
-
-        }
-
-        function displayPregCards()
         {
             let url = new URL(window.location.href);
             let paras = new URLSearchParams(url.search);
@@ -113,12 +134,12 @@
                     url: 'pregnancyCardController.php',
                     method:'post',
                     data: {
-                        action: "createPregCard",
+                        action: "createBabyCard",
                         userID:userID
                         },
 
                     success: function(respose) {
-                     $('#card-container').html(respose);
+                     $('#babyCard-container').html(respose);
                      
                     },
 
@@ -154,7 +175,7 @@
                 success: function()
                 {
                     //alert("Pregnancy added successfully!");
-                    displayPregCards();
+                    displayBabyCards();
                     $('#pregnancyModal').modal('hide');
 
                 },

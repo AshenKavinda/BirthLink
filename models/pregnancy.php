@@ -35,12 +35,17 @@ class pregnancy
 
     }
     
-    public function displayPregnancy($pregID)
+    public function displayPregnancy($uID)
     {
         try {
-            $sql = "Select * from pregnancy where uID = ?";
+            $sql = "
+                    SELECT p.*
+                    FROM pregnancy p
+                    LEFT JOIN baby b ON p.pID = b.pID
+                    WHERE b.pID IS NULL AND p.uID = ? ORDER BY p.pID ASC";
+                                                        
             $stmt = $this->DB->getConnection()->prepare($sql);
-            $stmt->bind_param('i',$pregID);
+            $stmt->bind_param('i',$uID);
 
            if($stmt->execute())
            {
