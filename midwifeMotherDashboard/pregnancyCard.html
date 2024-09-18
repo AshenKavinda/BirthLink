@@ -45,8 +45,14 @@
         background-position: right bottom; 
         background-repeat: no-repeat; 
         background-size: 50% 50%;
-        box-shadow: 0 4px 8px rgba(224, 20, 194, 0.2);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        transition: transform 0.3s, box-shadow 0.3s;
+        cursor: pointer;
    
+        }
+        .card:hover{
+            transform: scale(1.1);
+            box-shadow: 0 4px 8px rgba(224, 20, 194, 0.3);
         }
 
         @media (max-width: 768px) {

@@ -37,7 +37,7 @@ class baby{
             WHERE p.uID = ? ORDER BY b.bID ASC";
             
     
-            $stmt = $this->DB->getConnection()->prepare($sql);
+            $stmt = $this->db->getConnection()->prepare($sql);
   
             $stmt->bind_param('i', $uID);
     
@@ -57,7 +57,7 @@ class baby{
             throw new Exception($th->getMessage());
         }
     }
-    
+        
 }
 
 ?>
