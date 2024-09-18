@@ -114,20 +114,17 @@
               action: 'verifyOTP',
               otp: $('#otp').val().trim()
             },
-            success: function(responce) {
-              if (responce.trim() == "wrong-otp") {
-                alert(responce);
-                $('#otp').val('');
-                $('#btnSignIn').removeClass('disabled');
-              }
-              else {
-                $('body').fadeOut(1000, function() { // 1000ms = 1 second
-                  window.location.href = 'messageSingUpSuccessful.html'; // Redirect after fade out
-                });
-              }
+            success: function() {
+              $('body').fadeOut(1000, function() { // 1000ms = 1 second
+                window.location.href = 'messageSingUpSuccessful.html'; // Redirect after fade out
+              });
             },
             error: function() {
-              alert('somethig went wrong!Plase try again later.');
+              var respose = JSON.parse(xhr.responseText);
+              var errorMessage = respose.error || "An unknown error occurred.";
+              alert("Error: "+errorMessage);
+              $('#otp').val('');
+              $('#btnSignIn').removeClass('disabled');
             }
           });
         }

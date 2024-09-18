@@ -1,15 +1,5 @@
 <?php
- require_once 'models/User.php';
- $user = new User();
 
-
-$result = $user->addUser("wqe","qwe","qeqwe","wqertert","wqe;ee","wqe","qwe","wqe");
-//echo $result;
-if ($result) {
-    echo "ok";
-}else {
-    echo "no";
-}
 
 //  require_once 'models/Pregnancy.php';
 //  $preg = new PregnancyNote();
@@ -34,6 +24,7 @@ if ($result) {
 // }else {
 //     echo "no";
 // }
+
 
 
 ?>
