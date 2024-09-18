@@ -8,8 +8,8 @@ class DB {
             $this->conn = mysqli_connect('localhost','root','','birthlink');
         } catch (\Throwable $th) {
             die('<h1>DB Connection Fail</h1> ' . mysqli_connect_error());
-        }
-        
+        }   
+            
     }
     
     public function getConnection()

@@ -1,9 +1,9 @@
 <?php
 session_start();
 require_once '../models/Mother.php';
-require_once '../utils/Mailer.class.php';
+require_once '../utils/MailerMailGun.php';
 $mother = new Mother();
-$mailer = new Mailer();
+$mailer = new MailerMailGun();
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Get the action (function name) from the request
@@ -49,7 +49,8 @@ function createUserSession() {
             "city" => $_POST['inputCity'],
             "bday" => $_POST['bday'],
             "password" => "",
-            "otp" => ""
+            "otp" => "",
+            "otp-time" => ""
         );
 
 
@@ -115,7 +116,8 @@ function sendOTP() {
             // echo $_SESSION['personalData']['otp'];
             global $mailer;
             if ($mailer->send($email,$subject,$massege)) {
-                $_SESSION['personalData']['otp'] = $otp; 
+                $_SESSION['personalData']['otp'] = $otp;
+                $_SESSION['personalData']['otp-time'] = time();
                 http_response_code(200);
             }
             else {
@@ -135,6 +137,16 @@ function verifyOTP() {
         if (isset($_SESSION['personalData'])) {
             $otp = $_POST['otp'];
             $ootp = $_SESSION['personalData']['otp'];
+            $otpTime = $_SESSION['personalData']['otp-time'];
+            $currentTime = time();
+            // Check if OTP has expired (2 minutes = 120 seconds)
+            if (($currentTime - $otpTime) > 120) {
+                // OTP expired
+                unset($_SESSION['personalData']['otp']);
+                unset($_SESSION['personalData']['otp-time']);
+                throw new Exception("OTP expired!");
+            }
+
             if ((string)$ootp===(string)$otp) {
                 $fName = $_SESSION['personalData']['fName'];
                 $lName = $_SESSION['personalData']['lName'];
@@ -151,7 +163,7 @@ function verifyOTP() {
                     http_response_code(200);
                 }
                 else{
-                    throw new Exception();
+                    throw new Exception("System Error!");
                 }
                 
             }else {
@@ -163,6 +175,8 @@ function verifyOTP() {
         }
     } catch (Exception $th) {
         http_response_code(400);
+        echo json_encode(array('error' => $th->getMessage()));
+        exit();
     }
     
 }

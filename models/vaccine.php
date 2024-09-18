@@ -11,6 +11,72 @@ class vaccine{
         $this->db = new DB();
     }
 
+    public function calculateDoseDates($birthDate) {
+        // Define the vaccine schedule with respective age in months
+        $vaccineSchedule = [
+            ['age' => 0, 'vaccine' => 'BCG'],
+            ['age' => 2, 'vaccine' => 'Triple + Hep B 1st dose'],
+            ['age' => 2, 'vaccine' => 'Polio 1st dose'],
+            ['age' => 2, 'vaccine' => 'Hib 1st dose'],
+            ['age' => 4, 'vaccine' => 'Triple + Hep B 2nd dose'],
+            ['age' => 4, 'vaccine' => 'Polio 2nd dose'],
+            ['age' => 4, 'vaccine' => 'Hib 2nd dose'],
+            ['age' => 6, 'vaccine' => 'Triple + Hep B 3rd dose'],
+            ['age' => 6, 'vaccine' => 'Polio 3rd dose'],
+            ['age' => 6, 'vaccine' => 'Hib 3rd dose'],
+            ['age' => 9, 'vaccine' => 'Measles'],
+            ['age' => 15, 'vaccine' => 'MMR'],
+            ['age' => 18, 'vaccine' => 'Triple'],
+            ['age' => 18, 'vaccine' => 'Polio'],
+            ['age' => 18, 'vaccine' => 'Hib'],
+            ['age' => 60, 'vaccine' => 'DT'], // School entry is typically around 4-5 years (60 months)
+            ['age' => 60, 'vaccine' => 'Polio'],
+            ['age' => 60, 'vaccine' => 'MMR']
+        ];
+    
+        $doseDates = [];
+    
+        foreach ($vaccineSchedule as $vaccine) {
+            $doseDate = new DateTime($birthDate);
+            $doseDate->modify("+{$vaccine['age']} months");
+            $doseDates[] = [
+                'vaccine' => $vaccine['vaccine'],
+                'doseDate' => $doseDate->format('Y-m-d')
+            ];
+        }
+    
+        return $doseDates;
+    }
+
+    public function addAllVaccines($bid,$birthDate) {
+        $doseDates = $this->calculateDoseDates($birthDate); 
+        $query = "INSERT INTO babyVaccine(bID, vID, doseDate) VALUES(?, ?, ?)";
+        $stmt = $this->db->getConnection()->prepare($query);
+
+        $this->db->getConnection()->begin_transaction();
+
+        try {
+            for ($i = 0; $i < count($doseDates); $i++) { 
+                $vID = $i + 1; 
+                $doseDate = $doseDates[$i]['doseDate']; 
+
+                $stmt->bind_param('iis', $bid, $vID, $doseDate);
+
+                if (!$stmt->execute()) {
+                    throw new Exception('Error inserting record for vaccine ID ' . $vID);
+                }
+            }
+            $this->db->getConnection()->commit();
+            return true;
+
+        } catch (Exception $e) {
+            $this->db->getConnection()->rollback();
+            return false;
+            
+        }
+
+    }
+
     public function removeVaccineRecord($babyID,$vaccineID)
     {
         try {
