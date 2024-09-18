@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Bootstrap demo</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  </head>
+  <style>
+    body {
+        width: 100vw;
+        height: 100vh;
+        overflow-y: hidden;
+    }
+  </style>
+  <body>
+    <div class="container my-4">
+        <div class="d-flex">
+            <!-- Button trigger modal -->
+            <button type="button" class="btn btn-primary mb-5" data-bs-toggle="modal" data-bs-target="#weightModel">
+                ADD NEW
+            </button>
+            <button class="btn btn-danger mx-3 mb-5" onclick="deleteLast()">Delete Last</button>
+        </div>
+        <div class="my-4 d-flex align-items-center justify-content-center">
+            <canvas id="myChart" class="w-75 h-75"></canvas>
+        </div>
+  
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="weightModel" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h1 class="modal-title fs-5" id="staticBackdropLabel">Add Weight</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row mb-4">
+                    <div class="col-md-2 d-flex align-items-center justify-content-start">Date</div>
+                    <div class="col-md-10">
+                      <input type="date" class="form-control" id="date">
+                    </div>
+                </div>
+                <div class="row mb-4">
+                    <div class="col-md-2 d-flex align-items-center justify-content-start">Weight</div>
+                    <div class="col-md-10">
+                      <input type="text" class="form-control" id="weight">
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" onclick="clearInput()">Clear</button>
+                <button type="button" class="btn btn-primary" onclick="add()">Add</button>
+            </div>
+        </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        let chart = null;
+
+        $(document).ready(function (){
+            getData();
+        });
+
+        function validateInput() {
+            if ($('#date').val() === "") {
+                alert("Date cannot be empty!");
+                $('#date').focus();
+                return false;
+            }
+            if ($('#weight').val() === "") {
+                alert("Weight cannot be empty!");
+                $('#date').focus();
+                return false;
+            }
+            return true;
+        }
+
+        function displayChart(dates, weights) {
+            if (dates != null && weights != null) {
+                const data = {
+                    labels: dates,
+                    datasets: [{
+                        label: 'Weight over Time',
+                        data: weights,
+                        fill: false,
+                        borderColor: 'rgb(75, 192, 192)',
+                        tension: 0.1
+                    }]
+                };
+
+                if (chart) {
+                    // Update existing chart
+                    chart.data.labels = dates;
+                    chart.data.datasets[0].data = weights;
+                    chart.update(); // Update chart with new data
+                } else {
+                    // Create new chart
+                    const config = {
+                        type: 'line',
+                        data: data,
+                    };
+                    chart = new Chart(document.getElementById('myChart'), config);
+                }
+            }
+        }
+
+        function getData() {
+            let url = new URL(window.location.href);
+            let params = new URLSearchParams(url.search);
+            let bid = params.get('bid');
+            if (bid != null) {
+                $.ajax({
+                    url: 'weightController.php',
+                    method: 'post',
+                    data: {
+                        action: 'getData',
+                        bID: bid
+                    },
+                    success: function(response) {
+                        let data = JSON.parse(response);
+                        if (data.dates && data.weights) {
+                            displayChart(data.dates, data.weights);
+                        } else {
+                            alert("Invalid data received.");
+                        }
+                    },
+                    error: function(xhr,status,error) {
+                        var respose = JSON.parse(xhr.responseText);
+                        var errorMessage = respose.error || "An unknown error occurred.";
+                        alert("Error: "+errorMessage);
+                    }
+                });
+            } else {
+                alert("Invalid URL");
+            }
+        }
+
+        function add() {
+            let url = new URL(window.location.href);
+            let params = new URLSearchParams(url.search);
+            let bid = params.get('bid');
+            if (bid != null) {
+                if (validateInput()) {
+                    $.ajax({
+                        url: 'weightController.php',
+                        method: 'post',
+                        data: {
+                            action: 'addWeight',
+                            bID: bid,
+                            weight: $('#weight').val(),
+                            date: $('#date').val()
+                        },
+                        success: function() {
+                            getData();
+                        },
+                        error: function(xhr,status,error) {
+                            var respose = JSON.parse(xhr.responseText);
+                            var errorMessage = respose.error || "An unknown error occurred.";
+                            alert("Error: "+errorMessage);
+                        }
+                    });
+                }
+            } else {
+                alert("Invalid URL");
+            }
+        }
+
+        function deleteLast() {
+            let url = new URL(window.location.href);
+            let params = new URLSearchParams(url.search);
+            let bid = params.get('bid');
+            if (bid != null) {
+                $.ajax({
+                    url: 'weightController.php',
+                    method: 'post',
+                    data: {
+                        action: 'deleteLast',
+                        bID: bid,
+                        weight: $('#weight').val(),
+                        date: $('#date').val()
+                    },
+                    success: function() {
+                        alert("Today record deleted!");
+                        getData();
+                    },
+                    error: function(xhr,status,error) {
+                        var respose = JSON.parse(xhr.responseText);
+                        var errorMessage = respose.error || "An unknown error occurred.";
+                        alert("Error: "+errorMessage);
+                    }
+                });
+            } else {
+                alert("Invalid URL");
+            }
+        }
+    </script>
+  </body>
+</html>
