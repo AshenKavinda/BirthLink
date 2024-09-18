@@ -38,12 +38,11 @@
 require_once 'models/Weight.php';
 $weight = new Weight();
 
-$result = $weight->add(1,3.5);
+$result = $weight->display(1);
 
-if ($result) {
-    echo "ok";
-}else {
-    echo "no";
+while ($row = $result->fetch_assoc()) {
+    echo $row['date']."<br>";
+    echo $row['weight']."<br>";
 }
 
 ?>

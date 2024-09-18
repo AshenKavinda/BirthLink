@@ -25,6 +25,45 @@ class Weight{
             throw new Exception($th->getMessage());
         }
     }
+
+    public function delete($bid,$date) {
+        try {
+            $query = "delete from weight where date = ? and bid = ?";
+            $stmt = $this->db->getConnection()->prepare($query);
+            $stmt->bind_param('si',$date,$bid);
+            if ($stmt->execute()) {
+                if ($stmt->affected_rows > 0) {
+                    return true;
+                } else {
+                    return false;
+                }
+            } else {
+                return false;
+            }
+        } catch (\Throwable $th) {
+            throw new Exception($th->getMessage());
+        }
+    }
+
+    public function display($uID) {
+        try {
+            $query = "select date,weight from weight where bid = ? order by date";
+            $stmt = $this->db->getConnection()->prepare($query);
+            $stmt->bind_param('i',$uID);
+            if ($stmt->execute()) {
+                $result = $stmt->get_result();
+                if ($result->num_rows > 0) {
+                    return $result;
+                } else {
+                    throw new Exception("No data found!");
+                }
+            } else {
+                throw new Exception("Database error!");
+            }
+        } catch (\Throwable $th) {
+            throw new Exception($th->getMessage());
+        }
+    }
     
 }
 
