@@ -66,6 +66,43 @@ class User {
         
     }
 
+    public function getUserById($uid,$type)
+    {
+        try {
+            $quary = "select * from user where uID = '$uid' AND type ='$type'" ;
+            if (mysqli_query($this->db->getConnection(),$quary)) {
+                $result = mysqli_query($this->db->getConnection(),$quary);
+                if ($result) {
+                    return $result;
+                }
+                else {
+                    throw new Exception();
+                }
+            } 
+            else
+            {
+                throw new Exception();
+            }
+        } catch (Exception $th) {
+            return false;
+        }
+        
+    }
+
+    public function selectAll($type) {
+        try {
+            $quary = "select * from user WHERE type = '$type'";
+            $result = mysqli_query($this->db->getConnection(),$quary);
+            if ($result) {
+                    return $result;
+                } else {
+                    throw new Exception();
+                }
+        } catch (Exception $th) {
+            return false;
+        }
+    }
+
     public function addUser($fname,$lname,$nic,$cotactNo,$email,$address,$password,$type) {
         try {
             $fname = mysqli_real_escape_string($this->db->getConnection(),$fname);
@@ -85,10 +122,14 @@ class User {
                 return mysqli_insert_id($this->db->getConnection());
             }
             else {
+                error_log("MySQL error: " . mysqli_error($this->db->getConnection()));
+                return false;
                 throw new Exception();
             }
         } catch (Exception $th) {
-            return false;
+            
+            throw new Exception($th->getMessage());
+
         }
     }
 
