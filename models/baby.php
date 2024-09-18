@@ -17,7 +17,7 @@ class baby{
             $stmt = $this->db->getConnection()->prepare($query);
             $stmt->bind_param("isss",$pid,$bDay,$birthNo,$gender);
             if ($stmt->execute()) {
-                return true;
+                return $stmt->insert_id;
             } else {
                 return false;
             }

@@ -35,14 +35,14 @@
 //     echo "no";
 // }
 
-require_once 'models/Weight.php';
-$weight = new Weight();
+require_once 'models/vaccine.php';
+$vac = new vaccine();
 
-$result = $weight->display(1);
-
-while ($row = $result->fetch_assoc()) {
-    echo $row['date']."<br>";
-    echo $row['weight']."<br>";
+if ($vac->addAllVaccines(1,"2003-03-12")) {
+    echo "ok";
+}else {
+    echo "no";
 }
+
 
 ?>
