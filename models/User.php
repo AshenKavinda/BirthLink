@@ -116,8 +116,8 @@ class User {
 
             $password =password_hash(mysqli_real_escape_string($this->db->getConnection(),$password),PASSWORD_DEFAULT);
 
-            $quary = "INSERT INTO `user`(`fName`, `lName`, `nic`, `contactNo`, `email`, `address`, `password`,`type`) VALUES ('$fname','$lname','$nic','$cotactNo','$email','$address','$password','$type')" ;
-            $result = mysqli_query($this->db->getConnection(),$quary);
+            $query = "INSERT INTO `user`(`fName`, `lName`, `nic`, `contactNo`, `email`, `address`, `password`,`type`) VALUES ('$fname','$lname','$nic','$cotactNo','$email','$address','$password','$type')" ;
+            $result = mysqli_query($this->db->getConnection(),$query);
             if ($result) {
                 return mysqli_insert_id($this->db->getConnection());
             }
@@ -130,6 +130,28 @@ class User {
             
             throw new Exception($th->getMessage());
 
+        }
+    }
+
+    public function updateUser($uID,$fname,$lname,$nic,$cotactNo,$email,$address){
+        $fname = mysqli_real_escape_string($this->db->getConnection(),$uID);
+        $fname = mysqli_real_escape_string($this->db->getConnection(),$fname);
+        $lname = mysqli_real_escape_string($this->db->getConnection(),$lname);
+        $nic = mysqli_real_escape_string($this->db->getConnection(),$nic);
+        $cotactNo = mysqli_real_escape_string($this->db->getConnection(),$cotactNo);
+        $email = mysqli_real_escape_string($this->db->getConnection(),$email);
+        $address = mysqli_real_escape_string($this->db->getConnection(),$address);
+
+        $query = "UPDATE `user` SET `fName` = '$fname',`lName` = '$lname',`nic` = '$nic',`contactNo` = '$cotactNo',`email` = '$email',`address` = '$address' WHERE `uID` = '$uID'";
+        $result = mysqli_query($this->db->getConnection(),$query);
+
+        if ($result) {
+            return mysqli_insert_id($this->db->getConnection());
+        }
+        else {
+            error_log("MySQL error: " . mysqli_error($this->db->getConnection()));
+            return false;
+            throw new Exception();
         }
     }
 
