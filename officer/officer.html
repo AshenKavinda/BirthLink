@@ -32,7 +32,7 @@
     </div>
     <!--Add Modal -->
     <div class="modal fade" id="addNewAdmin" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg"> <!-- Added 'modal-lg' for a larger modal -->
+        <div class="modal-dialog modal-lg">
           <div class="modal-content">
             <div class="modal-header">
               <h1 class="modal-title fs-5" id="exampleModalLabel">Add New Officer</h1>
@@ -40,7 +40,6 @@
             </div>
             
             <div class="modal-body">
-              <!-- Begin form content -->
               <div class="row g-2">
                 <div class="col-md-6 input-group-sm">
                   <label for="firstName" class="form-label">First Name</label>
@@ -98,7 +97,6 @@
                   <label class="form-check-label" for="checkbox">Agree with all policies</label>
                 </div>
               </div>
-              <!-- End form content -->
             </div>
             
             <div class="modal-footer">
@@ -113,43 +111,77 @@
             
         <!-- Update Modal -->
     
-        <div class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
+        <div class="modal fade" id="updateNewAdmin" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-lg">
             <div class="modal-content">
-            <div class="modal-header">
-                <h1 class="modal-title fs-5" id="exampleModalLabel">Update User</h1>
+              <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Add New Officer</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-    
-            <div class="modal-body">
-                <div class="mb-3">
-                    <label for="name" class="form-label">Name</label>
-                    <input type="text" class="form-control" id="updateName" placeholder="Enter name">
+              </div>
+              
+              <div class="modal-body">
+                <div class="row g-2">
+                  <div class="col-md-6 input-group-sm">
+                    <label for="firstName" class="form-label">First Name</label>
+                    <input type="text" class="form-control" id="firstName" name="firstName" placeholder="Enter First Name">
+                  </div>
+                  <div class="col-md-6 input-group-sm">
+                    <label for="lastName" class="form-label">Last Name</label>
+                    <input type="text" class="form-control" id="lastName" name="lastName" placeholder="Enter Last Name">
+                  </div>
                 </div>
-    
-                <div class="mb-3">
+        
+                <div class="row g-2 mt-2">
+                  <div class="col-md-6 input-group-sm">
+                    <label for="NIC" class="form-label">NIC</label>
+                    <input type="text" class="form-control" id="NIC" placeholder="Enter NIC">
+                  </div>
+                </div>
+        
+                <div class="row g-2 mt-2">
+                  <div class="col-md-6 input-group-sm">
                     <label for="email" class="form-label">Email</label>
-                    <input type="email" class="form-control" id="updateEmail" placeholder="Enter email">
+                    <input type="email" class="form-control" id="email" placeholder="abcdefg123@gmail.com">
+                  </div>
+                  <div class="col-md-6 input-group-sm">
+                    <label for="phone" class="form-label">Phone No</label>
+                    <input type="text" class="form-control" id="phone" placeholder="0#########">
+                  </div>
                 </div>
-    
-                <div class="mb-3">
-                    <label for="mobile" class="form-label">Mobile Number</label>
-                    <input type="text" class="form-control" id="updateMobile" placeholder="Enter mobile number">
+        
+                <div class="row g-2 mt-2">
+                  <div class="col-12 input-group-sm">
+                    <label for="inputAddress" class="form-label">Address</label>
+                    <input type="text" class="form-control" id="inputAddress" placeholder="1234 Main Street">
+                  </div>
+                  <div class="col-12 input-group-sm mt-2">
+                    <label for="inputAddress2" class="form-label">Address 2</label>
+                    <input type="text" class="form-control" id="inputAddress2" placeholder="Apartment, studio">
+                  </div>
                 </div>
-    
-                <div class="mb-3">
-                    <label for="address" class="form-label">Address</label>
-                    <input type="text" class="form-control" id="updateAddress" placeholder="Enter address">
+  
+                <div class="row g-2 mt-2">
+                  <div class="col-md-6 input-group-sm">
+                    <label for="inputCity" class="form-label">City</label>
+                    <input type="text" class="form-control" id="city" placeholder="Enter City">
+                  </div>
                 </div>
-            </div>
-            
-            <div class="modal-footer">
-                <button type="button" class="btn btn-dark" onclick="updateUser()">Update</button>
+        
+                <div class="col-12 mt-3 input-group-sm">
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="checkbox">
+                    <label class="form-check-label" for="checkbox">Agree with all policies</label>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="modal-footer">
+                <button type="button" class="btn btn-primary px-5 border-0" onclick="addOfficer()">Add</button>
                 <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
                 <input type="hidden" id="hiddenData">
+              </div>
             </div>
-            </div>
-        </div>
+          </div>
         </div>
     
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
@@ -244,7 +276,70 @@
                     alert("Error fetching data: " + xhr.responseText);
                 }
             });
+          }
+
+          function getOfficerDetails(uID) {
+          $.ajax({
+              url: "officerController.php",
+              type: 'post',
+              data: {
+                  action: "getOfficerDetails",
+                  uID: uID
+              },
+              success: function(response) {
+                  const officer = JSON.parse(response);
+
+                  $('#firstName').val(officer.fName);
+                  $('#lastName').val(officer.lName);
+                  $('#NIC').val(officer.nic);
+                  $('#email').val(officer.email);
+                  $('#phone').val(officer.contactNo);
+                  $('#inputAddress').val(officer.address1);
+                  $('#inputAddress2').val(officer.address2);
+                  $('#city').val(officer.city);
+                  
+                  $('#hiddenData').val(uID);
+
+                  $('#addNewAdmin').modal('show');
+              },
+              error: function(xhr) {
+                  alert("Error fetching data: " + xhr.responseText);
+              }
+          });
+
         }
+
+        function updateOfficer() {
+        const uID = $('#hiddenData').val();
+
+        $.ajax({
+            url: "officerController.php",
+            type: 'post',
+            data: {
+                action: "updateOfficer",
+                uID: uID,
+                ofname: $('#firstName').val().trim(),
+                olname: $('#lastName').val().trim(),
+                onic: $('#NIC').val().trim(),
+                oemail: $('#email').val().trim(),
+                ophon: $('#phone').val().trim(),
+                oadd1: $('#inputAddress').val().trim(),
+                oadd2: $('#inputAddress2').val().trim(),
+                ocity: $('#city').val().trim()
+            },
+            success: function(response) {
+                $('#displayTable').html(response);
+                $('#addNewAdmin').modal('hide');
+                alert("Officer updated successfully!");
+            },
+            error: function(xhr) {
+                alert("Error updating data: " + xhr.responseText);
+            }
+        });
+      }
+
+  
+
     </script>
     
 </body>

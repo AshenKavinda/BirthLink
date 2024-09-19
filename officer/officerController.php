@@ -74,7 +74,7 @@
                         <td>'.$nic.'</td>
                         <td>'.$contact.'</td>
                         <td>'.$email.'</td>
-                        <td><div class="d-flex"><button class="btn btn-dark mx-1" onclick="">Update</button><button class="btn btn-danger" onclick="">Delete</button></div></td>
+                        <td><div class="d-flex"><button class="btn btn-dark mx-1" onclick="getOfficerDetails('.$id.')">Update</button><button class="btn btn-danger" onclick="deleteOfficer('.$id.')">Delete</button></div></td>
                       </tr>';
         }
     
@@ -123,7 +123,7 @@
                                 <td>'.$nic.'</td>
                                 <td>'.$contact.'</td>
                                 <td>'.$email.'</td>
-                                <td><div class="d-flex"><button class="btn btn-dark mx-1" onclick="">Update</button><button class="btn btn-danger" onclick="">Delete</button></div></td>
+                                <td><div class="d-flex"><button class="btn btn-dark mx-1" onclick="getOfficerDetails('.$id.')">Update</button><button class="btn btn-danger" onclick="deleteOfficer('.$id.')">Delete</button></div></td>
                               </tr>';
                 }
             } else {
@@ -140,5 +140,75 @@
             echo 'Please provide a valid ID.';
         }
     }
+
+    function getOfficerDetails() {
+        global $officer;
+    
+        if (isset($_POST['uID'])) {
+            $uID = $_POST['uID'];
+            $result = $officer->getOfficerById($uID);
+    
+            if ($row = mysqli_fetch_assoc($result)) {
+                // Send officer data as a JSON object
+                $officerData = array(
+                    'fName' => $row['fName'],
+                    'lName' => $row['lName'],
+                    'nic' => $row['nic'],
+                    'contactNo' => $row['contactNo'],
+                    'email' => $row['email'],
+                    'address1' => $row['address1'],
+                    'address2' => $row['address2'],
+                    'city' => $row['city']
+                );
+                echo json_encode($officerData);
+                exit();
+            } else {
+                http_response_code(404);
+                echo json_encode(array('error' => 'Officer not found'));
+                exit();
+            }
+        } else {
+            http_response_code(400);
+            echo json_encode(array('error' => 'Invalid request'));
+            exit();
+        }
+    }
+
+    function updateOfficer() {
+        try {
+            if (isset($_POST['uID']) && isset($_POST['ofname']) && isset($_POST['olname']) && isset($_POST['onic']) && isset($_POST['oemail']) && isset($_POST['ophon']) && isset($_POST['oadd1']) && isset($_POST['oadd2']) && isset($_POST['ocity'])) {
+                
+                global $officer;
+                
+                $address = $_POST['oadd1'] . ' ' . $_POST['oadd2'] . ' ' . $_POST['ocity'];
+                $result = $officer->updateOfficer(
+                    $_POST['uID'],
+                    $_POST['ofname'],
+                    $_POST['olname'],
+                    $_POST['onic'],
+                    $_POST['oemail'],
+                    $_POST['ophon'],
+                    $address
+                );
+    
+                if ($result) {
+                    setOfficerTable(); // Refresh the table with updated data
+                } else {
+                    throw new Exception("Update failed!");
+                }
+            } else {
+                throw new Exception("Invalid data!");
+            }
+        } catch (\Throwable $th) {
+            http_response_code(400);
+            echo json_encode(array('error' => $th->getMessage()));
+            exit();
+        }
+    }
+    
+    
+
+
+            
 
 ?>
