@@ -48,7 +48,8 @@ function createUserSession() {
             "address2" => $_POST['inputAddress2'],
             "city" => $_POST['inputCity'],
             "bday" => $_POST['bday'],
-            "location" => $_POST['location'],
+            "latitude" => $_POST['latitude'],
+            "longitude" => $_POST['longitude'],
             "password" => "",
             "otp" => "",
             "otp-time" => ""
@@ -56,9 +57,9 @@ function createUserSession() {
 
 
         if (isset($_SESSION['personalData'])) {
-            unset($_SESSION['personalData']); //if the personalData session alredy exsist, unseting it
+            unset($_SESSION['personalData']);
         }
-        $_SESSION['personalData'] = $dataArr; //assaing data array to session named personalData
+        $_SESSION['personalData'] = $dataArr;
 
         if (isset($_SESSION['personalData'])) {
             http_response_code(200);
@@ -157,9 +158,10 @@ function verifyOTP() {
                 $address = $_SESSION['personalData']['address'].", ".$_SESSION['personalData']['address2'].", ".$_SESSION['personalData']['city'];
                 $password = $_SESSION['personalData']['password'];
                 $bDay = $_SESSION['personalData']['bday'];
-                $location = $_SESSION['personalData']['location'];
+                $latitude = $_SESSION['personalData']['latitude'];
+                $longitude = $_SESSION['personalData']['longitude'];
                 global $mother;
-                $result = $mother->addUser($fName,$lName,$nic,$phone,$email,$address,$password,$bDay,$location);
+                $result = $mother->addUser($fName,$lName,$nic,$phone,$email,$address,$password,$bDay,$latitude,$longitude);
                 if ($result!= false) {
                     unset($_SESSION['personalData']);
                     http_response_code(200);
