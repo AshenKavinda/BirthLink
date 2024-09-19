@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vaccine</title>
+    <!--bootstrap css -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+
+</head>
+<body>
+
+    <!-- Add record modal -->
+      <!-- Modal -->
+    <div class="modal fade" id="vaccineRecordModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title" id="exampleModalLabel">Add New Vaccine</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+    
+            <div class="modal-body">
+               
+                <div class="mb-3">
+                    <label for="discrip" class="form-label">Name</label>
+                    <input type="text" class="form-control" id="vaccineName">
+                </div>
+
+                <div class="mb-3">
+                    <label for="name" class="form-label">Advised vaccination age</label>
+                    <input type="text" class="form-control" id="age">
+                </div>
+
+            </div>
+            
+            <div class="modal-footer">
+                <button type="button" class="btn btn-dark" onclick="addNewVaccine()">Add</button>
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+            </div>
+            </div>
+        </div>
+    </div>
+
+       <!-- Update Modal -->
+
+    <div class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Update Vaccine</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+    
+            <div class="modal-body">
+                <div class="mb-3">
+                    <label for="name" class="form-label">Name</label>
+                    <input type="text" class="form-control" id="updateName" placeholder="Enter name">
+                </div>
+    
+                <div class="mb-3">
+                    <label for="email" class="form-label">Advised vaccination age</label>
+                    <input type="email" class="form-control" id="updatedAge" placeholder="Enter email">
+                </div>
+            </div>
+            
+            <div class="modal-footer">
+                <button type="button" class="btn btn-dark" onclick="updateVaccine()">Update</button>
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                <input type="hidden" id="hiddenData">
+            </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container my-3">
+        <h1 class="text-center" id="headtitle">Vaccine Management</h1>
+            <!-- Button trigger modal -->
+        <button type="button" class="btn btn-dark my-4" data-bs-toggle="modal" data-bs-target="#vaccineRecordModal">Add Vaccine</button>
+
+        <div id="displayTable"></div>
+    </div>
+
+    <!-- bootstrap js -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    
+    <script>
+
+        $(document).ready(function() 
+        {
+            displayVaccineTable();
+        });
+
+        function getVaccine(vID)
+        {
+            $('#hiddenData').val(vID);
+
+            $.post("vaccineCrudController.php", { 
+                action: "getVaccine",  
+                vID: vID 
+            }, function(data, status) {
+
+                var response = JSON.parse(data);
+
+           
+                if (response.error) {
+                    alert("Error: " + response.error);
+                    return;
+                }
+  
+                $('#updateName').val(response.vaccineName);
+                $('#updatedAge').val(response.age);
+                $('#hiddenData').val(response.vID);
+           
+                $('#updateModal').modal("show");
+
+            }).fail(function(xhr, status, error) {
+                var respose = JSON.parse(xhr.responseText);
+                var errorMessage = respose.error || "An unknown error occurred.";
+                alert("Error: " + errorMessage);
+            });
+
+        }
+
+        function updateVaccine()
+        {
+            let name = document.getElementById('updateName').value;
+            let age = document.getElementById('updatedAge').value;
+            let vID = document.getElementById('hiddenData').value;
+
+            if(vID!=null){
+                $.ajax({
+                    url: 'vaccineCrudController.php',
+                    method:'post',
+                    data: {
+                        action: "updateVaccine",
+                        vID:vID,
+                        name:name,
+                        age:age
+                        },
+                    success: function(respose) {
+                     
+                        displayVaccineTable();
+                     
+                    },
+                    error: function(xhr,status,error) {
+                        var respose = JSON.parse(xhr.responseText);
+                        var errorMessage = respose.error || "An unknown error occurred.";
+                        alert("Error: "+errorMessage);
+                    }
+                })
+            }else{
+                alert("Disease ID not found!");
+            }
+
+        }
+
+        function removeVaccine(vID)
+        {
+
+            if(vID!=null){
+                $.ajax({
+                    url: 'vaccineCrudController.php',
+                    method:'post',
+                    data: {
+                        action: "deleteVaccine",
+                        vID:vID
+                        },
+                    success: function(respose) {
+                     
+                        displayVaccineTable();
+                     
+                    },
+                    error: function(xhr,status,error) {
+                        var respose = JSON.parse(xhr.responseText);
+                        var errorMessage = respose.error || "An unknown error occurred.";
+                        alert("Error: "+errorMessage);
+                    }
+                })
+            }else{
+                alert("Disease ID not found!");
+            }
+
+        }
+
+        function addNewVaccine()
+        {
+            let name = document.getElementById('vaccineName').value;
+            let age = document.getElementById('age').value;
+
+            if(name!=null && age!=null){
+
+                $.ajax({
+                    url: 'vaccineCrudController.php',
+                    method:'post',
+                    data: {
+                        action: "addNewVaccine",
+                        name:name,
+                        age:age
+                        },
+                    success: function(respose) {
+            
+                        displayVaccineTable();
+                     
+                    },
+                    error: function(xhr,status,error) {
+                        var respose = JSON.parse(xhr.responseText);
+                        var errorMessage = respose.error || "An unknown error occurred.";
+                        alert("Error: "+errorMessage);
+                    }
+                })
+
+            }
+        }
+
+        function displayVaccineTable()
+        {
+            $.ajax({
+                    url: 'vaccineCrudController.php',
+                    method:'post',
+                    data: {
+                        action: "displayVaccineController",
+                        dataSend:true
+                        },
+                    success: function(respose) {
+
+                        $('#displayTable').html(respose);
+                                         
+                    },
+                    error: function(xhr,status,error) {
+                        var respose = JSON.parse(xhr.responseText);
+                        var errorMessage = respose.error || "An unknown error occurred.";
+                        alert("Error: "+errorMessage);
+                    }
+                })
+        }
+
+    </script>
+
+</body>
+</html>
