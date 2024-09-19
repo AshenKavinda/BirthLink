@@ -115,7 +115,7 @@ function updateVaccine()
 
 }
 
-function displayVaccineController()
+function displayVaccineTable()
 {
     try {
         if(isset($_POST['dataSend'])){
