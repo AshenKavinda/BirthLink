@@ -25,6 +25,11 @@
 //     echo "no";
 // }
 
+require_once 'models/Mother.php';
+$mother = new Mother();
+
+$mother->addUser("Ashen", "kavinda", "200020122", "01144545", "kavindahemarathna321@gmail.com", "kalegana", "1234", "2003-03-12", 78.666666,45.5555555555);
+
 
 
 ?>
