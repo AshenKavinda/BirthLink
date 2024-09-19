@@ -113,7 +113,7 @@ class vaccine{
                     FROM 
                         babyVaccine bv
                     INNER JOIN 
-                        vaccine v ON bv.vID = v.vID
+                        vaccinations v ON bv.vID = v.vID
                     WHERE 
                         bv.bID = ?; 
                     ";
