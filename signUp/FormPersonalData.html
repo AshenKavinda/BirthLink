@@ -29,11 +29,11 @@
             <div class="row g-2">
               <div class="col-md-6 input-group-sm">
                 <label for="first-name" class="form-label">First Name</label>
-                <input type="text" class="form-control" name="firstName" id="firstName">
+                <input type="text" class="form-control" id="firstName">
               </div>
               <div class="col-md-6 input-group-sm">
                 <label for="first-name" class="form-label">Last Name</label>
-                <input type="text" class="form-control" name="lastName" id="lastName">
+                <input type="text" class="form-control" id="lastName">
               </div>
             </div>
           </div>
@@ -57,30 +57,43 @@
             <div class="row g-2">
               <div class="col-md-6 input-group-sm">
                 <label for="inputEmail4" class="form-label">Email</label>
-                <input type="email" class="form-control" name="email" id="email">
+                <input type="email" class="form-control" id="email">
               </div>
     
               <div class="col-md-6 input-group-sm">
                 <label for="inputEmail4" class="form-label">Phone No</label>
-                <input type="number" class="form-control" name="phone" id="phone">
+                <input type="number" class="form-control" id="phone">
               </div>
             </div>
           </div>
           
           <div class="col-12 input-group-sm">
             <label for="inputAddress" class="form-label">Address</label>
-            <input type="text" class="form-control" name="inputAddress" id="inputAddress" placeholder="1234 Main St">
+            <input type="text" class="form-control" id="inputAddress" placeholder="1234 Main St">
           </div>
 
           <div class="col-12 input-group-sm">
             <label for="inputAddress2" class="form-label">Address 2</label>
-            <input type="text" class="form-control" name="inputAddress2" id="inputAddress2" placeholder="Apartment, studio, or floor">
+            <input type="text" class="form-control" id="inputAddress2" placeholder="Apartment, studio, or floor">
           </div>
 
-          <div class="col-md-6 input-group-sm">
-            <label for="inputCity" class="form-label">City</label>
-            <input type="text" class="form-control" name="inputCity" id="inputCity">
+          <div class="col-md-12">
+            <div class="row g-2">
+              <div class="col-md-6 input-group-sm">
+                <label for="inputCity" class="form-label">City</label>
+                <input type="text" class="form-control" id="inputCity">
+              </div>
+              <div class="col-md-4 input-group-sm">
+                <label for="inputCity" class="form-label">Location</label>
+                <input type="text" class="form-control" id="location">
+              </div>
+              <div class="col-md-2 input-group-sm d-flex align-self-end">
+                <button class="btn btn-primary w-100" onclick="getLocation()">Location</button>
+              </div>
+            </div>
           </div>
+
+          
 
           <div class="col-12 mt-3 input-group-sm ">
             <div class="form-check">
@@ -101,6 +114,46 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
     <script>
+
+      function convertToDMS(decimal) {
+          const degrees = Math.floor(decimal);
+          const minutesNotTruncated = (decimal - degrees) * 60;
+          const minutes = Math.floor(minutesNotTruncated);
+          const seconds = ((minutesNotTruncated - minutes) * 60).toFixed(1);
+
+          return `${degrees}°${minutes}'${seconds}"`;
+      }
+
+      function getCurrentLocationDMS(callback) {
+          if (navigator.geolocation) {
+              navigator.geolocation.getCurrentPosition(
+                  function(position) {
+                      let latDecimal = position.coords.latitude;
+                      let lngDecimal = position.coords.longitude;
+
+                      let latDMS = convertToDMS(Math.abs(latDecimal)) + (latDecimal >= 0 ? "N" : "S");
+                      let lngDMS = convertToDMS(Math.abs(lngDecimal)) + (lngDecimal >= 0 ? "E" : "W");
+
+                      let dmsCoordinates = `${latDMS} ${lngDMS}`;
+                      callback(dmsCoordinates);
+                  },
+                  function(error) {
+                      console.error("Error fetching location: ", error);
+                      alert("Unable to retrieve your location.");
+                  }
+              );
+          } else {
+              alert("Geolocation is not supported by this browser.");
+          }
+      }
+
+      function getLocation() {
+          getCurrentLocationDMS(function(dmsCoordinates) {
+              $('#location').val(dmsCoordinates);
+          });
+      }
+
+
       $(document).ready(function () {
           $('#datepicker').datepicker({
               format: 'yyyy-mm-dd',
@@ -122,7 +175,6 @@
               }
           });
       });
-
 
       function createPerson() {
         if (validateInputFeild()) {
@@ -153,83 +205,83 @@
         }
       }
 
-      function validateInputFeild() {
-      
-        var firstName = $('#firstName').val().trim();
-        var lastName = $('#lastName').val().trim();
-        var NIC = $('#NIC').val().trim();
-        var email = $('#email').val().trim();
-        var phone = $('#phone').val().trim();
-        var inputAddress = $('#inputAddress').val().trim();
-        var inputAddress2 = $('#inputAddress2').val().trim();
-        var inputCity = $('#inputCity').val().trim();
-        var Checkbox = $('#checkbox').is(':checked');
-        var datepicker = $('#datepicker').val().trim();
-        if (firstName === "") {
-          alert("First name cannot be empty.");
-          $('#firstName').focus();
-          return false;
-        }
-        if (lastName === "") {
-          alert("Last name cannot be empty.");
-          $('#lastName').focus();
-          return false;
-        }
-        if (NIC === "") {
-          alert("NIC cannot be empty.");
-          $('#NIC').focus();
-          return false;
-        }
-        if (email === "") {
-          alert("Email cannot be empty.");
-          $('#email').focus();
-          return false;
-        }
-        const regex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-        if (!regex.test(email)) {
-          alert("Email not valied.");
-          $('#email').focus();
-          return false;
-        }
-        if (datepicker === "") {
-          alert("Birth day cannot be empty.");
-          $('#datepicker').focus();
-          return false;
-        }
-        if (phone === "") {
-          alert("Phone number cannot be empty.");
-          $('#phone').focus();
-          return false;
-        }
-        if (isNaN(phone)) {
-          alert("Phone number should be numeric.");
-          $('#phone').focus();
-          return false;
-        }
-        if (inputAddress === "") {
-          alert("Address cannot be empty.");
-          $('#inputAddress').focus();
-          return false;
-        }
-        if (inputAddress2 === "") {
-          alert("Address 2 cannot be empty.");
-          $('#inputAddress2').focus();
-          return false;
-        }
-        if (inputCity === "") {
-          alert("City cannot be empty.");
-          $('#inputCity').focus();
-          return false;
-        }
-        if (!Checkbox) {
-          alert("Please check the checkbox.");
-          $('#checkbox').focus();
-          return false;
-        }
-
-        return true;
+    function validateInputFeild() {
+    
+      var firstName = $('#firstName').val().trim();
+      var lastName = $('#lastName').val().trim();
+      var NIC = $('#NIC').val().trim();
+      var email = $('#email').val().trim();
+      var phone = $('#phone').val().trim();
+      var inputAddress = $('#inputAddress').val().trim();
+      var inputAddress2 = $('#inputAddress2').val().trim();
+      var inputCity = $('#inputCity').val().trim();
+      var Checkbox = $('#checkbox').is(':checked');
+      var datepicker = $('#datepicker').val().trim();
+      if (firstName === "") {
+        alert("First name cannot be empty.");
+        $('#firstName').focus();
+        return false;
+      }
+      if (lastName === "") {
+        alert("Last name cannot be empty.");
+        $('#lastName').focus();
+        return false;
+      }
+      if (NIC === "") {
+        alert("NIC cannot be empty.");
+        $('#NIC').focus();
+        return false;
+      }
+      if (email === "") {
+        alert("Email cannot be empty.");
+        $('#email').focus();
+        return false;
+      }
+      const regex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+      if (!regex.test(email)) {
+        alert("Email not valied.");
+        $('#email').focus();
+        return false;
+      }
+      if (datepicker === "") {
+        alert("Birth day cannot be empty.");
+        $('#datepicker').focus();
+        return false;
+      }
+      if (phone === "") {
+        alert("Phone number cannot be empty.");
+        $('#phone').focus();
+        return false;
+      }
+      if (isNaN(phone)) {
+        alert("Phone number should be numeric.");
+        $('#phone').focus();
+        return false;
+      }
+      if (inputAddress === "") {
+        alert("Address cannot be empty.");
+        $('#inputAddress').focus();
+        return false;
+      }
+      if (inputAddress2 === "") {
+        alert("Address 2 cannot be empty.");
+        $('#inputAddress2').focus();
+        return false;
+      }
+      if (inputCity === "") {
+        alert("City cannot be empty.");
+        $('#inputCity').focus();
+        return false;
+      }
+      if (!Checkbox) {
+        alert("Please check the checkbox.");
+        $('#checkbox').focus();
+        return false;
       }
 
-    </script>
+      return true;
+    }
+
+  </script>
   </body>
 </html>

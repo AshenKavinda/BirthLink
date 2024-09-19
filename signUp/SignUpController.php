@@ -48,6 +48,7 @@ function createUserSession() {
             "address2" => $_POST['inputAddress2'],
             "city" => $_POST['inputCity'],
             "bday" => $_POST['bday'],
+            "location" => $_POST['location'],
             "password" => "",
             "otp" => "",
             "otp-time" => ""
@@ -156,8 +157,9 @@ function verifyOTP() {
                 $address = $_SESSION['personalData']['address'].", ".$_SESSION['personalData']['address2'].", ".$_SESSION['personalData']['city'];
                 $password = $_SESSION['personalData']['password'];
                 $bDay = $_SESSION['personalData']['bday'];
+                $location = $_SESSION['personalData']['location'];
                 global $mother;
-                $result = $mother->addUser($fName,$lName,$nic,$phone,$email,$address,$password,$bDay);
+                $result = $mother->addUser($fName,$lName,$nic,$phone,$email,$address,$password,$bDay,$location);
                 if ($result!= false) {
                     unset($_SESSION['personalData']);
                     http_response_code(200);
