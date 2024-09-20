@@ -5,7 +5,7 @@ class DB {
     public function __construct()
     {
         try {
-            $this->conn = mysqli_connect('localhost','root','','birthlink');
+            $this->conn = mysqli_connect('localhost','root','1234','birthlink');
         } catch (\Throwable $th) {
             die('<h1>DB Connection Fail</h1> ' . mysqli_connect_error());
         }   

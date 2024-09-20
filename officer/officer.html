@@ -90,14 +90,6 @@
                   <input type="text" class="form-control" id="password" placeholder="!@#$%^&*">
                 </div>
               </div>
-      
-              <div class="col-12 mt-3 input-group-sm">
-                <div class="form-check">
-                  <input class="form-check-input" type="checkbox" id="checkbox">
-                  <label class="form-check-label" for="checkbox">Agree with all policies</label>
-                </div>
-              </div>
-            </div>
             
             <div class="modal-footer">
               <button type="button" class="btn btn-primary px-5 border-0" onclick="addOfficer()">Add</button>
@@ -108,14 +100,13 @@
         </div>
       </div>
       
-            
         <!-- Update Modal -->
     
         <div class="modal fade" id="updateNewAdmin" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
           <div class="modal-dialog modal-lg">
             <div class="modal-content">
               <div class="modal-header">
-                <h1 class="modal-title fs-5" id="exampleModalLabel">Add New Officer</h1>
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Update Officer</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
               
@@ -123,63 +114,49 @@
                 <div class="row g-2">
                   <div class="col-md-6 input-group-sm">
                     <label for="firstName" class="form-label">First Name</label>
-                    <input type="text" class="form-control" id="firstName" name="firstName" placeholder="Enter First Name">
+                    <input type="text" class="form-control" id="upfirstName" name="firstName" placeholder="Enter First Name">
                   </div>
                   <div class="col-md-6 input-group-sm">
                     <label for="lastName" class="form-label">Last Name</label>
-                    <input type="text" class="form-control" id="lastName" name="lastName" placeholder="Enter Last Name">
+                    <input type="text" class="form-control" id="uplastName" name="lastName" placeholder="Enter Last Name">
                   </div>
                 </div>
         
                 <div class="row g-2 mt-2">
                   <div class="col-md-6 input-group-sm">
                     <label for="NIC" class="form-label">NIC</label>
-                    <input type="text" class="form-control" id="NIC" placeholder="Enter NIC">
+                    <input type="text" class="form-control" id="upNIC" placeholder="Enter NIC">
                   </div>
                 </div>
         
                 <div class="row g-2 mt-2">
                   <div class="col-md-6 input-group-sm">
                     <label for="email" class="form-label">Email</label>
-                    <input type="email" class="form-control" id="email" placeholder="abcdefg123@gmail.com">
+                    <input type="email" class="form-control" id="upemail" placeholder="abcdefg123@gmail.com">
                   </div>
                   <div class="col-md-6 input-group-sm">
                     <label for="phone" class="form-label">Phone No</label>
-                    <input type="text" class="form-control" id="phone" placeholder="0#########">
+                    <input type="text" class="form-control" id="upphone" placeholder="0#########">
                   </div>
                 </div>
         
                 <div class="row g-2 mt-2">
                   <div class="col-12 input-group-sm">
                     <label for="inputAddress" class="form-label">Address</label>
-                    <input type="text" class="form-control" id="inputAddress" placeholder="1234 Main Street">
-                  </div>
-                  <div class="col-12 input-group-sm mt-2">
-                    <label for="inputAddress2" class="form-label">Address 2</label>
-                    <input type="text" class="form-control" id="inputAddress2" placeholder="Apartment, studio">
+                    <input type="text" class="form-control" id="upinputAddress" placeholder="1234 Main Street">
                   </div>
                 </div>
-  
-                <div class="row g-2 mt-2">
-                  <div class="col-md-6 input-group-sm">
-                    <label for="inputCity" class="form-label">City</label>
-                    <input type="text" class="form-control" id="city" placeholder="Enter City">
-                  </div>
-                </div>
-        
-                <div class="col-12 mt-3 input-group-sm">
-                  <div class="form-check">
-                    <input class="form-check-input" type="checkbox" id="checkbox">
-                    <label class="form-check-label" for="checkbox">Agree with all policies</label>
-                  </div>
-                </div>
-              </div>
-              
-              <div class="modal-footer">
-                <button type="button" class="btn btn-primary px-5 border-0" onclick="addOfficer()">Add</button>
+
+                <div class="modal-footer">
+                <button type="button" class="btn btn-primary px-5 border-0" onclick="updateOfficer()">Update</button>
                 <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
                 <input type="hidden" id="hiddenData">
               </div>
+
+              </div>  
+
+              
+              
             </div>
           </div>
         </div>
@@ -196,46 +173,40 @@
 
 
         function addOfficer(){
-          const agreeWithPolicies = $('#checkbox').is(':checked');
-
-          if(agreeWithPolicies == false){
-            alert("Please Agree with policies for Register");
-            return;
+         
+          if(validateInputFeildAdd()){
+            
+            $.ajax({
+              url: "officerController.php",
+                  type: 'post',
+                  data: {
+                      action: "add",
+                      ofname: $('#firstName').val().trim(),
+                      olname: $('#lastName').val().trim(),
+                      onic: $('#NIC').val().trim(),
+                      oemail: $('#email').val().trim(),
+                      ophon: $('#phone').val().trim(),
+                      oadd1: $('#inputAddress').val().trim(),
+                      oadd2: $('#inputAddress2').val().trim(),
+                      ocity: $('#city').val().trim(),
+                      opass: $('#password').val().trim()
+                  },
+                  success: function(data,response) {
+                      $('#displayTable').html(data);
+                      displayData();
+                      alert(response);
+                  },
+                  error: function(xhr) {
+                      alert("Error fetching data: " + xhr.responseText);
+                  }
+                
+            })
+            // alert($('#checkbox').is(':checked'));
           }
-
-          
-          // alert( $('#email').val().trim());
-          $.ajax({
-            url: "officerController.php",
-                type: 'post',
-                data: {
-                    action: "add",
-                    ofname: $('#firstName').val().trim(),
-                    olname: $('#lastName').val().trim(),
-                    onic: $('#NIC').val().trim(),
-                    oemail: $('#email').val().trim(),
-                    ophon: $('#phone').val().trim(),
-                    oadd1: $('#inputAddress').val().trim(),
-                    oadd2: $('#inputAddress2').val().trim(),
-                    ocity: $('#city').val().trim(),
-                    opass: $('#password').val().trim()
-                },
-                success: function(data,response) {
-                    $('#displayTable').html(data);
-                    alert(response);
-                },
-                error: function(xhr) {
-                    alert("Error fetching data: " + xhr.responseText);
-                }
-               
-          })
-           alert($('#checkbox').is(':checked'));
-
+          else{
+            alert("validate error");
+          }
         }
-
-        $(document).ready(function() {
-            displayData();
-        });
 
         function displayData() {        
             $.ajax({
@@ -279,6 +250,7 @@
           }
 
           function getOfficerDetails(uID) {
+
           $.ajax({
               url: "officerController.php",
               type: 'post',
@@ -287,58 +259,212 @@
                   uID: uID
               },
               success: function(response) {
-                  const officer = JSON.parse(response);
 
-                  $('#firstName').val(officer.fName);
-                  $('#lastName').val(officer.lName);
-                  $('#NIC').val(officer.nic);
-                  $('#email').val(officer.email);
-                  $('#phone').val(officer.contactNo);
-                  $('#inputAddress').val(officer.address1);
-                  $('#inputAddress2').val(officer.address2);
-                  $('#city').val(officer.city);
+                  const officer = JSON.parse(response);
+                  // console.log(officer);
+
+                  $('#upfirstName').val(officer.fName);
+                  $('#uplastName').val(officer.lName);
+                  $('#upNIC').val(officer.nic);
+                  $('#upemail').val(officer.email);
+                  $('#upphone').val(officer.contactNo);
+                  $('#upinputAddress').val(officer.address);
                   
                   $('#hiddenData').val(uID);
 
-                  $('#addNewAdmin').modal('show');
+                  $('#updateNewAdmin').modal('show');
               },
-              error: function(xhr) {
-                  alert("Error fetching data: " + xhr.responseText);
-              }
+              error: function(xhr,status,error) {
+              var respose = JSON.parse(xhr.responseText);
+              var errorMessage = respose.error || "An unknown error occurred.";
+              alert("Error: "+errorMessage);
+            }
           });
 
         }
 
         function updateOfficer() {
-        const uID = $('#hiddenData').val();
 
+        const uID = $('#hiddenData').val();
+        
+        if(validateInputFeildUpdate()){
+          $.ajax({
+              url: "officerController.php",
+              type: 'post',
+              data: {
+                  action: "updateOfficer",
+                  uID: uID,
+                  ofname: $('#upfirstName').val().trim(),
+                  olname: $('#uplastName').val().trim(),
+                  onic: $('#upNIC').val().trim(),
+                  oemail: $('#upemail').val().trim(),
+                  ophon: $('#upphone').val().trim(),
+                  oadd1: $('#upinputAddress').val().trim(),
+
+              },
+              success: function(response) {
+                  $('#displayTable').html(response);
+                  $('#updateNewAdmin').modal('hide');
+                  alert("Officer updated successfully!");
+              },
+              error: function(xhr,status,error) {
+                var respose = JSON.parse(xhr.responseText);
+                var errorMessage = respose.error || "An unknown error occurred.";
+                alert("Error: "+errorMessage);
+            }
+          });
+        }  
+      }
+
+      function deleteOfficer(id) {
         $.ajax({
             url: "officerController.php",
             type: 'post',
-            data: {
-                action: "updateOfficer",
-                uID: uID,
-                ofname: $('#firstName').val().trim(),
-                olname: $('#lastName').val().trim(),
-                onic: $('#NIC').val().trim(),
-                oemail: $('#email').val().trim(),
-                ophon: $('#phone').val().trim(),
-                oadd1: $('#inputAddress').val().trim(),
-                oadd2: $('#inputAddress2').val().trim(),
-                ocity: $('#city').val().trim()
-            },
-            success: function(response) {
-                $('#displayTable').html(response);
-                $('#addNewAdmin').modal('hide');
-                alert("Officer updated successfully!");
+            data: { action: "deleteOfficer", idSend: id },
+            success: function(data, status) {
+                displayData();
             },
             error: function(xhr) {
-                alert("Error updating data: " + xhr.responseText);
+                alert("Error deleting data: " + xhr.responseText);
             }
         });
       }
 
-  
+      function validateInputFeildAdd() {
+    
+      var firstName = $('#firstName').val().trim();
+      var lastName = $('#lastName').val().trim();
+      var NIC = $('#NIC').val().trim();
+      var email = $('#email').val().trim();
+      var phone = $('#phone').val().trim();
+      var inputAddress = $('#inputAddress').val().trim();
+      var inputAddress2 = $('#inputAddress2').val().trim();
+      var inputCity = $('#city').val().trim();
+      var password = $('#password').val().trim();
+
+      if (firstName === "") {
+        alert("First name cannot be empty.");
+        $('#firstName').focus();
+        return false;
+      }
+      if (lastName === "") {
+        alert("Last name cannot be empty.");
+        $('#lastName').focus();
+        return false;
+      }
+      if (NIC === "") {
+        alert("NIC cannot be empty.");
+        $('#NIC').focus();
+        return false;
+      }
+      if (email === "") {
+        alert("Email cannot be empty.");
+        $('#email').focus();
+        return false;
+      }
+      const regex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+      if (!regex.test(email)) {
+        alert("Email not valied.");
+        $('#email').focus();
+        return false;
+      }
+      if (datepicker === "") {
+        alert("Birth day cannot be empty.");
+        $('#datepicker').focus();
+        return false;
+      }
+      if (phone === "") {
+        alert("Phone number cannot be empty.");
+        $('#phone').focus();
+        return false;
+      }
+      if (isNaN(phone)) {
+        alert("Phone number should be numeric.");
+        $('#phone').focus();
+        return false;
+      }
+      if (inputAddress === "") {
+        alert("Address cannot be empty.");
+        $('#inputAddress').focus();
+        return false;
+      }
+      if (inputAddress2 === "") {
+        alert("Address 2 cannot be empty.");
+        $('#inputAddress2').focus();
+        return false;
+      }
+      if (inputCity === "") {
+        alert("City cannot be empty.");
+        $('#City').focus();
+        return false;
+      }
+      if (password === "") {
+        alert("Password cannot be empty.");
+        $('#password').focus();
+        return false;
+      }
+
+      return true;
+    }
+
+    function validateInputFeildUpdate() {
+    
+    var firstName = $('#upfirstName').val().trim();
+    var lastName = $('#uplastName').val().trim();
+    var NIC = $('#upNIC').val().trim();
+    var email = $('#upemail').val().trim();
+    var phone = $('#upphone').val().trim();
+    var inputAddress = $('#upinputAddress').val().trim();
+
+    if (firstName === "") {
+      alert("First name cannot be empty.");
+      $('#upfirstName').focus();
+      return false;
+    }
+    if (lastName === "") {
+      alert("Last name cannot be empty.");
+      $('#uplastName').focus();
+      return false;
+    }
+    if (NIC === "") {
+      alert("NIC cannot be empty.");
+      $('#upNIC').focus();
+      return false;
+    }
+    if (email === "") {
+      alert("Email cannot be empty.");
+      $('#upemail').focus();
+      return false;
+    }
+    const regex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    if (!regex.test(email)) {
+      alert("Email not valied.");
+      $('#upemail').focus();
+      return false;
+    }
+    if (datepicker === "") {
+      alert("Birth day cannot be empty.");
+      $('#updatepicker').focus();
+      return false;
+    }
+    if (phone === "") {
+      alert("Phone number cannot be empty.");
+      $('#upphone').focus();
+      return false;
+    }
+    if (isNaN(phone)) {
+      alert("Phone number should be numeric.");
+      $('#upphone').focus();
+      return false;
+    }
+    if (inputAddress === "") {
+      alert("Address cannot be empty.");
+      $('#upinputAddress').focus();
+      return false;
+    }
+    return true;
+  }
+
 
     </script>
     
