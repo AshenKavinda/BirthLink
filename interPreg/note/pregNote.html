@@ -49,12 +49,7 @@
                 <div class="row mb-4">
                   <div class="col-md-2 d-flex align-items-center justify-content-start">Diagnosis</div>
                   <div class="col-md-10">
-                    <select class="form-select" aria-label="Default select example" id="combo">
-                      <option value="0" selected>Select Diagnosis</option>
-                      <option value="1">One</option>
-                      <option value="2">Two</option>
-                      <option value="3">Three</option>
-                    </select>
+                    <select class="form-select" id="listItem" aria-label="Default select example"></select>
                   </div>
                 </div>
 
@@ -80,12 +75,31 @@
 
       $(document).ready(function(){
         displayNoteAccordion();
+        addListItem();
       });
 
+      function addListItem() {
+        $.ajax({
+          url: 'noteController.php',
+          method: 'post',
+          data: {
+            action: 'loadListItem'
+          },
+          success: function(respose) {
+            $('#listItem').html(respose);
+          },
+          error: function(xhr,status,error) {
+            var respose = JSON.parse(xhr.responseText);
+            var errorMessage = respose.error || "An unknown error occurred.";
+            alert("Error: "+errorMessage);
+          }
+        });
+      }
+
       function validateInput() {
-        if ($('#combo').val() == 0) {
+        if ($('#listItem').val() == 0) {
           alert("please select disease");
-          $('#combo').focus();
+          $('#listItem').focus();
           return false;
         }
         if ($('#datepicker').val() === "") {
@@ -109,7 +123,7 @@
 
       function clearInput() {
         $('#datepicker').val("");
-        $('#combo').val(0);
+        $('#listItem').val(0);
       }
 
       function displayNoteAccordion() {
@@ -155,7 +169,7 @@
               data: {
                 action: "add",
                 pID: pID,
-                dID: $("#combo").val(),
+                dID: $("#listItem").val(),
                 date: $("#datepicker").val()
               },
               success: function(respose) {
