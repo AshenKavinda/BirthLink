@@ -146,7 +146,7 @@ class User {
         $result = mysqli_query($this->db->getConnection(),$query);
 
         if ($result) {
-            return mysqli_insert_id($this->db->getConnection());
+            return true;
         }
         else {
             error_log("MySQL error: " . mysqli_error($this->db->getConnection()));

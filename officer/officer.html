@@ -279,7 +279,7 @@
         function updateOfficer() {
 
         const uID = $('#hiddenData').val();
-        
+
         if(validateInputFeildUpdate()){
           $.ajax({
               url: "officerController.php",
@@ -296,6 +296,7 @@
 
               },
               success: function(response) {
+                  displayData();
                   $('#displayTable').html(response);
                   $('#updateNewAdmin').modal('hide');
                   alert("Officer updated successfully!");
@@ -433,11 +434,6 @@
     if (!regex.test(email)) {
       alert("Email not valied.");
       $('#upemail').focus();
-      return false;
-    }
-    if (datepicker === "") {
-      alert("Birth day cannot be empty.");
-      $('#updatepicker').focus();
       return false;
     }
     if (phone === "") {
