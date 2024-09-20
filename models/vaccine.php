@@ -38,17 +38,20 @@ class vaccine{
 
         try {
             $vaccinations = $this->getAll();
-
+            $doseDates = [];
             while ($row = $vaccinations->fetch_assoc()) {
-                
+                $doseDate = new DateTime($birthDate);
+                $doseDate->modify("+{$row['age']} months");
+                $doseDates[] = [
+                    'vID' => $row['vID'],
+                    'doseDate' => $doseDate->format('Y-m-d')
+                ];
             }
 
             for ($i = 0; $i < count($doseDates); $i++) { 
                 $vID = $i + 1; 
                 $doseDate = $doseDates[$i]['doseDate']; 
-
                 $stmt->bind_param('iis', $bid, $vID, $doseDate);
-
                 if (!$stmt->execute()) {
                     throw new Exception('Error inserting record for vaccine ID ' . $vID);
                 }
