@@ -56,6 +56,27 @@ function removeRecord()
 
 }
 
+function getVaccines() {
+
+    try {
+        global $vaccine;
+        $result = $vaccine->getAll();
+        
+        $options = '';
+        while ($row = mysqli_fetch_assoc($result)) {
+            $options .= '<option value="' . $row['vID'] . '">' . $row['vaccineName'] . '</option>';
+        }
+
+        http_response_code(200);
+        echo $options;
+        exit();
+    } catch (\Throwable $th) {
+        http_response_code(400);
+        echo json_encode(array('error' => $th->getMessage()));
+        exit();
+    }
+}
+
 function createVaccinationTable()
 {
     try {

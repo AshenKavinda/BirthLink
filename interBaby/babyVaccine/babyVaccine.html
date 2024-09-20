@@ -148,25 +148,7 @@
                 <div class="mb-3">
                     <label for="vaccine" class="form-label">Vaccine Schedule</label>
                     <select class="form-control" id="vaccine">
-                        <option value="" disabled selected>Select a vaccine</option>
-                        <option value="1">At Birth - BCG</option>
-                        <option value="2">2 Months - Triple + Hep B 1st dose</option>
-                        <option value="3">2 Months - Polio 1st dose</option>
-                        <option value="4">2 Months - Hib 1st dose</option>
-                        <option value="5">4 Months - Triple + Hep B 2nd dose</option>
-                        <option value="6">4 Months - Polio 2nd dose</option>
-                        <option value="7">4 Months - Hib 2nd dose</option>
-                        <option value="8">6 Months - Triple + Hep B 3rd dose</option>
-                        <option value="9">6 Months - Polio 3rd dose</option>
-                        <option value="10">6 Months - Hib 3rd dose</option>
-                        <option value="11">9 Months - Measles</option>
-                        <option value="12">15 Months - MMR</option>
-                        <option value="13">18 Months - Triple</option>
-                        <option value="14">18 Months - Polio</option>
-                        <option value="15">18 Months - Hib</option>
-                        <option value="16">School entry - DT</option>
-                        <option value="17">School entry - Polio</option>
-                        <option value="18">School entry - MMR</option>
+
                     </select>
                 </div>                
             </div>
@@ -196,7 +178,29 @@
         $(document).ready(function() 
         {
             displayVaccinationData();
+            populateVaccineDropDown();
         });
+
+        function populateVaccineDropDown()
+        {
+            alert("1");
+            $.ajax({
+                url: 'babyVaccineController.php',
+                method: 'post',
+                data: {
+                    action: 'getVaccines'
+                },
+                success: function(response) {
+                     $('#vaccine').html(response); 
+                    
+                },
+                error: function(xhr, status, error) {
+                    var respose = JSON.parse(xhr.responseText);
+                    var errorMessage = respose.error || "An unknown error occurred.";
+                    alert("Error: " + errorMessage);
+                }
+            });
+        }
 
         function updateVaccineRecord(babyID,vaccineID)
         {

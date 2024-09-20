@@ -48,6 +48,7 @@ class vaccine{
                 ];
             }
 
+
             foreach ($doseDates as $item) {
                 $stmt->bind_param('iis', $bid, $item['vID'], $item['doseDate']);
                 if (!$stmt->execute()) {
@@ -175,28 +176,7 @@ class vaccine{
     
    }
 
-   public function getVaccineDetails()
-   {
-        try {
-            $sql = "select * from vaccinations";
-            $stmt = $this->db->getConnection()->prepare($sql);
-          
-               
-            if($stmt->execute()){
 
-                $result = $stmt->get_result();
-    
-                return $result;
-    
-            }else{
-    
-                throw new Exception("Couldn't fetch vaccine records!");
-            }
-        } catch (\Throwable $th) {
-            throw new Exception($th->getMessage());
-        }
-    
-   }
 
    public function deleteVaccine($vID){
 
