@@ -1,8 +1,9 @@
 <?php
 
 require_once '../../models/vaccine.php';
-
+require_once '../../models/baby.php';
 $vaccine = new vaccine();
+$baby = new baby();
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Get the action (function name) from the request
@@ -18,13 +19,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 }
 
-function updateVaccineRecord()
+function addVaccinationsByBID()
 {
     try {
         if(isset($_POST['babyID']) && isset($_POST['vaccineID']) && isset($_POST['selectedDate'])){
             global $vaccine;
-            $vaccine->updateVaccineRecord($_POST['babyID'], $_POST['vaccineID'], $_POST['selectedDate']);
-            http_response_code(200);
+            $result = $vaccine->addVaccinationsByBID($_POST['babyID'], $_POST['vaccineID'], $_POST['selectedDate']);
+            if ($result) {
+                http_response_code(200);
+            } else {
+                throw new Exception("System Error!");
+            }
+            
         }else
         {
             throw new Exception("System Error!");
@@ -82,7 +88,49 @@ function createVaccinationTable()
     try {
         if(isset($_POST['babyID'])){
             global $vaccine;
-            $result = $vaccine->getVaccinationDetails($_POST['babyID']);
+            global $baby;
+
+            $allVaccines = $vaccine->getAll();
+            $allVaccination = $vaccine->getVaccinationsByBID($_POST['babyID']);
+            $babyData = $baby->getBabyByBID($_POST['babyID'])->fetch_assoc();
+            $bDay = $babyData['bDay'];
+
+            $tableVaccines = [];
+            
+            $arrAllVaccinations = [];
+            while ($row = $allVaccination->fetch_assoc()) {
+                $arrAllVaccinations[] = [
+                    'vID' => $row['vID'],
+                    'givenDate' => $row['givenDate']
+                ];
+            }
+
+            
+            function findGivenDate($vaccinations, $vID) {
+                foreach ($vaccinations as $vaccination) {
+                    if ($vaccination['vID'] == $vID) {
+                        return $vaccination['givenDate'];
+                    }
+                }
+                return null;
+            }
+
+            
+            while ($row = $allVaccines->fetch_assoc()) {
+                $givenDate = findGivenDate($arrAllVaccinations, $row['vID']);
+
+                $doseDate = new DateTime($bDay);
+                $doseDate->modify("+{$row['age']} months");
+
+                
+                $tableVaccines[] = [
+                    'vID' => $row['vID'],
+                    'vaccineName' => $row['vaccineName'],
+                    'doseDate' => $doseDate->format('Y-m-d'),
+                    'givenDate' => $givenDate !== null ? $givenDate : "not yet"
+                ];
+            }
+
 
             $table = '<table class="table">
                             <thead>
@@ -96,13 +144,12 @@ function createVaccinationTable()
                             </thead>';
             $slNo = 1;
 
-            while($row = mysqli_fetch_assoc($result)){
-
-                    $vaccineID = $row['vID'];
-                    $babyID = $row['bID'];
-                    $vaccine = $row['vaccineName'];
-                    $doseDate = $row['doseDate'];
-                    $givenDate = $row['givenDate'];
+            foreach ($tableVaccines as $item) {
+                    $vaccineID = $item['vID'];
+                    $babyID = $_POST['babyID'];
+                    $vaccine = $item['vaccineName'];
+                    $doseDate = $item['doseDate'];
+                    $givenDate = $item['givenDate'];
         
                     $table.=' <tr>
                     <td>'.$slNo.'</td>
@@ -110,7 +157,7 @@ function createVaccinationTable()
                     <td>'.$doseDate.'</td>
                     <td>'.$givenDate.'</td>
                     <td>
-                        <button class="btn btn-danger" onclick="updateVaccineRecord('.$babyID.','.$vaccineID.')">Remove</button>
+                        <button class="btn btn-danger" onclick="deleteVaccineRecord('.$babyID.','.$vaccineID.')">Remove</button>
                     </td>
                     </tr>';
                     $slNo++;   

@@ -1,9 +1,7 @@
 <?php
 session_start();
 require_once '../../models/baby.php';
-require_once '../../models/vaccine.php';
 $baby = new baby();
-$vaccine = new vaccine();
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Get the action (function name) from the request
@@ -86,13 +84,7 @@ function addDatabase() {
                 $birthNo = $item['birthNo'];
                 $gender = $item['gender'];
                 global $baby;
-                $bID = $baby->add($pid,$bDay,$birthNo,$gender);
-                if ($bID!=false) {
-                    global $vaccine;
-                    $vaccine->addAllVaccines($bID,$bDay);
-                }else {
-                    throw new Exception("Database error!");
-                }
+                $baby->add($pid,$bDay,$birthNo,$gender);
             }
             http_response_code(200);
         } else {
