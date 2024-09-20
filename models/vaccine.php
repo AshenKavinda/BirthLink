@@ -48,7 +48,7 @@ class vaccine{
                 ];
             }
 
-
+            
             foreach ($doseDates as $item) {
                 $stmt->bind_param('iis', $bid, $item['vID'], $item['doseDate']);
                 if (!$stmt->execute()) {
