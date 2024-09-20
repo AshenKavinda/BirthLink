@@ -34,6 +34,19 @@ class growth{
     
     }
 
+    public function autoAdd($bID) {
+        try {
+            $quary = "insert into babygrowth(bID,gid) values(?,?)";
+            $stmt = $this->db->getConnection()->prepare($quary);
+            for ($i=1; $i < 10; $i++) { 
+                $stmt->bind_param('ii',$bID,$i);
+                $stmt->execute();
+            }
+        } catch (\Throwable $th) {
+            //throw $th;
+        }
+    }
+
     public function removeGrowthRecord($babyID,$growthID)
     {
         try {
