@@ -113,7 +113,7 @@ class vaccine{
                     FROM 
                         babyVaccine bv
                     INNER JOIN 
-                        vaccine v ON bv.vID = v.vID
+                        vaccinations v ON bv.vID = v.vID
                     WHERE 
                         bv.bID = ?; 
                     ";
@@ -165,16 +165,114 @@ class vaccine{
     }
 
    }
+
+   public function addNewVaccine($name,$age)
+   {
+        try {
+            $sql = "insert into vaccinations(age,vaccineName) values(?,?)";
+            $stmt = $this->db->getConnection()->prepare($sql);
+            $stmt->bind_param('ss',$age,$name);
+               
+            if($stmt->execute()){
+    
+                return true;
+    
+            }else{
+    
+                throw new Exception("Vaccination record unsuccessful!");
+            }
+        } catch (\Throwable $th) {
+            throw new Exception($th->getMessage());
+        }
+    
+   }
+
+   public function getVaccineDetails()
+   {
+        try {
+            $sql = "select * from vaccinations";
+            $stmt = $this->db->getConnection()->prepare($sql);
+          
+               
+            if($stmt->execute()){
+
+                $result = $stmt->get_result();
+    
+                return $result;
+    
+            }else{
+    
+                throw new Exception("Couldn't fetch vaccine records!");
+            }
+        } catch (\Throwable $th) {
+            throw new Exception($th->getMessage());
+        }
+    
+   }
+
+   public function deleteVaccine($vID){
+
+    try {
+        $sql = "delete from vaccinations where vID = ?";
+        $stmt = $this->db->getConnection()->prepare($sql);
+        $stmt->bind_param('i',$vID);
+             
+        if($stmt->execute()){
+
+            return true;
+
+        }else{
+
+            throw new Exception("Couldn't fetch vaccine records!");
+        }
+    } catch (\Throwable $th) {
+        throw new Exception($th->getMessage());
+    }
+    
+   }
+
+   public function updateVaccine($vID,$name,$age){
+
+    try {
+        $sql = "update vaccinations set age = ?, vaccineName = ? where vID = ?";
+        $stmt = $this->db->getConnection()->prepare($sql);
+        $stmt->bind_param('ssi',$age,$name,$vID);
+             
+        if($stmt->execute()){
+
+            return true;
+
+        }else{
+
+            throw new Exception("Couldn't update vaccine records!");
+        }
+    } catch (\Throwable $th) {
+        throw new Exception($th->getMessage());
+    }
+
+   }
+
+   public function getVaccine($vID){
+
+    try {
+        $sql = "select * from vaccinations where vID = ?";
+        $stmt = $this->db->getConnection()->prepare($sql);
+        $stmt->bind_param('i',$vID);
+             
+        if($stmt->execute()){
+
+            $result = $stmt->get_result();
+
+            return $result;
+
+        }else{
+
+            throw new Exception("Couldn't get vaccine record!");
+        }
+    } catch (\Throwable $th) {
+        throw new Exception($th->getMessage());
+    }
+   }
 }
-
-
-
-
-
-
-
-
-
-
 
 ?>
