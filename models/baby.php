@@ -57,6 +57,22 @@ class baby{
             throw new Exception($th->getMessage());
         }
     }
+
+    public function getBabyByBID($bID) {
+        try {
+            $query = 'select * from baby where bID = ?';
+            $stmt = $this->db->getConnection()->prepare($query);
+            $stmt->bind_param('i',$bID);
+            if ($stmt->execute()) {
+                $result = $stmt->get_result();
+                return $result;
+            }else {
+                throw new Exception('Quary Error!');
+            }
+        } catch (\Throwable $th) {
+            throw new Exception($th->getMessage());
+        }
+    }
         
 }
 

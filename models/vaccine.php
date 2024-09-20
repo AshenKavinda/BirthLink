@@ -30,37 +30,43 @@ class vaccine{
         }
     }
 
-    public function addAllVaccines($bid,$birthDate) {
-        $query = "INSERT INTO babyVaccine(bID, vID, doseDate) VALUES(?, ?, ?)";
-        $stmt = $this->db->getConnection()->prepare($query);
+    function getVaccinationsByBID($bid) {
+        try {
+            $query = "select * from babyVaccine where bID = ?";
+            $stmt = $this->db->getConnection()->prepare($query);
+            $stmt->bind_param('i',$bid);
+            if ($stmt->execute()) {
+                $result = $stmt->get_result();
+                return $result; 
+            } else {
+                throw new Exception("Quary Error!");
+            }
+        } catch (\Throwable $th) {
+            throw new Exception($th->getMessage());
+        }
+    }
 
-        $this->db->getConnection()->begin_transaction();
+    public function addVaccinationsByBID($bID,$vID,$doseDate) {
+        
+
+        // $doseDate = new DateTime($birthDate);
+        // $doseDate->modify("+{$row['age']} months");
+        // $doseDates[] = [
+        //     'vID' => $row['vID'],
+        //     'doseDate' => $doseDate->format('Y-m-d')
+        // ];
 
         try {
-            $vaccinations = $this->getAll();
-            $doseDates = [];
-            while ($row = $vaccinations->fetch_assoc()) {
-                $doseDate = new DateTime($birthDate);
-                $doseDate->modify("+{$row['age']} months");
-                $doseDates[] = [
-                    'vID' => $row['vID'],
-                    'doseDate' => $doseDate->format('Y-m-d')
-                ];
+            $query = "INSERT INTO babyVaccine(bID, vID, doseDate) VALUES(?, ?, ?)";
+            $stmt = $this->db->getConnection()->prepare($query);
+            $stmt->bind_param('iis',$bID,$vID,$doseDate);
+    
+            if ($stmt->execute()) {
+                return true;
+            } else {
+                return false;
             }
-
-
-            foreach ($doseDates as $item) {
-                $stmt->bind_param('iis', $bid, $item['vID'], $item['doseDate']);
-                if (!$stmt->execute()) {
-                    throw new Exception('Error inserting record for vaccine ID ' . $item['vID']);
-                }
-            }
-
-            $this->db->getConnection()->commit();
-            return true;
-
         } catch (Exception $e) {
-            $this->db->getConnection()->rollback();
             throw new Exception($e->getMessage());  
         }
 

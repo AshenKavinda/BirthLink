@@ -1,8 +1,9 @@
 <?php
 
 require_once '../../models/vaccine.php';
-
+require_once '../../models/baby.php';
 $vaccine = new vaccine();
+$baby = new baby();
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Get the action (function name) from the request
@@ -82,7 +83,51 @@ function createVaccinationTable()
     try {
         if(isset($_POST['babyID'])){
             global $vaccine;
-            $result = $vaccine->getVaccinationDetails($_POST['babyID']);
+            global $baby;
+
+            $allVaccines = $vaccine->getAll();
+            $allVaccination = $vaccine->getVaccinationsByBID($_POST['babyID']);
+            $babyData = $baby->getBabyByBID($_POST['babyID'])->fetch_assoc();
+            $bDay = $babyData['bDay'];
+
+            $tableVaccines = [];
+            
+            $arrAllVaccinations = [];
+            while ($row = $allVaccination->fetch_assoc()) {
+                $arrAllVaccinations[] = [
+                    'vID' => $row['vID'],
+                    'givenDate' => $row['givenDate']
+                ];
+            }
+
+            
+            function findGivenDate($vaccinations, $vID) {
+                foreach ($vaccinations as $vaccination) {
+                    if ($vaccination['vID'] == $vID) {
+                        return $vaccination['givenDate'];
+                    }
+                }
+                return null;
+            }
+
+            
+            while ($row = $allVaccines->fetch_assoc()) {
+                $givenDate = findGivenDate($arrAllVaccinations, $row['vID']);
+
+                $doseDate = new DateTime($bDay);
+                $doseDate->modify("+{$row['age']} months");
+
+                
+                $doseDates = [
+                    'vID' => $row['vID'],
+                    'vaccineName' => $row['vaccineName'],
+                    'doseDate' => $doseDate->format('Y-m-d'),
+                    'givenDate' => $givenDate !== null ? $givenDate : "not yet"
+                ];
+
+                $tableVaccines[] = $doseDates;
+            }
+
 
             $table = '<table class="table">
                             <thead>
@@ -96,13 +141,12 @@ function createVaccinationTable()
                             </thead>';
             $slNo = 1;
 
-            while($row = mysqli_fetch_assoc($result)){
-
-                    $vaccineID = $row['vID'];
-                    $babyID = $row['bID'];
-                    $vaccine = $row['vaccineName'];
-                    $doseDate = $row['doseDate'];
-                    $givenDate = $row['givenDate'];
+            foreach ($tableVaccines as $item) {
+                    $vaccineID = $item['vID'];
+                    $babyID = $_POST['babyID'];
+                    $vaccine = $item['vaccineName'];
+                    $doseDate = $item['doseDate'];
+                    $givenDate = $item['givenDate'];
         
                     $table.=' <tr>
                     <td>'.$slNo.'</td>
