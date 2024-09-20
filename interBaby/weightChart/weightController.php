@@ -46,7 +46,7 @@ function deleteLast() {
                 http_response_code(200);
                 exit();
             } else {
-                throw new Exception("Can not find to day record!");
+                throw new Exception("Last Record deleted rigth now!");
             }
         } else {
             throw new Exception("bid not found!");
