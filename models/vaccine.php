@@ -46,20 +46,11 @@ class vaccine{
         }
     }
 
-    public function addVaccinationsByBID($bID,$vID,$doseDate) {
-        
-
-        // $doseDate = new DateTime($birthDate);
-        // $doseDate->modify("+{$row['age']} months");
-        // $doseDates[] = [
-        //     'vID' => $row['vID'],
-        //     'doseDate' => $doseDate->format('Y-m-d')
-        // ];
-
+    public function addVaccinationsByBID($bID,$vID,$givenDate) {
         try {
-            $query = "INSERT INTO babyVaccine(bID, vID, doseDate) VALUES(?, ?, ?)";
+            $query = "INSERT INTO babyVaccine(bID, vID, givenDate) VALUES(?, ?, ?)";
             $stmt = $this->db->getConnection()->prepare($query);
-            $stmt->bind_param('iis',$bID,$vID,$doseDate);
+            $stmt->bind_param('iis',$bID,$vID,$givenDate);
     
             if ($stmt->execute()) {
                 return true;
@@ -76,17 +67,13 @@ class vaccine{
     {
         try {
 
-            $sql = "update babyvaccine set givenDate = null where bID = ? and vID = ?";
+            $sql = "delete from babyVaccine where bID = ? and vID = ?";
             $stmt = $this->db->getConnection()->prepare($sql);
             $stmt->bind_param('ii',$babyID,$vaccineID);
             
-    
             if($stmt->execute()){
-    
                 return true;
-    
             }else{
-    
                 throw new Exception("Couldn't remove record!");
             }
     

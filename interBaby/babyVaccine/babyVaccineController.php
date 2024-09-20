@@ -19,13 +19,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 }
 
-function updateVaccineRecord()
+function addVaccinationsByBID()
 {
     try {
         if(isset($_POST['babyID']) && isset($_POST['vaccineID']) && isset($_POST['selectedDate'])){
             global $vaccine;
-            $vaccine->updateVaccineRecord($_POST['babyID'], $_POST['vaccineID'], $_POST['selectedDate']);
-            http_response_code(200);
+            $result = $vaccine->addVaccinationsByBID($_POST['babyID'], $_POST['vaccineID'], $_POST['selectedDate']);
+            if ($result) {
+                http_response_code(200);
+            } else {
+                throw new Exception("System Error!");
+            }
+            
         }else
         {
             throw new Exception("System Error!");
@@ -118,14 +123,12 @@ function createVaccinationTable()
                 $doseDate->modify("+{$row['age']} months");
 
                 
-                $doseDates = [
+                $tableVaccines[] = [
                     'vID' => $row['vID'],
                     'vaccineName' => $row['vaccineName'],
                     'doseDate' => $doseDate->format('Y-m-d'),
                     'givenDate' => $givenDate !== null ? $givenDate : "not yet"
                 ];
-
-                $tableVaccines[] = $doseDates;
             }
 
 
@@ -154,7 +157,7 @@ function createVaccinationTable()
                     <td>'.$doseDate.'</td>
                     <td>'.$givenDate.'</td>
                     <td>
-                        <button class="btn btn-danger" onclick="updateVaccineRecord('.$babyID.','.$vaccineID.')">Remove</button>
+                        <button class="btn btn-danger" onclick="deleteVaccineRecord('.$babyID.','.$vaccineID.')">Remove</button>
                     </td>
                     </tr>';
                     $slNo++;   

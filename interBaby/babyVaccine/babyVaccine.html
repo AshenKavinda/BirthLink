@@ -201,7 +201,7 @@
             });
         }
 
-        function updateVaccineRecord(babyID,vaccineID)
+        function deleteVaccineRecord(babyID,vaccineID)
         {
             let url = new URL(window.location.href);
             let paras = new URLSearchParams(url.search);
@@ -246,7 +246,7 @@
                     url: 'babyVaccineController.php',
                     method:'post',
                     data: {
-                        action: "updateVaccineRecord",
+                        action: "addVaccinationsByBID",
                         babyID:babyID,
                         vaccineID:vaccineID,
                         selectedDate:selectedDate
@@ -283,7 +283,7 @@
                         babyID:babyID                                
                         },
                     success: function(respose) {
-                     $('#displayTable').html(respose);
+                      $('#displayTable').html(respose);
                     },
                     error: function(xhr,status,error) {
                         var respose = JSON.parse(xhr.responseText);
