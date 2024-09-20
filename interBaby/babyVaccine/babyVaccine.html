@@ -183,7 +183,6 @@
 
         function populateVaccineDropDown()
         {
-            alert("1");
             $.ajax({
                 url: 'babyVaccineController.php',
                 method: 'post',
@@ -283,12 +282,9 @@
                         action: "createVaccinationTable",
                         babyID:babyID                                
                         },
-
                     success: function(respose) {
                      $('#displayTable').html(respose);
-                     
                     },
-
                     error: function(xhr,status,error) {
                         var respose = JSON.parse(xhr.responseText);
                         var errorMessage = respose.error || "An unknown error occurred.";

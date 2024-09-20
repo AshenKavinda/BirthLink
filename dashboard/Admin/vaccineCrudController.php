@@ -120,7 +120,7 @@ function displayVaccineTable()
     try {
         if(isset($_POST['dataSend'])){
             global $vaccine;
-            $result = $vaccine->getVaccineDetails();
+            $result = $vaccine->getAll();
 
             $table = '<table class="table">
                             <thead>
