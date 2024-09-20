@@ -148,7 +148,7 @@
                 <div class="mb-3">
                     <label for="vaccine" class="form-label">Vaccine Schedule</label>
                     <select class="form-control" id="vaccine">
-                        
+
                     </select>
                 </div>                
             </div>
@@ -178,7 +178,29 @@
         $(document).ready(function() 
         {
             displayVaccinationData();
+            populateVaccineDropDown();
         });
+
+        function populateVaccineDropDown()
+        {
+            alert("1");
+            $.ajax({
+                url: 'babyVaccineController.php',
+                method: 'post',
+                data: {
+                    action: 'getVaccines'
+                },
+                success: function(response) {
+                     $('#vaccine').html(response); 
+                    
+                },
+                error: function(xhr, status, error) {
+                    var respose = JSON.parse(xhr.responseText);
+                    var errorMessage = respose.error || "An unknown error occurred.";
+                    alert("Error: " + errorMessage);
+                }
+            });
+        }
 
         function updateVaccineRecord(babyID,vaccineID)
         {
