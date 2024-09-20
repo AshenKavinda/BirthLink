@@ -16,7 +16,7 @@ class vaccine{
             $query = "Select * from vaccinations";
             $stmt = $this->db->getConnection()->prepare($query);
             if ($stmt->execute()) {
-                $result = $stmt->get_result($stmt);
+                $result = $stmt->get_result();
                 if ($result->num_rows > 0) {
                     return $result;
                 } else {
@@ -49,24 +49,18 @@ class vaccine{
             }
 
             foreach ($doseDates as $item) {
-                $stmt->bind_param('iis', $bid, $vID, $doseDate);
+                $stmt->bind_param('iis', $bid, $item['vID'], $item['doseDate']);
                 if (!$stmt->execute()) {
-                    throw new Exception('Error inserting record for vaccine ID ' . $vID);
+                    throw new Exception('Error inserting record for vaccine ID ' . $item['vID']);
                 }
             }
 
-            for ($i = 0; $i < count($doseDates); $i++) { 
-                $vID = $i + 1; 
-                $doseDate = $doseDates[$i]['doseDate']; 
-                
-            }
             $this->db->getConnection()->commit();
             return true;
 
         } catch (Exception $e) {
             $this->db->getConnection()->rollback();
-            return false;
-            
+            throw new Exception($e->getMessage());  
         }
 
     }
