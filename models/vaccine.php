@@ -177,6 +177,7 @@ class vaccine{
     
    }
 
+
    public function deleteVaccine($vID){
 
     try {
