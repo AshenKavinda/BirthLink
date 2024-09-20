@@ -27,45 +27,19 @@
     
     <script>
 
-        function getCurrentLocation(callback) {
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(
-                    function(position) {
-                        let originLat = position.coords.latitude;
-                        let originLng = position.coords.longitude;
-                        console.log(`Current Location: Latitude ${originLat}, Longitude ${originLng}`);
-                        callback(originLat, originLng); // Pass to the callback function
-                    },
-                    function(error) {
-                        console.error("Error fetching location: ", error);
-                        alert("Unable to retrieve your location.");
-                    },
-                    {
-                        enableHighAccuracy: true // Optionally request higher accuracy
-                    }
-                );
+        function openGoogleMaps(destLat, destLng) {
+            // Construct the URL for the destination
+            let url = `https://www.google.com/maps?q=${destLat},${destLng}`;
+
+            // Check if the user is on a mobile device
+            if (/Android|iPhone|iPad/i.test(navigator.userAgent)) {
+                // Open the Google Maps app with the destination coordinates
+                window.location.href = `geo:${destLat},${destLng}`;
             } else {
-                alert("Geolocation is not supported by this browser.");
+                // Open the destination in browser
+                window.open(url, '_blank');
             }
         }
-
-        function openGoogleMaps(destLat, destLng) {
-            getCurrentLocation(function(originLat, originLng) {
-                // Construct the URL
-                let url = `https://www.google.com/maps/dir/?api=1&origin=${originLat},${originLng}&destination=${destLat},${destLng}&travelmode=driving`;
-                
-                // Check if the user is on a mobile device
-                if (/Android|iPhone|iPad/i.test(navigator.userAgent)) {
-                    // Open the Google Maps app
-                    window.location.href = `geo:${originLat},${originLng}?q=${destLat},${destLng}`;
-                } else {
-                    // Open in browser
-                    window.open(url, '_blank');
-                }
-            });
-        }
-
-
 
         $(document).ready(function() {
             displayData();

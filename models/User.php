@@ -86,7 +86,7 @@ class User {
         } catch (Exception $th) {
             return false;
         }
-        
+
     }
 
     public function selectAll($type) {
@@ -134,7 +134,7 @@ class User {
     }
 
     public function updateUser($uID,$fname,$lname,$nic,$cotactNo,$email,$address){
-        $fname = mysqli_real_escape_string($this->db->getConnection(),$uID);
+        $uID = mysqli_real_escape_string($this->db->getConnection(),$uID);
         $fname = mysqli_real_escape_string($this->db->getConnection(),$fname);
         $lname = mysqli_real_escape_string($this->db->getConnection(),$lname);
         $nic = mysqli_real_escape_string($this->db->getConnection(),$nic);
@@ -146,13 +146,29 @@ class User {
         $result = mysqli_query($this->db->getConnection(),$query);
 
         if ($result) {
-            return mysqli_insert_id($this->db->getConnection());
+            return true;
         }
         else {
             error_log("MySQL error: " . mysqli_error($this->db->getConnection()));
             return false;
             throw new Exception();
         }
+    }
+
+    public function deleteUser($id){
+        $id = mysqli_real_escape_string($this->db->getConnection(),$id);
+
+        $query = "DELETE FROM user WHERE uID = '$id'";
+        $result = mysqli_query($this->db->getConnection(),$query);
+
+        if($result){
+            return true;
+        }else{
+            error_log("MySQL error: " . mysqli_error($this->db->getConnection()));
+            return false;
+            throw new Exception();
+        }
+
     }
 
     public function verifyEmail($email) {

@@ -27,9 +27,18 @@ class Officer extends User {
         }
     }
 
-    public function updateOfficer($uID,$fname, $lname, $nic,$email,$contactNo,$address){
+    public function updateOfficer($uID,$fname, $lname, $nic,$contactNo,$email,$address){
         try{
-            parent::updateUser($uID,$fname, $lname, $nic,$email,$contactNo, $address);
+            return parent::updateUser($uID,$fname, $lname, $nic,$email,$contactNo,$address);
+        }
+        catch(Exception $th){
+            throw new Exception($th->getMessage());
+        }
+    }
+
+    public function deleteOfficer($id){
+        try{
+            parent::deleteUser($id);
         }
         catch(Exception $th){
             throw new Exception($th->getMessage());

@@ -1,5 +1,7 @@
 <?php
 require_once '../../models/BabyNote.php';
+require_once '../../models/disease.php';
+$disease = new disease();
 $babyNote = new BabyNote();
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -68,6 +70,24 @@ function add() {
         } else {
             throw new Exception("System Error!");
         }
+    } catch (\Throwable $th) {
+        http_response_code(400);
+        echo json_encode(array('error' => $th->getMessage()));
+        exit();
+    }
+}
+
+function loadListItem() {
+    try {
+        global $disease;
+        $result = $disease->getPathalogyDetails();
+        $html = '<option value="0" selected>Select Diagnosis</option>';
+        while($row = $result->fetch_assoc()) {
+            $html .= '<option value="'.$row['dID'].'">'.$row['name'].'</option>';
+        }
+        http_response_code(200);
+        echo $html;
+        exit();
     } catch (\Throwable $th) {
         http_response_code(400);
         echo json_encode(array('error' => $th->getMessage()));
