@@ -48,13 +48,17 @@ class vaccine{
                 ];
             }
 
-            for ($i = 0; $i < count($doseDates); $i++) { 
-                $vID = $i + 1; 
-                $doseDate = $doseDates[$i]['doseDate']; 
+            foreach ($doseDates as $item) {
                 $stmt->bind_param('iis', $bid, $vID, $doseDate);
                 if (!$stmt->execute()) {
                     throw new Exception('Error inserting record for vaccine ID ' . $vID);
                 }
+            }
+
+            for ($i = 0; $i < count($doseDates); $i++) { 
+                $vID = $i + 1; 
+                $doseDate = $doseDates[$i]['doseDate']; 
+                
             }
             $this->db->getConnection()->commit();
             return true;
