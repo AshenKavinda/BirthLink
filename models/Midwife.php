@@ -40,7 +40,7 @@ class Midwife extends User {
 
     public function searchMidwifes($mID){
         try {
-            $query = "SELECT user.uID, user.email, user.fName, user.lName, user.nic, user.contactNo,user.email, user.address, center.name 
+            $query = "SELECT user.uID, user.email, user.fName, user.lName, user.nic, user.contactNo,user.email, user.address, center.centerID 
             FROM user
             JOIN midwife ON user.uID = midwife.uID
             JOIN center ON midwife.centerID = center.centerID
@@ -65,7 +65,7 @@ class Midwife extends User {
 
             $query = "DELETE FROM midwife WHERE uID = '$id'";
             mysqli_query($this->db->getConnection(),$query);
-            
+
             parent::deleteUser($id);
 
 

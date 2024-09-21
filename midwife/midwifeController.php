@@ -200,7 +200,7 @@
             global $midwife;
             $result = $midwife->getAll();
             
-            $options = '';
+            $options = '<option value="0"> Select Center</option>';
             while ($row = mysqli_fetch_assoc($result)) {
                 $options .= '<option value="' . $row['centerID'] . '">' . $row['name'] . '</option>';
             }

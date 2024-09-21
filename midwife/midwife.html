@@ -204,6 +204,7 @@
                       $('#displayTable').html(data);
                       displayData();
                       alert(response);
+                      alert("Midwife added successfully!");
                   },
                   error: function(xhr) {
                       alert("Error fetching data: " + xhr.responseText);
@@ -337,8 +338,6 @@
 
         function getMidwifeDetails(uID) {
 
-          alert("AAAAAAAAAAAAAAAAAAAAAAA");
-
             $.ajax({
                 url: "midwifeController.php",
                 type: 'post',
@@ -357,7 +356,7 @@
                     $('#upemail').val(midwife.email);
                     $('#upphone').val(midwife.contactNo);
                     $('#upinputAddress').val(midwife.address);
-                    $('upcenter').val(midwife.center);
+                    $('#upcenter').val(midwife.centerID);
                     
                     $('#hiddenData').val(uID);
 
@@ -375,8 +374,6 @@
         function updateMidwife() {
 
           const uID = $('#hiddenData').val();
-
-          alert ($('#upcenter').val());
 
           if(validateInputFeildUpdate()){
             $.ajax({
@@ -465,19 +462,22 @@
 
   
         function deleteMidwife(id) {
-        $.ajax({
-            url: "midwifeController.php",
-            type: 'post',
-            data: { 
-            action: "deleteMidwife",
-            mid: id },
-            success: function(data, status) {
-                displayData();
-            },
-            error: function(xhr) {
-                alert("Error deleting data: " + xhr.responseText);
-            }
-        });
+
+        if(confirm("Confirm deletion ?")){
+          $.ajax({
+              url: "midwifeController.php",
+              type: 'post',
+              data: { 
+              action: "deleteMidwife",
+              mid: id },
+              success: function(data, status) {
+                  displayData();
+              },
+              error: function(xhr) {
+                  alert("Error deleting data: " + xhr.responseText);
+              }
+          });
+        }
       }
 
       function centerDropDown()
