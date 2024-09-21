@@ -11,10 +11,24 @@ class growth{
         $this->db = new DB();
     }
 
+    public function getAllGrowth() {
+        try {
+            $quary = "select * from growth";
+            $stmt = $this->db->getConnection()->prepare($quary);
+            if ($stmt->execute()) {
+                $result = $stmt->get_result();
+                return $result;
+            } else {
+                throw new Exception("Database Error!");
+            }
+        } catch (\Throwable $th) {
+            throw new Exception($th->getMessage());
+        }
+    }
+
     public function addGrowthRecord($babyID,$growthID,$selectedDate)
     {
         try {
-
             $sql = "insert into babygrowth(bID,gid,happenedDate) values(?,?,?)";
             $stmt = $this->db->getConnection()->prepare($sql);
             $stmt->bind_param('iis',$babyID,$growthID,$selectedDate);
