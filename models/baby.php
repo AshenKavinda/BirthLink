@@ -1,30 +1,51 @@
 <?php
 
 require_once __DIR__ . '/../utils/DB.php';
+require_once 'pregnancy.php';
 
 class baby{
 
     private $db;
+    private $pregnancy;
 
     public function __construct()
     {
         $this->db = new DB();
+        $this->pregnancy = new pregnancy();
     }
 
-    function add($pid,$bDay,$birthNo,$gender) {
+    function add($pid, $bDay, $birthNo, $gender) {
         try {
-            $query = "insert into baby(pID,bDay,birthNumber,gender)values(?,?,?,?)";
+            // Begin transaction
+            $this->db->getConnection()->begin_transaction();
+    
+            $query = "INSERT INTO baby(pID, bDay, birthNumber, gender) VALUES (?, ?, ?, ?)";
             $stmt = $this->db->getConnection()->prepare($query);
-            $stmt->bind_param("isss",$pid,$bDay,$birthNo,$gender);
+            $stmt->bind_param("isss", $pid, $bDay, $birthNo, $gender);
+    
             if ($stmt->execute()) {
-                return $stmt->insert_id;
+                $result = $this->pregnancy->disablePregnancy($pid);
+    
+                if ($result) {
+                    $this->db->getConnection()->commit();
+                    return $stmt->insert_id;
+                } else {
+                    // Rollback if disablePregnancy fails
+                    $this->db->getConnection()->rollback();
+                    return false;
+                }
             } else {
+                // Rollback if insert fails
+                $this->db->getConnection()->rollback();
                 return false;
             }
         } catch (\Throwable $th) {
+            // Rollback on exception
+            $this->db->getConnection()->rollback();
             throw new Exception($th->getMessage());
         }
     }
+    
 
     public function displayBaby($uID)
     {
