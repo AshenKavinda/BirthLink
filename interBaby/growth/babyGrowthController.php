@@ -56,12 +56,41 @@ function addGrowthRecord()
     }
 }
 
+function findGivenDate($babyGrowth, $gID) {
+    foreach ($babyGrowth as $growth) {
+        if ($growth['gID'] == $gID) {
+            return $growth['happenedDate'];
+        }
+    }
+    return null;
+}
+
 function createGrowthDetailsTable()
 {
     try {
         if(isset($_POST['babyID'])){
             global $growth;
-            $result = $growth->getGrowthDetails($_POST['babyID']);
+            $babyGrowth = $growth->getGrowthDetails($_POST['babyID']);
+            $growthDetails = $growth->getAllGrowth();
+            $arrTableData = [];
+            $arrBabyGrowth = [];
+            while ($row = $babyGrowth->fetch_assoc()) {
+                $arrBabyGrowth[] = [
+                    "gID" => $row['gid'],
+                    "happenedDate" => $row['happenedDate']
+                ];
+            }
+
+            while ($row = $growthDetails->fetch_assoc()) {
+                $result = findGivenDate($arrBabyGrowth,$row['gid']);
+                $arrTableData[] = [
+                    "gID" => $row['gid'],
+                    "development" => $row['development'],
+                    "happenedDate" => $result != null ? $result : "Not yet"
+                ];
+            }
+
+            
 
             $table = '<table class="table">
                             <thead>
@@ -74,12 +103,12 @@ function createGrowthDetailsTable()
                             </thead>';
             $slNo = 1;
 
-            while($row = mysqli_fetch_assoc($result)){
+            foreach ($arrTableData as $item){
 
-                    $growthID = $row['gid'];
-                    $babyID = $row['bID'];
-                    $stage = $row['development'];
-                    $recordedDate = $row['happenedDate'];
+                    $growthID = $item['gID'];
+                    $babyID = $_POST['babyID'];
+                    $stage = $item['development'];
+                    $recordedDate = $item['happenedDate'];
     
         
                     $table.=' <tr>
