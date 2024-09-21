@@ -129,43 +129,8 @@
 </head>
 <body>
 
-    <!-- Add record modal -->
-      <!-- Modal -->
-    <div class="modal fade" id="vaccineRecordModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-            <div class="modal-header">
-                <h1 class="modal-title" id="exampleModalLabel">Add Vaccination Record</h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-    
-            <div class="modal-body">
-                <div class="mb-3">
-                    <label for="name" class="form-label">Date</label>
-                    <input type="date" class="form-control" id="date">
-                </div>
-    
-                <div class="mb-3">
-                    <label for="vaccine" class="form-label">Vaccine Schedule</label>
-                    <select class="form-control" id="vaccine">
-
-                    </select>
-                </div>                
-            </div>
-            
-            <div class="modal-footer">
-                <button type="button" class="btn btn-dark" onclick="insertVaccineRecord()">Add</button>
-                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
-            </div>
-            </div>
-        </div>
-    </div>
-
     <div class="container my-3">
         <h1 class="text-center" id="headtitle">Baby's Vaccination Status</h1>
-            <!-- Button trigger modal -->
-        <button type="button" class="btn btn-dark my-4" data-bs-toggle="modal" data-bs-target="#vaccineRecordModal">Add Record</button>
-
         <div id="displayTable"></div>
     </div>
 
@@ -175,130 +140,11 @@
     
     <script>
 
-        function validateForm() {
-            
-            const dateField = document.getElementById('date');
-            const vaccineField = document.getElementById('vaccine');
-
-            const currentDate = new Date();
-            
-            const selectedDate = new Date(dateField.value);
-            const vaccineValue = vaccineField.value;
-
-            if (!dateField.value) {
-                alert("Date cannot be empty");
-                dateField.focus();
-                return false;
-            } else if (selectedDate > currentDate) {
-                alert("Date cannot be in the future");
-                dateField.focus();
-                $('#date').val("");
-                return false;
-            }
-
-            if (vaccineValue == "0") {
-                alert("Please select a valid vaccine schedule");
-                vaccineField.focus();
-                $('#vaccine').val(0);
-                return false;
-            }
-
-            return true;
-        }
-
 
         $(document).ready(function() 
         {
             displayVaccinationData();
-            populateVaccineDropDown();
         });
-
-        function populateVaccineDropDown()
-        {
-            $.ajax({
-                url: 'babyVaccineController.php',
-                method: 'post',
-                data: {
-                    action: 'getVaccines'
-                },
-                success: function(response) {
-                     $('#vaccine').html(response); 
-                },
-                error: function(xhr, status, error) {
-                    var respose = JSON.parse(xhr.responseText);
-                    var errorMessage = respose.error || "An unknown error occurred.";
-                    alert("Error: " + errorMessage);
-                }
-            });
-        }
-
-        function deleteVaccineRecord(babyID,vaccineID)
-        {
-            let url = new URL(window.location.href);
-            let paras = new URLSearchParams(url.search);
-
-            if(babyID!=null){
-                $.ajax({
-                    url: 'babyVaccineController.php',
-                    method:'post',
-                    data: {
-                        action: "removeRecord",
-                        babyID:babyID,
-                        vaccineID:vaccineID
-                        },
-                    success: function(respose) {
-                     
-                        displayVaccinationData();
-                     
-                    },
-                    error: function(xhr,status,error) {
-                        var respose = JSON.parse(xhr.responseText);
-                        var errorMessage = respose.error || "An unknown error occurred.";
-                        alert("Error: "+errorMessage);
-                    }
-                })
-            }else{
-                alert("Baby ID not found!");
-            }
-
-        }
-
-        function insertVaccineRecord()
-        {
-            let url = new URL(window.location.href);
-            let paras = new URLSearchParams(url.search);
-
-            let babyID = paras.get('bid');
-            let vaccineID = document.getElementById('vaccine').value;
-            let selectedDate = document.getElementById('date').value;
-
-            if(babyID!=null){
-                if (validateForm()) {
-                    $.ajax({
-                        url: 'babyVaccineController.php',
-                        method:'post',
-                        data: {
-                            action: "addVaccinationsByBID",
-                            babyID:babyID,
-                            vaccineID:vaccineID,
-                            selectedDate:selectedDate
-                            },
-                        success: function(respose) {
-                        
-                            displayVaccinationData();
-                        
-                        },
-                        error: function(xhr,status,error) {
-                            var respose = JSON.parse(xhr.responseText);
-                            var errorMessage = respose.error || "An unknown error occurred.";
-                            alert("Error: "+errorMessage);
-                        }
-                    });
-                }
-            }else{
-                alert("Baby ID not found!");
-            }
-        }
 
         function displayVaccinationData()
         {

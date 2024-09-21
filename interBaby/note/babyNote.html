@@ -142,8 +142,9 @@
 
       function validateInput() {
         if ($('#listItem').val() == 0) {
-          alert("please select disease");
+          alert("Please select a valid diagnosis");
           $('#listItem').focus();
+          $('#datepicker').val("0");
           return false;
         }
         if ($('#datepicker').val() === "") {
