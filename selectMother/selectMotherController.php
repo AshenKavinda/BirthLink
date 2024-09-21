@@ -1,7 +1,7 @@
 <?php
-require_once '../models/SelectMother.php';
+require_once '../models/Mother.php';
 
-$selectMother = new SelectMother();
+$mother = new Mother();
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (!empty($_POST['action'])) {
@@ -21,8 +21,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 function setMotherTable() {
 
-    global $selectMother;
-    $result = $selectMother->getMothers();
+    global $mother;
+    $result = $mother->getMothers();
 
     $table = '<table class="table">
                 <thead>
@@ -61,12 +61,12 @@ function setMotherTable() {
 
 function searchMotherTable() {
 
-    global $selectMother;
+    global $mother;
 
     if (isset($_POST['mid']) && !empty($_POST['mid'])) {
 
         $uID = $_POST['mid'];
-        $result = $selectMother->getMotherById($uID);
+        $result = $mother->getMotherById($uID);
 
         $table = '<table class="table">
                     <thead>

@@ -40,6 +40,26 @@ class Mother extends User {
                 throw new Exception("No data found");
             }
         } catch (Throwable $th) {
+            // throw new Exception($th->getMessage());
+        }
+    }
+
+    public function getMotherById($uid) {
+        try {
+            $query = "SELECT * FROM user WHERE uID = ? AND type = ?";
+            $stmt = $this->db->getConnection()->prepare($query);
+    
+            $type = "mother";
+            $stmt->bind_param('is',$uid,$type);
+            $stmt->execute();
+            $result = $stmt->get_result();
+
+            if ($result) {
+                return $result;
+            } else {
+                throw new Exception("No data found");
+            }
+        } catch (Throwable $th) {
             throw new Exception($th->getMessage());
         }
     }
@@ -65,4 +85,5 @@ class Mother extends User {
             throw new Exception($th->getMessage());
         }
     }
+
 }
