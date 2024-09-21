@@ -122,9 +122,7 @@ class User {
                 return mysqli_insert_id($this->db->getConnection());
             }
             else {
-                error_log("MySQL error: " . mysqli_error($this->db->getConnection()));
-                return false;
-                throw new Exception();
+                return null;
             }
         } catch (Exception $th) {
             

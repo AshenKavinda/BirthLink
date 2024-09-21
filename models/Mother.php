@@ -8,19 +8,18 @@ class Mother extends User {
         try {
             $birthDay = mysqli_real_escape_string($this->db->getConnection(),$birthDay);
             $uID = Parent::addUser($fname, $lname, $nic, $cotactNo, $email, $address, $password, "mother");
-            if ($uID != false) {
+            if ($uID != null) {
                 $quary = "insert into mother(uID,birthDay,latitude,longitude) values($uID,'$birthDay',$latitude,$longitude)";
                 $result = mysqli_query($this->db->getConnection(),$quary);
                 if ($result) {
                     return $uID;
                 }
                 else {
-                    throw new Exception();
+                    return null;
                 }
-
             }
             else {
-                throw new Exception();
+                return null;
             }
             
         } catch (Exception $th) {

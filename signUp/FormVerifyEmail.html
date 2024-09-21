@@ -114,17 +114,24 @@
               action: 'verifyOTP',
               otp: $('#otp').val().trim()
             },
-            success: function() {
-              $('body').fadeOut(1000, function() { // 1000ms = 1 second
+            success: function(responce) {
+              alert(responce);
+              if (responce.trim() === "EmailExist") {
+                alert("Email alredy exist!");
+                $('#otp').val('');
+                $('#btnSignIn').removeClass('disabled');
+              } else {
+                $('body').fadeOut(1000, function() { // 1000ms = 1 second
                 window.location.href = 'messageSingUpSuccessful.html'; // Redirect after fade out
-              });
+                });
+              }
             },
-            error: function() {
-              var respose = JSON.parse(xhr.responseText);
-              var errorMessage = respose.error || "An unknown error occurred.";
-              alert("Error: "+errorMessage);
-              $('#otp').val('');
-              $('#btnSignIn').removeClass('disabled');
+            error: function(xhr, status, error) {
+                var respose = JSON.parse(xhr.responseText);
+                var errorMessage = respose.error || "An unknown error occurred.";
+                alert("Error: " + errorMessage);
+                $('#otp').val('');
+                $('#btnSignIn').removeClass('disabled');
             }
           });
         }
