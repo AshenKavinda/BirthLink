@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Include Bootstrap for styling -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/css/bootstrap.min.css" />
+    <style>
+        body {
+          
+            background: linear-gradient(135deg, #74ebd5 0%, #9face6 100%);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .container {
+            margin-top: 60px;
+            padding: 30px;
+            border-radius: 10px;
+            background-color: #ffffff;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .header {
+            margin-bottom: 30px;
+        }
+
+        .qr-code {
+            max-width: 200px;
+            margin: 20px 0;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .qr-code:hover {
+            transform: scale(1.1);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .form-control {
+            border-radius: 30px;
+            border: 1px solid #ced4da;
+            box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+            padding: 15px;
+        }
+
+        .btn-custom {
+            background-color: #007bff;
+            color: white;
+            border-radius: 30px;
+            border: none;
+            padding: 10px 25px;
+            font-weight: bold;
+        }
+
+        .btn-custom:hover {
+            background-color: #0056b3;
+            color: white;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            font-weight: bold;
+        }
+    </style>
+
+    <title>QR Code Generator</title>
+</head>
+
+<body>
+    <div class="container">
+        <div class="text-center header">
+            <h1 class="display-4">Generate QR Code</h1>
+            <p class="lead">Generate baby QR code here</p>
+        </div>
+
+        <div class="text-center">
+            <!-- Placeholder image initially; this will change based on the data entered -->
+            <img src="https://api.qrserver.com/v1/create-qr-code/?data=Hello+World&size=160x160" class="qr-code img-thumbnail img-responsive" alt="QR Code" id="qr-image" />
+        </div>
+
+        <form class="form-horizontal" id="qr-form" method="post">
+            <div class="form-group">
+                <label class="control-label col-sm-12" for="content">Content:</label>
+                <div class="col-sm-12">
+                    <!-- Input box to enter the required data -->
+                    <input type="text" size="60" maxlength="60" class="form-control" id="content" name="content" placeholder="Enter content" required />
+                </div>
+            </div>
+            <div class="form-group text-center">
+                <!-- Button to generate QR Code -->
+                <button type="submit" class="btn btn-custom">
+                    Generate QR Code
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <!-- jQuery inclusion -->
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/js/bootstrap.min.js"></script>
+
+    <script>
+        $(function () {
+            $('#qr-form').on('submit', function (e) {
+                e.preventDefault();
+                let content = encodeURIComponent($('#content').val());
+                let finalURL = 'https://api.qrserver.com/v1/create-qr-code/?data=' + content + '&size=160x160';
+
+                // Update the QR code image source
+                $('#qr-image').attr('src', finalURL);
+            });
+        });
+    </script>
+</body>
+
+</html>
