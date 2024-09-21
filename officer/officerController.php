@@ -86,6 +86,61 @@
         exit();
     }
 
+    function searchOfficerTable() {
+        global $officer;
+
+        if(isset($_POST['oID'])){
+
+            $id= $_POST['oID'];
+
+            $result = $officer->getOfficerById($id);
+        
+            $table = '<table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">UID</th>
+                                <th scope="col">Name</th>
+                                <th scope="col">NIC</th>
+                                <th scope="col">Contact</th>
+                                <th scope="col">Email</th>
+                                <th scope="col">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>';
+
+            if (mysqli_num_rows($result) > 0) {            
+        
+                while ($row = mysqli_fetch_assoc($result)) {
+            
+                    $id = $row['uID'];
+                    $fname = $row['fName'];
+                    $lname = $row['lName'];
+                    $nic = $row['nic'];
+                    $contact = $row['contactNo'];
+                    $email = $row['email'];
+            
+                    $table .= '<tr>
+                                <td>'.$id.'</td>
+                                <td>'.$fname.' '.$lname.'</td>
+                                <td>'.$nic.'</td>
+                                <td>'.$contact.'</td>
+                                <td>'.$email.'</td>
+                                <td><div class="d-flex"><button class="btn btn-dark mx-1" onclick="getOfficerDetails('.$id.')">Update</button>
+                                <button class="btn btn-danger" onclick="deleteOfficer('.$id.')">Delete</button>
+                                </div></td>
+                            </tr>';
+                }
+            }else{
+                $table .= '<tr><td colspan="5">No data found</td></tr>';
+            }    
+            
+            $table .= '</tbody></table>';
+            http_response_code(200);
+            echo $table;
+            exit();
+        }    
+    }
+
     function getOfficerDetails() {
         global $officer;
 

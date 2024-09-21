@@ -48,28 +48,28 @@
         }
 
         function searchMother() {
-            const id = $('#searchId').val();
+        const id = $('#searchId').val();
 
-        if (id === "") {
-            alert("Please enter a valid ID.");
-            return;
-        }
+            if (id === "") {
+                displayData();
+                return;
+            }
 
-            $.ajax({
-                url: "selectMotherController.php",
-                type: 'post',
-                data: {
-                    action: "searchMotherTable",
-                    mid: id,
-                    motherData: true
-                },
-                success: function(data) {
-                    $('#displayTable').html(data);
-                },
-                error: function(xhr) {
-                    alert("Error fetching data: " + xhr.responseText);
-                }
-            });
+                $.ajax({
+                    url: "selectMotherController.php",
+                    type: 'post',
+                    data: {
+                        action: "searchMotherTable",
+                        mid: id,
+                        motherData: true
+                    },
+                    success: function(data) {
+                        $('#displayTable').html(data);
+                    },
+                    error: function(xhr) {
+                        alert("Error fetching data: " + xhr.responseText);
+                    }
+                });
         }
     </script>
     
