@@ -136,18 +136,38 @@
         });
 
         function validateInput() {
+            var selectedDate = new Date($('#date').val());
+            var today = new Date();
+            today.setHours(0, 0, 0, 0); 
+
             if ($('#date').val() === "") {
                 alert("Date cannot be empty!");
                 $('#date').focus();
                 return false;
             }
-            if ($('#weight').val() === "") {
-                alert("Weight cannot be empty!");
+            if (selectedDate > today) {
+                alert("Date cannot be in the future!");
                 $('#date').focus();
                 return false;
             }
+
+            const weightValue = parseFloat($('#weight').val());
+            if ($('#weight').val() === "") {
+                alert("Weight cannot be empty!");
+                $('#weight').focus();
+                $('#weight').val("");
+                return false;
+            }
+            if (weightValue < 0) {
+                alert("Weight cannot be negative!");
+                $('#weight').focus();
+                $('#weight').val("");
+                return false;
+            }
+
             return true;
         }
+
 
         function displayChart(dates, weights) {
             if (dates != null && weights != null) {

@@ -175,6 +175,38 @@
     
     <script>
 
+        function validateForm() {
+            
+            const dateField = document.getElementById('date');
+            const vaccineField = document.getElementById('vaccine');
+
+            const currentDate = new Date();
+            
+            const selectedDate = new Date(dateField.value);
+            const vaccineValue = vaccineField.value;
+
+            if (!dateField.value) {
+                alert("Date cannot be empty");
+                dateField.focus();
+                return false;
+            } else if (selectedDate > currentDate) {
+                alert("Date cannot be in the future");
+                dateField.focus();
+                $('#date').val("");
+                return false;
+            }
+
+            if (vaccineValue == "0") {
+                alert("Please select a valid vaccine schedule");
+                vaccineField.focus();
+                $('#vaccine').val(0);
+                return false;
+            }
+
+            return true;
+        }
+
+
         $(document).ready(function() 
         {
             displayVaccinationData();
@@ -191,7 +223,6 @@
                 },
                 success: function(response) {
                      $('#vaccine').html(response); 
-                    
                 },
                 error: function(xhr, status, error) {
                     var respose = JSON.parse(xhr.responseText);
@@ -242,26 +273,28 @@
             let selectedDate = document.getElementById('date').value;
 
             if(babyID!=null){
-                $.ajax({
-                    url: 'babyVaccineController.php',
-                    method:'post',
-                    data: {
-                        action: "addVaccinationsByBID",
-                        babyID:babyID,
-                        vaccineID:vaccineID,
-                        selectedDate:selectedDate
+                if (validateForm()) {
+                    $.ajax({
+                        url: 'babyVaccineController.php',
+                        method:'post',
+                        data: {
+                            action: "addVaccinationsByBID",
+                            babyID:babyID,
+                            vaccineID:vaccineID,
+                            selectedDate:selectedDate
+                            },
+                        success: function(respose) {
+                        
+                            displayVaccinationData();
+                        
                         },
-                    success: function(respose) {
-                     
-                        displayVaccinationData();
-                     
-                    },
-                    error: function(xhr,status,error) {
-                        var respose = JSON.parse(xhr.responseText);
-                        var errorMessage = respose.error || "An unknown error occurred.";
-                        alert("Error: "+errorMessage);
-                    }
-                })
+                        error: function(xhr,status,error) {
+                            var respose = JSON.parse(xhr.responseText);
+                            var errorMessage = respose.error || "An unknown error occurred.";
+                            alert("Error: "+errorMessage);
+                        }
+                    });
+                }
             }else{
                 alert("Baby ID not found!");
             }

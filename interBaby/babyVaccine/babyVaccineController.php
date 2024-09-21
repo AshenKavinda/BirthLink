@@ -68,7 +68,7 @@ function getVaccines() {
         global $vaccine;
         $result = $vaccine->getAll();
         
-        $options = '';
+        $options = '<option value="0" selected>- Select Vaccine -</option>';
         while ($row = mysqli_fetch_assoc($result)) {
             $options .= '<option value="' . $row['vID'] . '">' . $row['vaccineName'] . '</option>';
         }
