@@ -128,20 +128,25 @@ function sendOTP() {
         }else {
             throw new Exception();
         }
-    } catch (Exception $th) {
+    } catch (\Throwable $th) {
         http_response_code(400);
+        echo json_encode(array('error' => $th->getMessage()));
+        exit();
     }
     
 }
 
 function verifyOTP() {
     try {
+        
         if (isset($_SESSION['personalData'])) {
             $otp = $_POST['otp'];
+            //error line
             $ootp = $_SESSION['personalData']['otp'];
             $otpTime = $_SESSION['personalData']['otp-time'];
             $currentTime = time();
             // Check if OTP has expired (2 minutes = 120 seconds)
+            
             if (($currentTime - $otpTime) > 120) {
                 // OTP expired
                 unset($_SESSION['personalData']['otp']);
@@ -149,6 +154,7 @@ function verifyOTP() {
                 throw new Exception("OTP expired!");
             }
 
+            
             if ((string)$ootp===(string)$otp) {
                 $fName = $_SESSION['personalData']['fName'];
                 $lName = $_SESSION['personalData']['lName'];
@@ -162,22 +168,25 @@ function verifyOTP() {
                 $longitude = $_SESSION['personalData']['longitude'];
                 global $mother;
                 $result = $mother->addUser($fName,$lName,$nic,$phone,$email,$address,$password,$bDay,$latitude,$longitude);
-                if ($result!= false) {
+                if ($result!= null) {
                     unset($_SESSION['personalData']);
                     http_response_code(200);
+                    exit();
                 }
                 else{
-                    throw new Exception("System Error!");
+                    http_response_code(200);
+                    echo "EmailExist";
+                    exit();
                 }
                 
             }else {
-                echo "wrong-otp";
+                throw new Exception("Wrong OTP");
             }
         }
         else {
-            throw new Exception();
+            throw new Exception("System error!");
         }
-    } catch (Exception $th) {
+    } catch (\Throwable $th) {
         http_response_code(400);
         echo json_encode(array('error' => $th->getMessage()));
         exit();

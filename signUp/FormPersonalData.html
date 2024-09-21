@@ -46,7 +46,7 @@
               </div>
               <div class="col-md-6 input-group-sm">
                 <label for="first-name" class="form-label">Birth Day</label>
-                <input type="text" class="form-control" id="datepicker">
+                <input type="date" class="form-control" id="datepicker">
               </div>
             </div>
           </div>
@@ -112,172 +112,169 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
     <script>
 
-      function convertDmsToDecimal(dmsString) {
-          const dmsPattern = /(\d+)°(\d+)'([\d.]+)"([NSEW])/g;
-          const results = [];
+      function convertDmsToDecimal(coordString) {
+          const coords = coordString.split(',').map(coord => parseFloat(coord.trim()));
 
-          let match;
-          while ((match = dmsPattern.exec(dmsString)) !== null) {
-              const degrees = parseInt(match[1]);
-              const minutes = parseInt(match[2]);
-              const seconds = parseFloat(match[3]);
-              const direction = match[4];
-
-              // Convert to decimal
-              let decimal = degrees + (minutes / 60) + (seconds / 3600);
-              if (direction === 'S' || direction === 'W') {
-                  decimal *= -1;
-              }
-
-              results.push(decimal);
-          }
-
-          // Check if we found exactly two coordinates (lat and long)
-          if (results.length === 2) {
-              return results;
+          // Check if both latitude and longitude are parsed correctly
+          if (coords.length === 2 && !isNaN(coords[0]) && !isNaN(coords[1])) {
+              return coords;  // Return the coordinates as an array of numbers
           } else {
-              return [undefined, undefined]; // Return undefined if format is incorrect
+              return [undefined, undefined];  // Return undefined if the input format is incorrect
           }
       }
-      
-      $(document).ready(function () {
-          $('#datepicker').datepicker({
-              format: 'yyyy-mm-dd',
-              autoclose: true,
-              todayHighlight: true
-          }).on('changeDate', function (e) {
-              // Get the selected date (it is already a Date object)
-              const selectedDate = e.date;
-              
-              // Get the current date without time (for accurate comparison)
-              const currentDate = new Date();
-              currentDate.setHours(0, 0, 0, 0); // Set time to 00:00:00 for today
-              
-              // Compare selected date with the current date
-              if (selectedDate > currentDate) {
-                  // Clear the input field and alert the user
-                  $('#datepicker').val("");
-                  alert("The selected date is in the future!");
-              }
-          });
-      });
+
 
       function createPerson() {
-        const locationValue = $('#location').val().trim();
-    
-        // Try converting the DMS to decimal
+        var locationValue = $('#location').val().trim();
         const [latitude, longitude] = convertDmsToDecimal(locationValue);
-
-        if (latitude !== undefined && longitude !== undefined) {
-            if (validateInputFeild()) {
-              $.ajax({
-                url: 'SignUpController.php',
-                method: 'post',
-                data: {
-                  action: 'createUserSession',
-                  firstName: $('#firstName').val().trim(),
-                  lastName: $('#lastName').val().trim(),
-                  NIC: $('#NIC').val().trim(),
-                  email: $('#email').val().trim(),
-                  phone: $('#phone').val().trim(),
-                  inputAddress: $('#inputAddress').val().trim(),
-                  inputAddress2: $('#inputAddress2').val().trim(),
-                  inputCity: $('#inputCity').val().trim(),
-                  bday: $('#datepicker').val().trim(),
-                  latitude: latitude,
-                  longitude: longitude
-                },
-                success: function(response) {
-                  $('body').fadeOut(1000, function() { // 1000ms = 1 second
-                    window.location.href = 'FormSetPassword.html'; // Redirect after fade out
-                  });
-                },
-                error: function() {
-                  alert("System error");
-                }
+        if (validateInputFeild()) {
+          $.ajax({
+            url: 'SignUpController.php',
+            method: 'post',
+            data: {
+              action: 'createUserSession',
+              firstName: $('#firstName').val().trim(),
+              lastName: $('#lastName').val().trim(),
+              NIC: $('#NIC').val().trim(),
+              email: $('#email').val().trim(),
+              phone: $('#phone').val().trim(),
+              inputAddress: $('#inputAddress').val().trim(),
+              inputAddress2: $('#inputAddress2').val().trim(),
+              inputCity: $('#inputCity').val().trim(),
+              bday: $('#datepicker').val().trim(),
+              latitude: latitude,
+              longitude: longitude
+            },
+            success: function(response) {
+              $('body').fadeOut(1000, function() { // 1000ms = 1 second
+                window.location.href = 'FormSetPassword.html'; // Redirect after fade out
               });
+            },
+            error: function() {
+              alert("System error");
             }
-        } else {
-          alert("Ivalied Location Patern!");
+          });
         }
+        
       }
 
-    function validateInputFeild() {
+      function validateInputFeild() {
     
-      var firstName = $('#firstName').val().trim();
-      var lastName = $('#lastName').val().trim();
-      var NIC = $('#NIC').val().trim();
-      var email = $('#email').val().trim();
-      var phone = $('#phone').val().trim();
-      var inputAddress = $('#inputAddress').val().trim();
-      var inputAddress2 = $('#inputAddress2').val().trim();
-      var inputCity = $('#inputCity').val().trim();
-      var Checkbox = $('#checkbox').is(':checked');
-      var datepicker = $('#datepicker').val().trim();
-      if (firstName === "") {
-        alert("First name cannot be empty.");
-        $('#firstName').focus();
-        return false;
-      }
-      if (lastName === "") {
-        alert("Last name cannot be empty.");
-        $('#lastName').focus();
-        return false;
-      }
-      if (NIC === "") {
-        alert("NIC cannot be empty.");
-        $('#NIC').focus();
-        return false;
-      }
-      if (email === "") {
-        alert("Email cannot be empty.");
-        $('#email').focus();
-        return false;
-      }
-      const regex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-      if (!regex.test(email)) {
-        alert("Email not valied.");
-        $('#email').focus();
-        return false;
-      }
-      if (datepicker === "") {
-        alert("Birth day cannot be empty.");
-        $('#datepicker').focus();
-        return false;
-      }
-      if (phone === "") {
-        alert("Phone number cannot be empty.");
-        $('#phone').focus();
-        return false;
-      }
-      if (isNaN(phone)) {
-        alert("Phone number should be numeric.");
-        $('#phone').focus();
-        return false;
-      }
-      if (inputAddress === "") {
-        alert("Address cannot be empty.");
-        $('#inputAddress').focus();
-        return false;
-      }
-      if (inputAddress2 === "") {
-        alert("Address 2 cannot be empty.");
-        $('#inputAddress2').focus();
-        return false;
-      }
-      if (inputCity === "") {
-        alert("City cannot be empty.");
-        $('#inputCity').focus();
-        return false;
-      }
-      if (!Checkbox) {
-        alert("Please check the checkbox.");
-        $('#checkbox').focus();
-        return false;
+          var firstName = $('#firstName').val().trim();
+          var lastName = $('#lastName').val().trim();
+          var NIC = $('#NIC').val().trim();
+          var email = $('#email').val().trim();
+          var phone = $('#phone').val().trim();
+          var inputAddress = $('#inputAddress').val().trim();
+          var inputAddress2 = $('#inputAddress2').val().trim();
+          var inputCity = $('#inputCity').val().trim();
+          var Checkbox = $('#checkbox').is(':checked');
+          var datepicker = $('#datepicker').val().trim();
+          var locationValue = $('#location').val().trim();
+
+          const [latitude, longitude] = convertDmsToDecimal(locationValue);
+          
+
+          // Check for empty fields
+          if (firstName === "") {
+              alert("First name cannot be empty.");
+              $('#firstName').focus();
+              return false;
+          }
+          if (lastName === "") {
+              alert("Last name cannot be empty.");
+              $('#lastName').focus();
+              return false;
+          }
+          if (NIC === "") {
+              alert("NIC cannot be empty.");
+              $('#NIC').focus();
+              return false;
+          }
+
+          // Validate Sri Lankan NIC (old or new format)
+          const nicRegex = /^([0-9]{9}[vVxX]|[0-9]{12})$/;
+          if (!nicRegex.test(NIC)) {
+              alert("Invalid NIC format.");
+              $('#NIC').focus();
+              return false;
+          }
+
+          if (datepicker === "") {
+              alert("Birth date cannot be empty.");
+              $('#datepicker').focus();
+              return false;
+          }
+
+          // Check if the selected date is not in the future
+          var selectedDate = new Date(datepicker);
+          var today = new Date();
+          today.setHours(0, 0, 0, 0); // Reset time part for accurate comparison
+
+          if (selectedDate > today) {
+              alert("Birth date cannot be in the future.");
+              $('#datepicker').focus();
+              return false;
+          }
+
+          if (email === "") {
+              alert("Email cannot be empty.");
+              $('#email').focus();
+              return false;
+          }
+          const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+          if (!emailRegex.test(email)) {
+              alert("Invalid email format.");
+              $('#email').focus();
+              return false;
+          }
+
+          if (phone === "") {
+              alert("Phone number cannot be empty.");
+              $('#phone').focus();
+              return false;
+          }
+
+          // Check phone number length, numeric value, and no negative value
+          if (phone.length !== 10 || isNaN(phone) || parseInt(phone) < 0) {
+              alert("Phone number should be exactly 10 digits and cannot be negative.");
+              $('#phone').focus();
+              return false;
+          }
+
+          if (inputAddress === "") {
+              alert("Address cannot be empty.");
+              $('#inputAddress').focus();
+              return false;
+          }
+          if (inputAddress2 === "") {
+              alert("Address 2 cannot be empty.");
+              $('#inputAddress2').focus();
+              return false;
+          }
+          if (inputCity === "") {
+              alert("City cannot be empty.");
+              $('#inputCity').focus();
+              return false;
+          }
+          if (latitude == undefined && longitude == undefined) {
+              alert("Ivalied Location Patern!");
+              $('#location').focus();
+              return false;
+          } else {
+            console.log(latitude);
+            console.log(longitude);
+          } 
+
+          if (!Checkbox) {
+              alert("Please check the checkbox.");
+              $('#checkbox').focus();
+              return false;
+          }
+
+          return true;
       }
 
-      return true;
-    }
 
   </script>
   </body>
