@@ -22,7 +22,6 @@ class MailerMailGun {
     
         # Convert array of recipients to a comma-separated string
         $toRecipients = implode(', ', $recipients);
-    
         # Make the call to the Mailgun API.
         $responce = $this->mgClient->messages()->send($this->domain, [
             'from'    => 'kavindahemarathna321@gmail.com',

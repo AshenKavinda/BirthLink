@@ -1,5 +1,5 @@
 <?php
-require_once('../utils/DB.php');
+require_once __DIR__ . '/../utils/DB.php';
 
 class pregnancy
 {
@@ -11,13 +11,13 @@ class pregnancy
 
     }
 
-    public function add($userID,$pregnancyDate)
+    public function add($userID,$midID,$pregnancyDate)
     {
         try {
 
-            $sql = "INSERT INTO pregnancy(uID, date) VALUES (?, ?)";
+            $sql = "INSERT INTO pregnancy(uID,midID, date) VALUES (?, ? ,?)";
             $stmt = $this->DB->getConnection()->prepare($sql);
-            $stmt->bind_param('is', $userID, $pregnancyDate);
+            $stmt->bind_param('iis', $userID,$midID, $pregnancyDate);
     
             if ($stmt->execute()) {
     
@@ -34,15 +34,30 @@ class pregnancy
         }
 
     }
+
+    public function disablePregnancy($pid) {
+        try {
+            $query = "update pregnancy set status = 0 where pID=?";
+            $stmt = $this->DB->getConnection()->prepare($query);
+            $stmt->bind_param('i',$pid);
+            if ($stmt->execute()) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (\Throwable $th) {
+            throw new Exception($th->getMessage());
+        }
+    }
     
     public function displayPregnancy($uID)
     {
         try {
             $sql = "
-                    SELECT p.*
+                    SELECT p.*, u.uID
                     FROM pregnancy p
-                    LEFT JOIN baby b ON p.pID = b.pID
-                    WHERE b.pID IS NULL AND p.uID = ? ORDER BY p.pID ASC";
+                    INNER JOIN `user` u ON p.uID = u.uID
+                    WHERE p.status = 1 AND p.uID = ? ORDER BY p.pID ASC";
                                                         
             $stmt = $this->DB->getConnection()->prepare($sql);
             $stmt->bind_param('i',$uID);
@@ -50,15 +65,7 @@ class pregnancy
            if($stmt->execute())
            {
                 $result = $stmt->get_result();
-
-                if($result->num_rows>0)
-                {
-                    return $result;
-
-                }else
-                {
-                    throw new Exception("No pregnancy found!");
-                }
+                return $result;
            }
         
         } catch (\Throwable $th) {
