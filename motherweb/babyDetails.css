@@ -1,0 +1,87 @@
+body {
+    position: relative;
+    height:max-content;
+  }
+  section {
+    padding: 50px 0;
+    margin-bottom: 50px;
+  }
+  footer {
+    text-align: center;
+    padding: 20px 0;
+  }
+  .navbar-nav {
+    flex-grow: 1;
+    justify-content: center;
+  }
+
+  /* nav */
+
+html ::-webkit-scrollbar-track{
+    background: transparent;
+}
+
+html ::-webkit-scrollbar-thumb{
+    background: #ffffff !important ;
+    border-radius: 10px;
+}
+
+html ::-webkit-scrollbar{
+    width: 10px;
+}
+
+#navbar{
+    background-color:  #ffffff!important;
+    
+    /* position: sticky;
+    top: 0;
+    z-index: 1000; */
+}
+
+#singnbtn:hover{
+    transition: 0.5s;
+    transform: translateY(-5px);
+
+}
+
+#logoimg img{
+    border-radius: 10x;
+    width: 85px;
+    height: 55px;
+    margin-left: 40px;
+}
+
+#logoimg:hover{
+    transition: 0.5s;
+    transform: translateY(-5px);
+
+}
+
+/* .navbar-nav{
+    margin-left: 50px;
+} */
+
+
+.nav-item .nav-link{
+    color: rgb(30, 101, 200)!important;
+    margin-left: 10px;
+    font-weight: bold;
+    transition: 0.5s;
+}
+
+.nav-item .nav-link:hover{
+    background-color:  rgb(30, 101, 200);
+    color: white !important;
+    border-radius: 5px;
+
+    transform: translateY(-5px);
+}
+
+#navbar form button{
+    background-color: #ffffff;
+    color: white;
+    border: 1px solid #ffffff;
+}
+
+
+/* nav */
