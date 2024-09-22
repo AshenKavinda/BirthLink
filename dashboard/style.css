@@ -405,12 +405,31 @@ html ::-webkit-scrollbar{
 #contact {
     width: 100%;
     height: 100vh;
-    background: linear-gradient(135deg, #00317a 0%, #88aeea 100%);
+    background-image: linear-gradient(rgba(0,0,0,0.3),rgba(0,0,0,0.3)), url(../img/contactadmin.jpg);
+    background-repeat: no-repeat;
+    background-size: contain; /* Change from cover to contain */
+    background-position: center; /* Center the image */
     display: flex;
     align-items: flex-start;
     justify-content: space-between;
     padding: 2rem;
 }
+
+.formC input,
+.formC textarea {
+    width: 100%; /* Ensures full width */
+    margin-bottom: 1.5rem; /* Adjusts the gap between fields */
+    padding: 0.5rem; /* Adds some padding for better appearance */
+    border: 1px solid #ccc; /* Optional: add border */
+    border-radius: 4px; /* Optional: add rounded corners */
+    background: #f9f9fa;
+    outline: none;
+    font-size: 16px;
+    transition: border-color 0.3s ease, background-color 0.3s ease; /* Smooth transition */
+}
+
+
+
 
 .formC {
     background-color: #fff;
@@ -449,16 +468,6 @@ html ::-webkit-scrollbar{
     font-weight: bold; /* Make labels stand out */
 }
 
-.formC input,
-.formC textarea {
-    border: 1px solid #ccc; 
-    padding: 15px; 
-    outline: none;
-    background: #f5f5f5;
-    font-size: 16px;
-    border-radius: 8px; /* Rounded corners for inputs */
-    transition: border-color 0.3s ease, background-color 0.3s ease; /* Smooth transition */
-}
 
 .formC input:focus,
 .formC textarea:focus {
@@ -467,7 +476,7 @@ html ::-webkit-scrollbar{
 }
 
 .formC button {
-    padding: 15px; 
+    padding: 0.5rem 1rem;
     background: #00317a; /* Button background color */
     color: white;
     font-size: 18px;
