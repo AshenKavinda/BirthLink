@@ -3,162 +3,103 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>BirthLink</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="babyDetails.css">
   <style>
-    body {
-      position: relative;
+    html, body {
+      height: 100%; /* Ensure the body and html take full height */
+      margin: 0;
     }
-    section {
-      padding: 50px 0;
-      margin-bottom: 50px;
+    .main-container {
+      height: 100vh; /* Full viewport height */
     }
-    footer {
-      text-align: center;
-      padding: 20px 0;
-    }
-    .navbar-nav {
-      flex-grow: 1;
-      justify-content: center;
+    iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+      padding-top: 8vh;
     }
   </style>
 </head>
-<body data-bs-spy="scroll" data-bs-target="#navbar" data-bs-offset="70">
+<body  data-bs-target="#navbar" data-bs-offset="70">
 
   <!-- Navbar -->
   <nav id="navbar" class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
     <div class="container-fluid">
-      <a class="navbar-brand" href="#">BirthLink</a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav ms-auto">
           <li class="nav-item">
-            <a class="nav-link" href="#weight">Weight</a>
+            <a class="nav-link" href="#weight" onclick="loadPage(1)">Weight</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#growth">Growth</a>
+            <a class="nav-link" href="#growth" onclick="loadPage(2)">Growth</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#vaccine">Vaccine</a>
+            <a class="nav-link" href="#vaccine" onclick="loadPage(3)">Vaccine</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#note">Note</a>
+            <a class="nav-link" href="#note" onclick="loadPage(4)">Note</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#qr">QR</a>
+            <a class="nav-link" href="#qr" onclick="loadPage(5)">QR</a>
           </li>
         </ul>
       </div>
     </div>
   </nav>
 
-  <!-- Sections with Iframes -->
-  <div class="mt-5">
-    <section id="weight-iframe" class="bg-light">
-      <iframe src="" onload="resizeIframe(this)" scrolling="no"></iframe>
-    </section>
-
-    <section id="growth-iframe" class="bg-secondary text-white">
-      <iframe src="" onload="resizeIframe(this)" scrolling="no"></iframe>
-    </section>
-
-    <section id="note-iframe" class="bg-light">
-      <iframe src="" onload="resizeIframe(this)" scrolling="no"></iframe>
-    </section>
-
-    <section id="qr-iframe" class="bg-secondary text-white">
-      <iframe src="" onload="resizeIframe(this)" scrolling="no"></iframe>
-    </section>
-
-    <section id="disease-iframe" class="bg-light">
-      <iframe src="" onload="resizeIframe(this)" scrolling="no"></iframe>
-    </section>
+  <div class="main-container" style="grid-area:auto;">
+    <iframe id="main-content" style="height: 100%;" src=""></iframe>
   </div>
 
-  <!-- Footer with Back to Top button -->
-  <footer class="bg-dark text-white mt-5">
-    <p>Health Monitoring &copy; 2024</p>
-    <button class="btn btn-primary" onclick="scrollToTop()">Back to Top</button>
-  </footer>
+  <!-- Bootstrap JS and jQuery -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 
-  <!-- Bootstrap JS -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-  <!-- Script to adjust iframe height dynamically -->
+  <!-- Script to dynamically load content into iframes and adjust iframe height -->
   <script>
-    function resizeIframe(iframe) {
-    iframe.style.height = iframe.contentWindow.document.body.scrollHeight + 'px';
-    }
-
-    // Function to scroll to the top of the page
-    function scrollToTop() {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-
     let bid = null;
+        $(document).ready(function() {
+            let url = new URL(window.location.href);
+            let params = new URLSearchParams(url.search);
+            let bidPara = params.get('bid');
+            if (bidPara == null) {
+                alert("Dashbord URL not valid!");
+            }else{
+                bid=bidPara;
+            }
+            document.getElementById('main-content').src = "../interMother/weightChart/weightChart.html?bid="+bid;
+    
+        });
+        function loadPage(page){
+            if (bid != null) {
+                switch (page) {
+                    case 1:
+                    document.getElementById('main-content').src = "../interMother/weightChart/weightChart.html?bid="+bid;
+                        break;
+                    case 2:
+                    document.getElementById('main-content').src = "../interMother/growth/babyGrowth.html?bid="+bid;
+                        break;
+                    case 3:
+                    document.getElementById('main-content').src = "../interMother/vaccine/babyVaccine.html?bid="+bid;
+                        break;
+                    case 4:
+                    document.getElementById('main-content').src = "../interMother/note/babyNote.html?bid="+bid;
+                        break;
+                    case 5:
+                    document.getElementById('main-content').src = "../interMother/QR/generateQR.html?bid="+bid;
+                        break;
 
-    $(document).ready(function() {
-        
-        alert("uyfuyg");
-        let url = new URL(window.location.href);
-        let params = new URLSearchParams(url.search);
-        let bidPara = params.get('bid');
-
-        if (bidPara == null) {
-        alert("Dashboard URL not valid!");
-        } else {
-        bid = bidPara;
-        loadInitialPages();
+                    default:
+                        break;
+                }
+            } else {
+                alert("bid is null!");
+            }
         }
-    });
-
-    function loadInitialPages() {
-
-        alert("1213");
-        loadPage(3); // Load Weight page
-        loadPage(5); // Load Growth page
-        loadPage(6); // Load Note page
-        loadPage(2); // Load QR page
-        loadPage(4); // Load Disease page
-
-
-    }
-
-    function loadPage(page) {
-        alert(bid);
-        //document.getElementById('qr-iframe').src = "../interMother/QR/generateQR.html?bid=" + bid;
-        if (bid != null) {
-        switch (page) {
-            case 1:
-            //document.getElementById('').src = "Home.html?bid=" + bid;
-            break;
-            case 2:
-            document.getElementById('qr-iframe').src = "../interMother/QR/generateQR.html?bid=" + bid;
-            break;
-            case 3:
-            document.getElementById('weight-iframe').src ="../interMother/weightChart/weightChart.html?bid=" + bid;
-            break;
-            case 4:
-            document.getElementById('vaccine-iframe').src = "../interBaby/babyVaccine/babyVaccine.html?bid=" + bid;
-            break;
-            case 5:
-            document.getElementById('growth-iframe').src = "../interBaby/growth/babyGrowth.html?bid=" + bid;
-            break;
-            case 6:
-            document.getElementById('note-iframe').src = "../interBaby/note/babyNote.html?bid=" + bid;
-            break;
-            default:
-            alert("Invalid page selection");
-            break;
-        }
-        } else {
-        alert("bid is null!");
-        }
-    }
-</script>
-
   </script>
 
 </body>
