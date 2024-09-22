@@ -119,6 +119,7 @@ class Midwife extends User {
         }
     }
 
+
     public function getUserWithMidwife($uID)
     {
         try {
@@ -137,11 +138,27 @@ class Midwife extends User {
             } else {
                 throw new Exception("Query failed: " . mysqli_error($this->db->getConnection()));
             }
-        } catch (Exception $th) {
+        } catch(\Throwable $th){
+            throw new Exception($th->getMessage());
+        }
+  }
+
+    public function set($firstDate,$seconddate,$mid){
+
+        try{
+            $query = "UPDATE midwife SET day1='$firstDate', day2='$seconddate' WHERE uID = $mid";
+            $result = mysqli_query($this->db->getConnection(),$query);
+
+            if($result){
+                return true;
+            }else{
+                return false;
+            }
+
+        }catch(\Throwable $th){
             throw new Exception($th->getMessage());
         }
     }
-
 
     public function sendEmail($midID) {
         try {
@@ -172,7 +189,30 @@ class Midwife extends User {
             } else {
                 throw new Exception("Quary Error!");
             }
-        } catch (\Throwable $th) {
+        } catch(\Throwable $th) {
+            throw new Exception($th->getMessage());
+        }
+    }
+
+    public function displaydates($uid) {
+        try {
+            $query = "SELECT day1, day2 FROM midwife WHERE uID = $uid";
+            $result = mysqli_query($this->db->getConnection(), $query);
+
+            if ($result && mysqli_num_rows($result) > 0) {
+                $row = mysqli_fetch_assoc($result);
+                return [
+                    "day1" => $row['day1'],
+                    "day2" => $row['day2']
+                ];
+            } else {
+                return [
+                    "day1" => null,
+                    "day2" => null
+                ];
+            }
+
+        } catch(\Throwable $th) {
             throw new Exception($th->getMessage());
         }
     }
