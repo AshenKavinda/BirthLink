@@ -65,12 +65,7 @@ class baby{
             if ($stmt->execute()) {
              
                 $result = $stmt->get_result();
-    
-                if ($result->num_rows > 0) {
-                    return $result;
-                } else {
-                    throw new Exception("No records found for the specified user ID!");
-                }
+                return $result;
             } else {
                 throw new Exception("Failed to execute query.");
             }
