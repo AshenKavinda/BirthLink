@@ -7,7 +7,7 @@
   <link rel="stylesheet" href="babyDetails.css">
   <style>
     html, body {
-      height: 100%; /* Ensure the body and html take full height */
+      height: 100vh; /* Ensure the body and html take full height */
       margin: 0;
     }
     .main-container {
@@ -25,7 +25,11 @@
 
   <!-- Navbar -->
   <nav id="navbar" class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
+    <div style="align-items: start;">
+        <img src="../img/BirthLink.png" alt="BirthLink" width="80" height="50">
+    </div>
     <div class="container-fluid">
+        
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
