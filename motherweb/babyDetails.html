@@ -45,10 +45,13 @@
             <a class="nav-link" href="#vaccine" onclick="loadPage(3)">Vaccine</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#note" onclick="loadPage(4)">Note</a>
+            <a class="nav-link" href="#note" onclick="loadPage(4)">BabyNote</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#qr" onclick="loadPage(5)">QR</a>
+            <a class="nav-link" href="#pregnote" onclick="loadPage(5)">PregnancyNote</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#qr" onclick="loadPage(6)">QR</a>
           </li>
         </ul>
       </div>
@@ -70,10 +73,12 @@
             let url = new URL(window.location.href);
             let params = new URLSearchParams(url.search);
             let bidPara = params.get('bid');
+            let pidPara = params.get('pid');
             if (bidPara == null) {
                 alert("Dashbord URL not valid!");
             }else{
                 bid=bidPara;
+                pid=pidPara;
             }
             document.getElementById('main-content').src = "../interMother/weightChart/weightChart.html?bid="+bid;
     
@@ -94,6 +99,9 @@
                     document.getElementById('main-content').src = "../interMother/note/babyNote.html?bid="+bid;
                         break;
                     case 5:
+                    document.getElementById('main-content').src = "../interMother/pregNote/pregNote.html?pid="+pid;
+                        break;
+                    case 6:
                     document.getElementById('main-content').src = "../interMother/QR/generateQR.html?bid="+bid;
                         break;
 
