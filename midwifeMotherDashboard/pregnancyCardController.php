@@ -88,6 +88,14 @@ function createBabyCard()
                         </div>';
             }
 
+            $card .= '
+            <div class="col-md-3">
+            <div class="card my-2" style="height: 250px; background-image: url("../img/pregWoman.jpg"); border: 2px solid #ccc; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); position: relative; overflow: hidden;">
+                <div class="card-body d-flex justify-content-center align-items-center" class="plus-btn" data-toggle="modal" data-target="#pregnancyModal"></div>
+            </div>
+            </div>
+            ';
+
             http_response_code(200);
             echo $card;
             exit();

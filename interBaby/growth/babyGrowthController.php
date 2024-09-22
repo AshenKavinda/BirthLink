@@ -86,6 +86,7 @@ function createGrowthDetailsTable()
                 $arrTableData[] = [
                     "gID" => $row['gid'],
                     "development" => $row['development'],
+                    "expectedMonths"=> $row['expectedMonths'],
                     "happenedDate" => $result != null ? $result : "Not yet"
                 ];
             }
@@ -97,6 +98,7 @@ function createGrowthDetailsTable()
                                 <tr>
                                 <th scope="col">No</th>
                                 <th scope="col">Growth stage</th>
+                                <th scope="col">ExpectedMonths</th>
                                 <th scope="col">Recorded date</th>
                                 <th scope="col">Action</th>
                                 </tr>
@@ -108,12 +110,14 @@ function createGrowthDetailsTable()
                     $growthID = $item['gID'];
                     $babyID = $_POST['babyID'];
                     $stage = $item['development'];
+                    $expectedMonths = $item['expectedMonths'];
                     $recordedDate = $item['happenedDate'];
     
         
                     $table.=' <tr>
                     <td>'.$slNo.'</td>
                     <td>'.$stage.'</td>
+                    <td>'.$expectedMonths.'</td>
                     <td>'.$recordedDate.'</td>
                     <td>
                         <button class="btn btn-danger" onclick="deleteGrowthRecord('.$babyID.','.$growthID.')">Remove</button>
