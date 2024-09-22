@@ -17,7 +17,7 @@ body{
   width: 450px;
   background: #fff;
   border-radius: 10px;
-  box-shadow: 0 15px 40px rgba(0,0,0,0.12);
+  box-shadow: 0 15px 40px rgba(0,0,0,0.5);
 }
 .wrapper header{
   display: flex;
@@ -52,6 +52,7 @@ header .current-date{
 }
 .calendar{
   padding: 20px;
+  margin-right: 10px;
 }
 .calendar ul{
   display: flex;
@@ -104,9 +105,30 @@ header .current-date{
 .days li.selected{
   background-color: #00bb3e;
   color: white;
-  border-radius: 10%;
+  border-radius: 50%;
+  
+
 }
 
 .days li.selected::before {
   background-color: transparent;
 }
+
+.main-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.button-left,
+.button-right {
+  flex-grow: 0;
+}
+
+.button-center {
+  flex-grow: 1;
+  display: flex;
+  justify-content: center;
+}
+
