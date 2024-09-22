@@ -99,28 +99,6 @@
         </div>
     </div>
 
-    <div class="modal fade" id="pregnancyModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="modalLabel">Add Pregnancy Details</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <label for="pregnancyDate">Pregnancy Date</label>
-                    <input type="date" class="form-control" id="pregnancyDate" required>
-
-                    <div class="d-flex align-items-center justify-content-end">
-                        <button type="submit" class="btn btn-primary my-3" onclick="add()">Submit</button>
-                    </div>   
-                </div>
-            </div>
-        </div>
-    </div>
-
-   
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
@@ -142,7 +120,7 @@
         {
             if(userID!=null&&midID!= null){
                 $.ajax({
-                    url: 'pregnancyCardController.php',
+                    url: 'pregCardController.php',
                     method:'post',
                     data: {
                         action: "createBabyCard",
@@ -166,39 +144,29 @@
             }
         }
 
-        function add()
-        {
-            let pregDate = $('#pregnancyDate').val();
+        function viewBabyProfile(pid,bid){
 
-            if(userID!=null&&midID!= null){
+            let url = new URL(window.location.href);
+            let paras = new URLSearchParams(url.search);
 
-                $.ajax({
-                    url: 'pregnancyCardController.php',
-                    type: 'POST',
-                    data: {
-                        action: 'add',
-                        pregDate: pregDate,
-                        userID: userID,
-                        midID:midID
-                    },
+            paras.set('bid',bid);
+            paras.set('pid',pid);
 
-                    success: function()
-                    {
-                        //alert("Pregnancy added successfully!");
-                        displayBabyCards();
-                        $('#pregnancyModal').modal('hide');
+            const newURL = "../../motherweb/babyDetails.html?"+paras.toString();
 
-                    },
-                    error: function(xhr,status,error) {
-                    var respose = JSON.parse(xhr.responseText);
-                    var errorMessage = respose.error || "An unknown error occurred.";
-                    alert("Error: "+errorMessage);
-                    }       
-                });
+            window.open(newURL,'_blank');
+        }
 
-            }else{
-                alert("User ID not found!!!");
-            }
+        function viewPregnancyProfile(pid){
+
+            let url = new URL(window.location.href);
+            let paras = new URLSearchParams(url.search);
+
+            paras.set('pid',pid);
+
+            const newURL = "../../motherweb/babyDetails.html?"+paras.toString();
+
+            window.open(newURL,'_blank');
         }
 
     </script>
