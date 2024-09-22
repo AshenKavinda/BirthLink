@@ -1,6 +1,6 @@
 <?php
-require_once '../models/pregnancy.php';
-require_once '../models/baby.php';
+require_once __DIR__ . '/../../models/pregnancy.php';
+require_once __DIR__ . '/../../models/baby.php';
 $pregnancy = new pregnancy();
 $baby = new baby();
 
@@ -18,35 +18,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 }
 
-function add()
-{
-    try {
-
-        if(isset($_POST['userID']) && isset($_POST['pregDate']) && isset($_POST['midID'])){
-            global $pregnancy;
-            $result = $pregnancy->add($_POST['userID'],$_POST['midID'],$_POST['pregDate']);
-
-            if($result)
-            {
-                http_response_code(200);
-                exit();
-            }else{
-                throw new Exception("System error!");
-            }
-
-        }else
-        {
-            throw new Exception("System error!");
-        }
-        
-    } catch (\Throwable $th) {
-
-        http_response_code(400);
-        echo json_encode(array('error' => $th->getMessage()));
-        exit();
-        
-    }
-}
 
 function createBabyCard()
 {
@@ -62,8 +33,9 @@ function createBabyCard()
            
             while($row = mysqli_fetch_assoc($result))
             {
-                $card .= '<div class="col-md-3">
-                            <div class="card my-2" id="carid" style="height: 250px; background-image: url(\'../img/mother.png\');">
+                $card .='<div class="col-md-3" onclick="viewBabyProfile(\'' . htmlspecialchars($row['pID']) . '\', \'' . htmlspecialchars($row['bID']) . '\')">
+
+                            <div class="card my-2" id="carid" style="height: 250px; background-image: url(\'../../img/mother.png\');">
                                 <div class="card-body">
                                     <h4 class="card-title">Baby ID: '.$row['bID'].'</h4>
                                     <h6>Pregnancy ID: '.$row['pID'].'</h6>
@@ -77,8 +49,8 @@ function createBabyCard()
 
             while($row = mysqli_fetch_assoc($result2))
             {
-                $card .= '<div class="col-md-3">
-                            <div class="card my-2" id="carid" style="height: 250px;  background-image: url(\'../img/pregWoman.jpg\');">
+                $card .= '<div class="col-md-3" onclick="viewPregnancyProfile('.$row['pID'].')">
+                            <div class="card my-2" id="carid" style="height: 250px;  background-image: url(\'../../img/pregWoman.jpg\');">
                                 <div class="card-body">
                                     <h4 class="card-title">Pregnancy ID: '.$row['pID'].'</h4>
                                     <h6>Mother ID: '.$row['uID'].'</h6>
@@ -87,18 +59,6 @@ function createBabyCard()
                             </div>
                         </div>';
             }
-
-            $card .= '
-            <div class="col-md-3">
-            <div class="card my-2" style="height: 250px; id="addNewCard" id="addNewCard" position: relative; overflow: hidden;">
-                <div class="card-body d-flex justify-content-center align-items-center" class="plus-btn" data-toggle="modal" data-target="#pregnancyModal">
-                    <div class="plus-btn" data-toggle="modal" data-target="#pregnancyModal">
-                        +
-                    </div>
-                </div>
-            </div>
-            </div>
-            ';
 
             http_response_code(200);
             echo $card;
