@@ -122,20 +122,21 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
     <script>
+        let userID = null;
+        let midID = null;
         $(document).ready(function(){
+            let url = new URL(window.location.href);
+            let paras = new URLSearchParams(url.search);
 
+            userID = paras.get('uid');
+            midID = paras.get('midid');
             displayBabyCards();
            
         });
 
         function displayBabyCards()
         {
-            let url = new URL(window.location.href);
-            let paras = new URLSearchParams(url.search);
-
-            let userID = paras.get('uid');
-
-            if(userID!=null){
+            if(userID!=null&&midID!= null){
                 $.ajax({
                     url: 'pregnancyCardController.php',
                     method:'post',
@@ -156,41 +157,40 @@
                     }
 
                 })
+            } else {
+                alert("Invalied URL!")
             }
         }
 
         function add()
         {
-            let url = new URL(window.location.href);
-            let paras = new URLSearchParams(url.search);
-            let userID = paras.get("uid");
             let pregDate = $('#pregnancyDate').val();
 
-            if(userID!=null){
+            if(userID!=null&&midID!= null){
 
                 $.ajax({
-               
-                url: 'pregnancyCardController.php',
-                type: 'POST',
-                data: {
-                    action: 'add',
-                    pregDate: pregDate,
-                    userID: userID
-                },
+                    url: 'pregnancyCardController.php',
+                    type: 'POST',
+                    data: {
+                        action: 'add',
+                        pregDate: pregDate,
+                        userID: userID,
+                        midID:midID
+                    },
 
-                success: function()
-                {
-                    //alert("Pregnancy added successfully!");
-                    displayBabyCards();
-                    $('#pregnancyModal').modal('hide');
+                    success: function()
+                    {
+                        //alert("Pregnancy added successfully!");
+                        displayBabyCards();
+                        $('#pregnancyModal').modal('hide');
 
-                },
-                error: function(xhr,status,error) {
-                var respose = JSON.parse(xhr.responseText);
-                var errorMessage = respose.error || "An unknown error occurred.";
-                alert("Error: "+errorMessage);
-              }       
-            })
+                    },
+                    error: function(xhr,status,error) {
+                    var respose = JSON.parse(xhr.responseText);
+                    var errorMessage = respose.error || "An unknown error occurred.";
+                    alert("Error: "+errorMessage);
+                    }       
+                });
 
             }else{
                 alert("User ID not found!!!");

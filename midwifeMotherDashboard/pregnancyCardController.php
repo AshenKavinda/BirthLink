@@ -22,9 +22,9 @@ function add()
 {
     try {
 
-        if(isset($_POST['userID']) && isset($_POST['pregDate'])){
+        if(isset($_POST['userID']) && isset($_POST['pregDate']) && isset($_POST['midID'])){
             global $pregnancy;
-            $result = $pregnancy->add($_POST['userID'],$_POST['pregDate']);
+            $result = $pregnancy->add($_POST['userID'],$_POST['midID'],$_POST['pregDate']);
 
             if($result)
             {

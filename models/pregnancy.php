@@ -11,13 +11,13 @@ class pregnancy
 
     }
 
-    public function add($userID,$pregnancyDate)
+    public function add($userID,$midID,$pregnancyDate)
     {
         try {
 
-            $sql = "INSERT INTO pregnancy(uID, date) VALUES (?, ?)";
+            $sql = "INSERT INTO pregnancy(uID,midID, date) VALUES (?, ? ,?)";
             $stmt = $this->DB->getConnection()->prepare($sql);
-            $stmt->bind_param('is', $userID, $pregnancyDate);
+            $stmt->bind_param('iis', $userID,$midID, $pregnancyDate);
     
             if ($stmt->execute()) {
     
