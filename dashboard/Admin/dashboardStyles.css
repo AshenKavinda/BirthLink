@@ -15,12 +15,16 @@ body {
     vertical-align: text-top;
     line-height: 1px;
     font-size: 20px;
+    font-weight: 600;
     padding: 0px 0px 0px 10px;
+    color: rgb(30, 101, 200) !important;
 }
+
 
 .material-icons-outlined, svg {
     width: 24px;
     height: 24px;
+    color:  rgb(30, 101, 200);
 }
 
 @media (max-width: 768px) {
@@ -34,7 +38,7 @@ body {
 .header{
     grid-area: header;
     height: 70px;
-    background-color: rgb(97, 2, 141);
+    background-color: rgb(98, 90, 216);
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -93,12 +97,15 @@ body, html {
 #sidebar {
     width: 220px;
     height: 100%;
-    background-color: #333;
-    color: #fff;
+    background-color: #ffffff;
+    color: #643eeb;
     position: fixed;
     left: 0;
     top: 0;
     transition: width 0.3s;
+    display: flex;
+    flex-direction: column; /* Arrange children vertically */
+    height: 100vh; 
 }
 
 @media (max-width: 768px) {
@@ -113,6 +120,7 @@ body, html {
     .sidebar-name {
         display: flex;
         justify-content: space-between;
+        color: #ffffff;
     }
 }
 .sidebar-hidden {
@@ -156,10 +164,41 @@ body, html {
 .sidebar-list-item {
     padding: 20px;
     font-size: 10px;
+    color:  rgb(23, 109, 230) !important;
+}
+
+.sidebar-list-item1 {
+    padding: 20px;
+    font-size: 10px;
+    color:  rgb(23, 109, 230) !important;
+}
+
+.sidebar-list-item:last-child{
+    margin-top: auto;
+}
+.sidebar-list-item:hover {
+    border-top-left-radius: 25px;
+    border-bottom-left-radius: 25px;
+    padding: 20px;
+    font-size: 10px;
+    color:  rgb(255, 255, 255) !important;
+}
+
+.sidebar-list-item:hover .icon{
+    fill:  rgb(255, 255, 255) !important;
+}
+
+.sidebar-list-item:hover .meterial-icons-outlined{
+    color: #ffffff !important;
+}
+
+.sidebar-list-item .icon{
+    fill:  rgb(23, 109, 230) !important;
 }
 
 .sidebar-list-item:hover {
-    background-color: rgb(180, 102, 174);
+    background-color: #74ebd5;
+    color: #EDEDED !important;
     cursor: pointer;
 }
 
@@ -169,6 +208,9 @@ body, html {
     z-index: 12 !important;
 }
 
+.sidebar .sidebar-list .logout{
+    fill: rgb(23, 109, 230) !important;
+}
 .main-container {
     grid-area: main;
     overflow-y:hidden;

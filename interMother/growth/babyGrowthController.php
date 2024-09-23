@@ -48,6 +48,7 @@ function createGrowthDetailsTable()
                 $arrTableData[] = [
                     "gID" => $row['gid'],
                     "development" => $row['development'],
+                    "expectedMonths"=> $row['expectedMonths'],
                     "happenedDate" => $result != null ? $result : "Not yet"
                 ];
             }
@@ -59,22 +60,25 @@ function createGrowthDetailsTable()
                                 <tr>
                                 <th scope="col">No</th>
                                 <th scope="col">Growth stage</th>
+                                <th scope="col">ExpectedMonths</th>
                                 <th scope="col">Recorded date</th>
                                 </tr>
                             </thead>';
             $slNo = 1;
 
             foreach ($arrTableData as $item){
-                    $stage = $item['development'];
-                    $recordedDate = $item['happenedDate'];
+                $stage = $item['development'];
+                $expectedMonths = $item['expectedMonths'];
+                $recordedDate = $item['happenedDate'];
+
     
-        
-                    $table.=' <tr>
-                    <td>'.$slNo.'</td>
-                    <td>'.$stage.'</td>
-                    <td>'.$recordedDate.'</td>
-                    </tr>';
-                    $slNo++;   
+                $table.=' <tr>
+                <td>'.$slNo.'</td>
+                <td>'.$stage.'</td>
+                <td>'.$expectedMonths.'</td>
+                <td>'.$recordedDate.'</td>
+                </tr>';
+                $slNo++;   
             }
 
             $table.='</table>';

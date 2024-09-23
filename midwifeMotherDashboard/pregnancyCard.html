@@ -8,13 +8,13 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <style>
         .plus-btn {
-            position: fixed;
+            /* position: fixed; */
             bottom: 20px;
             right: 20px;
             width: 60px;
             height: 60px;
             border-radius: 50%;
-            background-color: #007bff;
+            background-color: #549fef;
             color: white;
             font-size: 30px;
             display: flex;
@@ -22,6 +22,14 @@
             justify-content: center;
             cursor: pointer;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+            transition: 0.5s;
+
+        }
+        .plus-btn:hover{
+            background-color: #1b61ac;
+            transform: translateY(-5px);
+            
+            
 
         }
         .modal-dialog {
@@ -38,7 +46,7 @@
         .babyCard-container{
             margin-bottom: 20px;
         }
-        .card {
+        #carid {
         position: relative;
         overflow: hidden;
         background-size: cover; 
@@ -50,7 +58,8 @@
         cursor: pointer;
    
         }
-        .card:hover{
+      
+        #carid:hover{
             transform: scale(1.1);
             box-shadow: 0 4px 8px rgba(224, 20, 194, 0.3);
         }
@@ -89,11 +98,6 @@
 
         </div>
     </div>
-
-    <div class="plus-btn" data-toggle="modal" data-target="#pregnancyModal">
-        +
-    </div>
-
 
     <div class="modal fade" id="pregnancyModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">

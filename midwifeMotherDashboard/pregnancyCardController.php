@@ -63,7 +63,7 @@ function createBabyCard()
             while($row = mysqli_fetch_assoc($result))
             {
                 $card .= '<div class="col-md-3">
-                            <div class="card my-2" style="height: 250px; background-image: url(\'../img/mother.png\');">
+                            <div class="card my-2" id="carid" style="height: 250px; background-image: url(\'../img/mother.png\');">
                                 <div class="card-body">
                                     <h4 class="card-title">Baby ID: '.$row['bID'].'</h4>
                                     <h6>Pregnancy ID: '.$row['pID'].'</h6>
@@ -78,7 +78,7 @@ function createBabyCard()
             while($row = mysqli_fetch_assoc($result2))
             {
                 $card .= '<div class="col-md-3">
-                            <div class="card my-2" style="height: 250px;  background-image: url(\'../img/pregWoman.jpg\');">
+                            <div class="card my-2" id="carid" style="height: 250px;  background-image: url(\'../img/pregWoman.jpg\');">
                                 <div class="card-body">
                                     <h4 class="card-title">Pregnancy ID: '.$row['pID'].'</h4>
                                     <h6>Mother ID: '.$row['uID'].'</h6>
@@ -90,8 +90,12 @@ function createBabyCard()
 
             $card .= '
             <div class="col-md-3">
-            <div class="card my-2" style="height: 250px; background-image: url("../img/pregWoman.jpg"); border: 2px solid #ccc; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); position: relative; overflow: hidden;">
-                <div class="card-body d-flex justify-content-center align-items-center" class="plus-btn" data-toggle="modal" data-target="#pregnancyModal"></div>
+            <div class="card my-2" style="height: 250px; id="addNewCard" id="addNewCard" position: relative; overflow: hidden;">
+                <div class="card-body d-flex justify-content-center align-items-center" class="plus-btn" data-toggle="modal" data-target="#pregnancyModal">
+                    <div class="plus-btn" data-toggle="modal" data-target="#pregnancyModal">
+                        +
+                    </div>
+                </div>
             </div>
             </div>
             ';

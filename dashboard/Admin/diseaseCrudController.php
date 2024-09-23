@@ -126,6 +126,7 @@ function displayDiseaseTable()
                                 <th scope="col">Pathology ID</th>
                                 <th scope="col">Pathology Name</th>
                                 <th scope="col">Discription</th>
+                                <th scope="col">Action</th>
                                 </tr>
                             </thead>';
 
