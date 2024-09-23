@@ -105,20 +105,18 @@
 
     <script>
         let userID = null;
-        let midID = null;
         $(document).ready(function(){
             let url = new URL(window.location.href);
             let paras = new URLSearchParams(url.search);
 
             userID = paras.get('uid');
-            midID = paras.get('midid');
             displayBabyCards();
            
         });
 
         function displayBabyCards()
         {
-            if(userID!=null&&midID!= null){
+            if(userID!=null){
                 $.ajax({
                     url: 'pregCardController.php',
                     method:'post',

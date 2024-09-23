@@ -50,9 +50,9 @@
         function openMother(id) {
             if (id != null) {
                 let params = new URLSearchParams();
-                params.set('bid', id);
+                params.set('uid', id);
 
-                const url = '../dashboard/babyDashboard/babyDashboard.html?' + params.toString();
+                const url = '../midwifeMotherDashboard/pregnancyCard.html?' + params.toString();
                 window.open(url, '_blank');
             } else {
                 alert("UID not found!");
