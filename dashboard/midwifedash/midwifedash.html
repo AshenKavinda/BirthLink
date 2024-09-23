@@ -61,15 +61,14 @@
               action: 'verifyAuthentication'
             },
             success: function(response) {
-              alert(response);
               mid = response;
               document.getElementById('main-content').src = "../../selectmother/selectMother.html?mid="+mid;
             },
             error: function() {
-              $('#error').text("Invalid username or password");
+              window.location.href = "../../signIn/FormSignIn.html";
             }
           });
-        })
+        });
 
         function loadPage(page){
             if (mid != null) {
