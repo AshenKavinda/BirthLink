@@ -1,4 +1,5 @@
 <?php
+session_start();
 require_once '../models/Mother.php';
 
 $mother = new Mother();
@@ -21,8 +22,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 function setMotherTable() {
 
+    $uID = 11;
+
+    if (isset($_SESSION['uID'])) {
+        $uID = $_SESSION['uID'];
+    }
     global $mother;
-    $result = $mother->getMothers();
+    $result = $mother->getMothersByMID($uID);
 
     $table = '<table class="table">
                 <thead>
