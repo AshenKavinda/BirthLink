@@ -49,7 +49,7 @@ function setMotherTable() {
                     <td>'.$fname.' '.$lname.'</td>
                     <td>'.$nic.'</td>
                     <td>'.$contact.'</td>
-                    <td><button class="btn btn-dark" onclick="">Select</button></td>
+                    <td><button class="btn btn-dark" onclick="openMother('.$id.')">Select</button></td>
                   </tr>';
     }
 

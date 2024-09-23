@@ -30,6 +30,19 @@
             displayData();
         });
 
+        function openMother(id) {
+            if (id != null) {
+                let params = new URLSearchParams();
+                params.set('uid', id);
+
+                const url = '../dashbord/babyDashbord/babyDashboard.html?' + params.toString();
+                window.open(url, '_blank');
+            } else {
+                alert("UID not found!");
+            }
+        }
+
+
         function displayData() {        
             $.ajax({
                 url: "selectMotherController.php",
