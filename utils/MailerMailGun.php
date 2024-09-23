@@ -30,7 +30,15 @@ class MailerMailGun {
             'text'    => $massage
         ]);
         
-        return $responce;
+        if ($responce) {
+            $messageId = $responce->getId();
+            $messageStatus = $responce->getMessage(); 
+            
+            return [
+                'id' => $messageId,
+                'status' => $messageStatus
+            ];
+        }
     }
 }
 

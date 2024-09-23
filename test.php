@@ -2,8 +2,13 @@
 // require_once 'models/Midwife.php';
 // $mid = new Midwife();
 // try {
+
 //     $response = $mid->sendEmail(11);
 //     echo $response;
+
+//     $mid->sendEmail(1);
+//     echo "ok";
+
 // } catch (\Throwable $th) {
 //     echo $th->getMessage();
 // }
