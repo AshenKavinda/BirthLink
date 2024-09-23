@@ -23,14 +23,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 function setMotherTable() {
 
     try {
-        //code...
-        $uID = 11;
-    
-        if (isset($_SESSION['uID'])) {
-            $uID = $_SESSION['uID'];
-        }
         global $mother;
-        $result = $mother->getMothersByMID($uID);
+        $result = $mother->getMothers();
     
         $table = '<table class="table">
                     <thead>

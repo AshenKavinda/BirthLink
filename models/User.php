@@ -16,8 +16,8 @@ class User {
             
             //$quary = "select * from userData where email = '$vEmail'" ;
             $quary = "select * from user where email = '$vEmail'" ;
-            if (mysqli_query($this->db->getConnection(),$quary)) {
-                $result = mysqli_query($this->db->getConnection(),$quary);
+            $result = mysqli_query($this->db->getConnection(),$quary);
+            if ($result) {
                 if (mysqli_num_rows($result)>0) {
                     $row = mysqli_fetch_row($result);
                     //echo $row[7];                   
@@ -26,18 +26,18 @@ class User {
                     }
                     else
                     {
-                        throw new Exception();
+                        throw new Exception("password not match!");
                     }
                 }else {
-                    throw new Exception();
+                    throw new Exception("No record found!");
                 }
             }
             else
             {
-                throw new Exception();
+                throw new Exception("Database Error!");
             }
         } catch (Exception $th) {
-            return false;
+            throw new Exception($th->getMessage());
         }
     }
 

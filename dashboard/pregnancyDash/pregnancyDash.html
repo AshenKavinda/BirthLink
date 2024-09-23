@@ -203,27 +203,31 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
     <script>
-        let bid = null;
-        $(document).ready(function() {
-            let url = new URL(window.location.href);
-            let params = new URLSearchParams(url.search);
-            let pidPara = params.get('pid');
-            if (pidPara == null) {
-                alert("Dashbord URL not valid!");
-            }else{
-                pid=pidPara;
-                document.getElementById('main-content').src = "../../interPreg/note/convert.html?pid="+pid;
-            }
-    
+
+        $(document).ready(function(){
+            $.ajax({
+                url: 'verify.php',
+                method: 'post',
+                data: {
+                action: 'verifyAuthentication'
+                },
+                success: function() {
+
+                },
+                error: function() {
+                    window.location.href = "../../signIn/FormSignIn.html";
+                }
+            });
         });
-        function loadPage(page){
-            if (bid != null) {
-                switch (page) {
+
+        function loadPage(pid){
+            if (pid != null) {
+                switch (pid) {
                     case 1:
-                        document.getElementById('main-content').src = "../../interPreg/note/convert.html?pid="+pid;
+                        document.getElementById('main-content').src = "../../interPreg/note/pregNote.html?pid="+pid;
                         break;
                     case 2:
-                        document.getElementById('main-content').src = "../../interPreg/convert/convertController.html?pid="+pid;
+                        document.getElementById('main-content').src = "../../interPreg/convert/convert.html?pid="+pid;
                         break;                
                     default:
                         break;

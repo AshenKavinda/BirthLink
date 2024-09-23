@@ -98,15 +98,11 @@
               password: $('#password').val().trim()
             },
             success: function(response) {
-              alert (response);
               openDashboard(response);
             },
             error: function(xhr,status,error) {
-                    var respose = JSON.parse(xhr.responseText);
-                    var errorMessage = respose.error || "An unknown error occurred.";
-                    alert("Error: "+errorMessage);
-                    $('#error').text("Invalid username or password");
-                }
+                $('#error').text("Invalid username or password");
+            }
           });
         }
       }
@@ -117,7 +113,15 @@
           case 'midwife':
             window.location.href = "../dashboard/midwifedash/midwifedash.html";
             break;
-        
+          case 'mother':
+            window.location.href = "../interMother/pregCards/pregCard.html";
+            break;
+          case 'admin':
+            window.location.href = "../dashboard/Admin/adminDashboard.html";
+            break;
+          case 'officer':
+            window.location.href = "../dashboard/officerDashboard/officerDash.html";
+            break;
           default:
             break;
         }

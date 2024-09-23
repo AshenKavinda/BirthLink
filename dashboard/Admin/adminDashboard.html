@@ -51,15 +51,28 @@
             <iframe id="main-content" src=""></iframe>
         </div>
     </div>
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script>
-        window.onload = function() {
-            loadPage('../../officer/officer.html');
-        };
+        $(document).ready(function(){
+            $.ajax({
+                url: 'verify.php',
+                method: 'post',
+                data: {
+                action: 'verifyAuthentication'
+                },
+                success: function() {
+                    loadPage('../../officer/officer.html');
+                },
+                error: function() {
+                    window.location.href = "../../signIn/FormSignIn.html";
+                }
+            });
+        });
 
         function loadPage(page){ 
             document.getElementById('main-content').src = page;
         }
+
     </script>
 </body>
 </html>

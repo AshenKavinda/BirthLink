@@ -159,7 +159,6 @@
               otp: $('#otp').val().trim()
             },
             success: function(responce) {
-              alert(responce);
               if (responce.trim() === "EmailExist") {
                 alert("Email alredy exist!");
                 $('#otp').val('');

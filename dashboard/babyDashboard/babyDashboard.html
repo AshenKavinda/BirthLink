@@ -222,17 +222,30 @@
 
     <script>
         let bid = null;
-        $(document).ready(function() {
-            let url = new URL(window.location.href);
-            let params = new URLSearchParams(url.search);
-            let bidPara = params.get('bid');
-            if (bidPara == null) {
-                alert("Dashbord URL not valid!");
-            }else{
-                bid=bidPara;
-            }
-    
+
+        $(document).ready(function(){
+            $.ajax({
+                url: 'verify.php',
+                method: 'post',
+                data: {
+                action: 'verifyAuthentication'
+                },
+                success: function() {
+                    let url = new URL(window.location.href);
+                    let params = new URLSearchParams(url.search);
+                    let bidPara = params.get('bid');
+                    if (bidPara == null) {
+                        alert("Dashbord URL not valid!");
+                    }else{
+                        bid=bidPara;
+                    }
+                },
+                error: function() {
+                    window.location.href = "../../signIn/FormSignIn.html";
+                }
+            });
         });
+
         function loadPage(page){
             if (bid != null) {
                 switch (page) {
