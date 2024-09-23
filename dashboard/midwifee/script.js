@@ -15,6 +15,7 @@ domReady(function () {
 
     // If QR code is found
     function onScanSuccess(decodeText, decodeResult) {
+        alert(decodeText);
         // Redirect to the URL contained in the QR code
         window.location.href = decodeText;
     }
