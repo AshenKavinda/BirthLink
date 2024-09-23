@@ -19,9 +19,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 function displaySearch() {
     try {
-        if (isset($_POST['date']) && isset($_POST['district'])) {
+        if (isset($_POST['district'])) {
             global $report;
-            $result = $report->getAllMalnutritionByMonth($_POST['date'],$_POST['district']);
+            $result = $report->getVaccinationCoverageByDistrict($_POST['district']);
             displayTable($result); 
         } else {
             throw new Exception('No date found!');
@@ -40,13 +40,11 @@ function displayTable($result)
                         <thead>
                             <tr>
                             <th scope="col">No</th>
-                            <th scope="col">Baby ID</th>
-                            <th scope="col">Baby day</th>
-                            <th scope="col">Email</th>
-                            <th scope="col">Weight</th>
-                            <th scope="col">weight limit</th>
-                            <th scope="col">Center</th>
-                            <th scope="col">Distric</th>
+                            <th scope="col">Vaccine</th>
+                            <th scope="col">Vaccinated Babies</th>
+                            <th scope="col">Total Babies</th>
+                            <th scope="col">Coverage</th>
+                            <th scope="col">District</th>
                             </tr>
                         </thead>';
         $slNo = 1;
@@ -56,13 +54,11 @@ function displayTable($result)
     
                 $table.=' <tr>
                 <td>'.$slNo.'</td>
-                <td>'.$row['bID'].'</td>
-                <td>'.$row['bDay'].'</td>
-                <td>'.$row['email'].'</td>
-                <td>'.$row['weight'].'</td>
-                <td>'.$row['min_weight_kg'].'</td>
-                <td>'.$row['center_name'].'</td>
-                <td>'.$row['district_name'].'</td>
+                <td>'.$row['Vaccine'].'</td>
+                <td>'.$row['VaccinatedBabies'].'</td>
+                <td>'.$row['TotalBabies'].'</td>
+                <td>'.$row['VaccinationCoverage'].'</td>
+                <td>'.$row['District'].'</td>
                 </tr>';
                 $slNo++;   
         }

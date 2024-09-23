@@ -98,7 +98,7 @@
 <body>
 
     <div class="container my-3">
-        <h1 class="text-center" id="headtitle">Malnourished Children</h1>
+        <h1 class="text-center" id="headtitle">Vaccination-Coverage</h1>
         <div class="my-4">
             <div class="col-12">
                 <div class="row">
@@ -106,7 +106,6 @@
                         <input class="form-control w-50" id="district" type="text">
                     </div>
                     <div class="col-md-4 d-flex justify-content-end">
-                        <input class="form-control w-50 mx-3" id="date" type="date">
                         <div class="text-end">
                             <button class="btn btn-primary" onclick="printTable()">Print</button>
                         </div>
@@ -160,7 +159,6 @@
                 method:'post',
                 data: {
                     action: "displaySearch",   
-                    date: $('#date').val(),
                     district: $('#district').val()                            
                 },
                 success: function(respose) {
