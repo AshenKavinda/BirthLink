@@ -6,10 +6,174 @@
     <title>BirthLink</title>
 
     <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet"> 
-    <link rel="stylesheet" href="../Admin/dashboardStyles.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
+
+    <style>
+            body {
+        padding: 0;
+        margin: 0;
+        color: #333; /* Dark gray for better readability */
+        font-family: 'Poppins', sans-serif;
+        overflow-y: hidden;
+        background-color: #F4F4F4; /* Soft light gray background */
+    }
+
+    @media (max-width: 768px) {
+        body {
+            font-size: 14px;
+        }
+    }
+
+    .material-icons-outlined {
+        vertical-align: text-top;
+        line-height: 1px;
+        font-size: 20px;
+        padding: 0 10px; /* Simplified padding */
+    }
+
+    .header {
+        grid-area: header;
+        height: 70px;
+        background-color: #f0f4f8;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 30px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Softer shadow */
+    }
+
+    .grid-container {
+        grid-template-columns: 260px 1fr 1fr 1fr;
+        grid-template-rows: 0.2fr 3fr;
+        grid-template-areas:
+            "sidebar header header header"
+            "sidebar main-container main-container main-container";
+        height: 100vh;
+    }
+
+    @media (max-width: 768px) {
+        .grid-container {
+            grid-template-columns: 60px auto;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .grid-container {
+            grid-template-columns: 1fr;
+            grid-template-rows: auto auto;
+        }
+    }
+
+    .header-right, .header-left {
+        display: flex;
+        flex-direction: row;
+        justify-content: right;
+        width: 100%;
+        align-items: center;
+    }
+
+    #sidebar {
+        width: 220px;
+        height: 100%;
+        background-color: #2C3E50; /* Dark blue-gray */
+        color: #ECF0F1; /* Light gray for contrast */
+        position: fixed;
+        left: 0;
+        top: 0;
+        transition: width 0.3s;
+    }
+
+    @media (max-width: 768px) {
+        #sidebar {
+            width: 60px; 
+        }
+
+        #sidebar .sidebar-list-item span {
+            display: none;
+        }
+
+        .sidebar-name {
+            display: flex;
+            justify-content: space-between;
+        }
+    }
+
+    .sidebar-name {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 30px;
+        margin-bottom: 30px;
+    }
+
+    .sidebar-list {
+        padding: 0;
+        margin-top: 15px;
+        list-style-type: none;
+    }
+
+    .sidebar-list-item {
+        padding: 20px;
+        font-size: 14px; /* Increased font size for better readability */
+        transition: background-color 0.3s; /* Smooth transition */
+    }
+
+    .sidebar-list-item:hover {
+        background-color: rgba(236, 240, 241, 0.3); /* Light gray hover effect */
+        cursor: pointer;
+    }
+
+    .main-container {
+        grid-area: main;
+        overflow-y: hidden;
+        background-color: #FFFFFF; /* White background for the main content */
+        padding-left: 220px; 
+        transition: padding-left 0.3s; 
+        height: 100%;
+    }
+
+    @media (max-width: 768px) {
+        .main-container {
+            padding-left: 60px;
+        }
+    }
+
+    .txtBirth{
+        margin-left: 40px;
+        font-size:x-large;
+    }
+
+    @media (max-width: 768px) {
+        .txtBirth{
+            color: #2C3E50;
+        }
+    }
+
+    iframe {
+        width: 100%;
+        height: 100%;
+        border: none;
+        border-radius: 8px; /* Rounded corners for iframes */
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+    }
+    </style>
 </head>
 <body>
+
+    <!--Header-->
+    <header class="header">
+        <div class="menu-icon">
+        </div>
+        <div class="header-left">
+        </div>
+        <div class="header-right">
+        <a href="../../utils/LogOut.php" style="text-decoration: none;">
+            <svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" height="24px" viewBox="0 0 24 24" width="24px" fill="#000000"><g><path d="M0,0h24v24H0V0z" fill="none"/></g><g><path d="M17,8l-1.41,1.41L17.17,11H9v2h8.17l-1.58,1.58L17,16l4-4L17,8z M5,5h7V3H5C3.9,3,3,3.9,3,5v14c0,1.1,0.9,2,2,2h7v-2H5V5z"/></g></svg>
+            <span class="header-icons"></span>
+        </a>
+        </div> 
+    </header>
+
     <div class="grid-container">
         <!--SideBar-->
         <aside id="sidebar">
@@ -24,25 +188,23 @@
                         <svg class="icon" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed"><path d="M480-480q-66 0-113-47t-47-113q0-66 47-113t113-47q66 0 113 47t47 113q0 66-47 113t-113 47ZM160-160v-112q0-34 17-62.5t47-43.5q60-30 124.5-46T480-440q67 0 131.5 16T736-378q30 15 47 43.5t17 62.5v112H160Zm320-400q33 0 56.5-23.5T560-640q0-33-23.5-56.5T480-720q-33 0-56.5 23.5T400-640q0 33 23.5 56.5T480-560Zm160 228v92h80v-32q0-11-5-20t-15-14q-14-8-29.5-14.5T640-332Zm-240-21v53h160v-53q-20-4-40-5.5t-40-1.5q-20 0-40 1.5t-40 5.5ZM240-240h80v-92q-15 5-30.5 11.5T260-306q-10 5-15 14t-5 20v32Zm400 0H320h320ZM480-640Z"/></svg>
                         <span class="meterial-icons-outlined">Mothers</span>
                     </li>
+                    <li class="sidebar-list-item" onclick="loadPage(4)">
+                        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed"><path d="M80-680v-200h200v80H160v120H80Zm0 600v-200h80v120h120v80H80Zm600 0v-80h120v-120h80v200H680Zm120-600v-120H680v-80h200v200h-80ZM700-260h60v60h-60v-60Zm0-120h60v60h-60v-60Zm-60 60h60v60h-60v-60Zm-60 60h60v60h-60v-60Zm-60-60h60v60h-60v-60Zm120-120h60v60h-60v-60Zm-60 60h60v60h-60v-60Zm-60-60h60v60h-60v-60Zm240-320v240H520v-240h240ZM440-440v240H200v-240h240Zm0-320v240H200v-240h240Zm-60 500v-120H260v120h120Zm0-320v-120H260v120h120Zm320 0v-120H580v120h120Z"/></svg>
+                        <span class="meterial-icons-outlined">QR Scanner</span>
+                    </li>
                     <li class="sidebar-list-item" onclick="loadPage(2)">
-                        <svg class="icon" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed"><path d="M420-340h120v-100h100v-120H540v-100H420v100H320v120h100v100Zm60 260q-139-35-229.5-159.5T160-516v-244l320-120 320 120v244q0 152-90.5 276.5T480-80Zm0-84q104-33 172-132t68-220v-189l-240-90-240 90v189q0 121 68 220t172 132Zm0-316Z"/></svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed"><path d="M200-80q-33 0-56.5-23.5T120-160v-560q0-33 23.5-56.5T200-800h40v-80h80v80h320v-80h80v80h40q33 0 56.5 23.5T840-720v560q0 33-23.5 56.5T760-80H200Zm0-80h560v-400H200v400Zm0-480h560v-80H200v80Zm0 0v-80 80Zm280 240q-17 0-28.5-11.5T440-440q0-17 11.5-28.5T480-480q17 0 28.5 11.5T520-440q0 17-11.5 28.5T480-400Zm-160 0q-17 0-28.5-11.5T280-440q0-17 11.5-28.5T320-480q17 0 28.5 11.5T360-440q0 17-11.5 28.5T320-400Zm320 0q-17 0-28.5-11.5T600-440q0-17 11.5-28.5T640-480q17 0 28.5 11.5T680-440q0 17-11.5 28.5T640-400ZM480-240q-17 0-28.5-11.5T440-280q0-17 11.5-28.5T480-320q17 0 28.5 11.5T520-280q0 17-11.5 28.5T480-240Zm-160 0q-17 0-28.5-11.5T280-280q0-17 11.5-28.5T320-320q17 0 28.5 11.5T360-280q0 17-11.5 28.5T320-240Zm320 0q-17 0-28.5-11.5T600-280q0-17 11.5-28.5T640-320q17 0 28.5 11.5T680-280q0 17-11.5 28.5T640-240Z"/></svg>
                         <span class="meterial-icons-outlined">Clinic Dates</span>
                     </li>
                     <li class="sidebar-list-item" onclick="loadPage(3)">
-                        <svg class="icon" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed"><path d="M420-340h120v-100h100v-120H540v-100H420v100H320v120h100v100Zm60 260q-139-35-229.5-159.5T160-516v-244l320-120 320 120v244q0 152-90.5 276.5T480-80Zm0-84q104-33 172-132t68-220v-189l-240-90-240 90v189q0 121 68 220t172 132Zm0-316Z"/></svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed"><path d="M480-480q33 0 56.5-23.5T560-560q0-33-23.5-56.5T480-640q-33 0-56.5 23.5T400-560q0 33 23.5 56.5T480-480Zm0 294q122-112 181-203.5T720-552q0-109-69.5-178.5T480-800q-101 0-170.5 69.5T240-552q0 71 59 162.5T480-186Zm0 106Q319-217 239.5-334.5T160-552q0-150 96.5-239T480-880q127 0 223.5 89T800-552q0 100-79.5 217.5T480-80Zm0-480Z"/></svg>
                         <span class="meterial-icons-outlined">Directions</span>
                     </li>
                 </ul>
-                <ul >
-                    <li class="sidebar-list-item" style="list-style: none;">
-                        <a href="../../utils/LogOut.php" style="text-decoration: none;">
-                            <svg class="icon" xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" height="24px" viewBox="0 0 24 24" width="24px" fill="#e8eaed"><g><path d="M0,0h24v24H0V0z" fill="none"/></g><g><path d="M17,8l-1.41,1.41L17.17,11H9v2h8.17l-1.58,1.58L17,16l4-4L17,8z M5,5h7V3H5C3.9,3,3,3.9,3,5v14c0,1.1,0.9,2,2,2h7v-2H5V5z"/></g></svg>
-                            <span class="meterial-icons-outlined">Logout</span>
-                        </a>
-                    </li> 
-                </ul>
             </div>      
         </aside>
+
+        
         <div class="main-container">
             <iframe id="main-content" src=""></iframe>
         </div>
@@ -81,7 +243,10 @@
                         break;
                     case 3:
                         document.getElementById('main-content').src = "../../location/selectMother.html?mid="+mid;
-                    break;    
+                    break;
+                    case 4:
+                        document.getElementById('main-content').src = "../midwifee/QRReader.html?mid="+mid;
+                    break;     
                 
                     default:
                         break;
