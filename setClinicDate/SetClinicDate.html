@@ -167,24 +167,27 @@ daysTag.addEventListener("click", (e) => {
       if(compareDates(selectedDates[0],formattedDate) == 0 || compareDates(selectedDates[1],formattedDate) == 0){
         alert("Invalid Date");
       }else{
-        $.ajax({
-              url: 'ClinicDateController.php',
-              method:'post',
-              data: {
-                action: "setClinicDate",
-                mid:ID,
-                firstDate: selectedDates[0],
-                secondDate: selectedDates[1]
-              },
-              success: function() {
-                alert("Clinic Dates Set Successfully");
-              },
-              error: function(xhr,status,error) {
-                var respose = JSON.parse(xhr.responseText);
-                var errorMessage = respose.error || "An unknown error occurred.";
-                alert("Error: "+errorMessage);
-              }
-            });
+        if(ID != null){
+
+          $.ajax({
+                url: 'ClinicDateController.php',
+                method:'post',
+                data: {
+                  action: "setClinicDate",
+                  mid:ID,
+                  firstDate: selectedDates[0],
+                  secondDate: selectedDates[1]
+                },
+                success: function() {
+                  alert("Clinic Dates Set Successfully");
+                },
+                error: function(xhr,status,error) {
+                  var respose = JSON.parse(xhr.responseText);
+                  var errorMessage = respose.error || "An unknown error occurred.";
+                  alert("Error: "+errorMessage);
+                }
+              });
+        }
       }
     }
 
@@ -209,6 +212,37 @@ function compareDates(date1, date2){
       return 1;
     }
 }    
+
+function sendEmail(){
+
+    let mid = null;
+    let url = new URL(window.location.href);
+    let params = new URLSearchParams(url.search);
+    let midPara = params.get('mid');
+
+    if (midPara == null) {
+        alert("Dashbord URL not valid!");
+    }else{
+        mid=midPara;
+    }
+
+    $.ajax({
+        url: 'ClinicDateController.php',
+        method:'post',
+        data: {
+          action: "sendEmail",
+          mid:mid
+        },
+        success: function() {
+          alert("Email Send Successfully");
+        },
+        error: function(xhr,status,error) {
+          var respose = JSON.parse(xhr.responseText);
+          var errorMessage = respose.error || "An unknown error occurred.";
+          alert("Error: "+errorMessage);
+        }
+      });
+}
 
   </script>
   </body>
