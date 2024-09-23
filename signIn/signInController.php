@@ -48,4 +48,20 @@ function signIn() {
   }
 }
 
+function verifyAuthentication(){
+  try {
+    if(isset($_SESSION['uID'])){
+      http_response_code(200);
+      exit();
+    }else{
+      header('location :')
+    }
+    
+  } catch (\Throwable $th) {
+    http_response_code(400);
+    echo json_encode(array('error' => $th->getMessage()));
+    exit();
+  }
+}
+
 ?>
