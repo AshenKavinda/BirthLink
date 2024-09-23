@@ -27,6 +27,9 @@ function signIn() {
       if ($result) {
         $row = $user->getUserByEmail($_POST['username']);
         if ($row != false) {
+          if(isset($_SESSION['uID'])){
+            unset($_SESSION['uID']);
+          }
           $_SESSION['uID'] = $row['uID'];
           $type = $row['type'];
           http_response_code(200);
@@ -45,7 +48,10 @@ function signIn() {
     }
   } catch (Exception $th) {
     http_response_code(400);
+    echo json_encode(array('error' => $th->getMessage()));
+    exit();
   }
 }
+
 
 ?>
