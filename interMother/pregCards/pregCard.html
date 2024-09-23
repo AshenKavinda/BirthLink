@@ -106,7 +106,7 @@
     <script>
         $(document).ready(function(){
             $.ajax({
-                url: 'midwifeDash.php',
+                url: 'verify.php',
                 method: 'post',
                 data: {
                 action: 'verifyAuthentication'
@@ -158,7 +158,7 @@
 
             const newURL = "../../motherweb/babyDetails.html?"+paras.toString();
 
-            window.open(newURL,'_blank');
+            window.open(newURL,'_self');
         }
 
         function viewPregnancyProfile(pid){
@@ -170,7 +170,7 @@
 
             const newURL = "../../motherweb/pregDetails.html?"+paras.toString();
 
-            window.open(newURL,'_blank');
+            window.open(newURL,'_self');
         }
 
     </script>
