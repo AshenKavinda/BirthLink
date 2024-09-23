@@ -19,5 +19,5 @@ if (ini_get("session.use_cookies")) {
 
 // Finally, destroy the session.
 session_destroy();
-header('Location: ../signIn/FormSignIn.html') ;
+header('Location: ../signIn/FormSignIn.html');
 ?>
