@@ -48,18 +48,24 @@
 
     <script>
         let mid = null;
-        $(document).ready(function() {
-            let url = new URL(window.location.href);
-            let params = new URLSearchParams(url.search);
-            let midPara = params.get('mid');
 
-            if (midPara == null) {
-                alert("Dashbord URL not valid!");
-            }else{
-                mid=midPara;
+        $(document).ready(function(){
+        $.ajax({
+            url: 'midwifeDash.php',
+            method: 'post',
+            data: {
+              action: 'verifyAuthentication'
+            },
+            success: function(response) {
+              alert(response);
+              mid = response;
+            },
+            error: function() {
+              $('#error').text("Invalid username or password");
             }
-    
-        });
+          });
+        })
+
         function loadPage(page){
             if (mid != null) {
                 switch (page) {

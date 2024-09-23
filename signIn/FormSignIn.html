@@ -73,23 +73,6 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <script>
 
-      $(document).ready(function(){
-        $.ajax({
-            url: 'signInController.php',
-            method: 'post',
-            data: {
-              action: 'verifyAuthentication'
-            },
-            success: function() {
-              alert("success Type = "+);
-            },
-            error: function() {
-              $('#error').text("Invalid username or password");
-            }
-          });
-      })
-
-
       function validateInputFeild() {
         if ($('#username').val().trim()==="") {
           alert("Username can not be blank!");
@@ -115,18 +98,23 @@
               password: $('#password').val().trim()
             },
             success: function(response) {
-              alert("success Type = "+response);
+              alert (response);
+              openDashboard(response);
             },
-            error: function() {
-              $('#error').text("Invalid username or password");
-            }
+            error: function(xhr,status,error) {
+                    var respose = JSON.parse(xhr.responseText);
+                    var errorMessage = respose.error || "An unknown error occurred.";
+                    alert("Error: "+errorMessage);
+                    $('#error').text("Invalid username or password");
+                }
           });
         }
       }
 
       function openDashboard(type) {
-        switch (type) {
-          case 'mother':
+        let vtype= type.trim();
+        switch (vtype) {
+          case 'midwife':
             window.location.href = "../dashboard/midwifedash/midwifedash.html";
             break;
         
