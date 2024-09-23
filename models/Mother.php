@@ -40,7 +40,7 @@ class Mother extends User {
                 throw new Exception("No data found");
             }
         } catch (Throwable $th) {
-            // throw new Exception($th->getMessage());
+            throw new Exception($th->getMessage());
         }
     }
 
