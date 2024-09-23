@@ -48,7 +48,7 @@ function signIn() {
     }
   } catch (Exception $th) {
     http_response_code(400);
-    echo json_encode(array('error' => $th->getMessage()));
+    //echo json_encode(array('error' => $th->getMessage()));
     exit();
   }
 }
