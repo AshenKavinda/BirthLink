@@ -9,18 +9,74 @@
   </head>
   <style>
     body {
-      width: 100vw;
-      height: 100vh;
+      background: linear-gradient(135deg, #74ebd5 0%, #9face6 100%);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       overflow-x: hidden;
+      height: 100vh;
+    }
+
+    .form-container {
+      background-color: #fff;
+      border-radius: 10px;
+      padding: 30px;
+      box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 600px;
+    }
+
+    .form-header {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .form-header h2 {
+      font-weight: 600;
+      font-size: 1.8rem;
+      color: #333;
+    }
+
+    .form-label {
+      font-weight: 500;
+      color: #555;
+    }
+
+    .btn-primary {
+      background-color: #007bff;
+      border: none;
+      border-radius: 25px;
+      padding: 10px 20px;
+      font-weight: 600;
+      transition: background-color 0.3s, transform 0.2s;
+    }
+
+    .btn-primary:hover {
+      background-color: #003063 !important;
+      transform: translateY(-1px);
+    }
+
+    input {
+      border-radius: 5px;
+      box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+
+    .form-check-label {
+      margin-left: 5px;
+    }
+
+    .alert-message {
+      text-align: center;
+      color: rgb(228, 17, 17);
+      font-weight: 500;
+      margin-top: 10px;
     }
   </style>
   <body style="background-color:#E2E2E2;">
     <div class="d-flex flex-column align-items-center justify-content-center w-100 h-100">
       
-      <div class="p-4 m-3 rounded-4 w-50 shadow" style="background-color: rgb(255, 255, 255);color: rgb(122, 122, 122);font-weight: 700;">
+      <div class="p-4 m-3 rounded-4 w-50 shadow" style="background-color: rgb(255, 255, 255);color: rgb(122, 122, 122);">
           <!--hedder-->
           <div class="text-center mb-4">
-            <samp class="" style="font-family:Arial, Helvetica, sans-serif;font-weight: 700;font-size: 2rem;">Personal Details</samp>
+            <samp class="" style="font-family:Arial, Helvetica, sans-serif;font-size: 2rem;">Personal Details</samp>
           </div>
 
           <!--form body-->
@@ -96,13 +152,13 @@
             <div class="form-check">
               <input class="form-check-input" type="checkbox" id="checkbox">
               <label class="form-check-label" for="gridCheck">
-                Agree with all policys
+                Agree with all policies
               </label>
             </div>
           </div>
 
           <div class="col-12 d-flex justify-content-end">
-            <button id="btnNext" class="btn btn-primary px-5 border-0" style="font-weight: 700;background-color: blueviolet;" onclick="createPerson()">NEXT</button>
+            <button id="btnNext" class="btn btn-primary px-4 py-1"  onclick="createPerson()">Next</button>
           </div>
       </div>
 
