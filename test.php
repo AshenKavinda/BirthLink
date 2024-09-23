@@ -1,9 +1,18 @@
 <?php
-require_once 'models/Midwife.php';
-$mid = new Midwife();
+// require_once 'models/Midwife.php';
+// $mid = new Midwife();
+// try {
+//     $mid->sendEmail(1);
+//     echo "ok";
+// } catch (\Throwable $th) {
+//     echo $th->getMessage();
+// }
+
+require_once 'utils/MailerMailGun.php';
+$mid = new MailerMailGun();
 try {
-    $mid->sendEmail(1);
-    echo "ok";
+    $response = $mid->send('adeeshananayakkara27@gmail.com',"Helooooooooo","helloo");
+    echo $response;
 } catch (\Throwable $th) {
     echo $th->getMessage();
 }

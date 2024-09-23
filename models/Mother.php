@@ -44,6 +44,29 @@ class Mother extends User {
         }
     }
 
+    public function getMothersByMID($mid) {
+        try {
+            $query = "
+            use birthlink;
+            SELECT u.*, m.* FROM user u 
+            JOIN mother m ON u.uID = m.uID
+            join pregnancy p on p.uID = m.uID
+            join midwife mid on mid.uID = p.midID 
+            where type = 'mother' and mid.uID = 11";
+            $stmt = $this->db->getConnection()->prepare($query);
+            $stmt->execute();
+            $result = $stmt->get_result();
+
+            if ($result && $result->num_rows > 0) {
+                return $result;
+            } else {
+                throw new Exception("No data found");
+            }
+        } catch (Throwable $th) {
+            // throw new Exception($th->getMessage());
+        }
+    }
+
     public function getMotherById($uid) {
         try {
             $query = "SELECT * FROM user WHERE uID = ? AND type = ?";
