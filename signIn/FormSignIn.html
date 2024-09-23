@@ -101,11 +101,8 @@
               openDashboard(response);
             },
             error: function(xhr,status,error) {
-                    var respose = JSON.parse(xhr.responseText);
-                    var errorMessage = respose.error || "An unknown error occurred.";
-                    alert("Error: "+errorMessage);
-                    $('#error').text("Invalid username or password");
-                }
+                $('#error').text("Invalid username or password");
+            }
           });
         }
       }
