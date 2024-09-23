@@ -17,29 +17,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 }
 
-function display() {
-    try {
-        global $report;
-        $result = $report->getAllMalnutrition();
-        displayTable($result);
-    } catch (\Throwable $th) {
-        http_response_code(400);
-        echo json_encode(array('error' => $th->getMessage()));
-        exit();
-    }
-}
-
 function displaySearch() {
     try {
-        if (isset($_POST['date'])) {
-            if ($_POST['date']!= null) {
-                global $report;
-                $result = $report->getAllMalnutritionByMonth($_POST['date']);
-                displayTable($result);
-                # code...
-            } else {
-                display();
-            }
+        if (isset($_POST['date']) && isset($_POST['district'])) {
+            global $report;
+            $result = $report->getAllMalnutritionByMonth($_POST['date'],$_POST['district']);
+            displayTable($result); 
         } else {
             throw new Exception('No date found!');
         }
@@ -63,6 +46,7 @@ function displayTable($result)
                             <th scope="col">Weight</th>
                             <th scope="col">weight limit</th>
                             <th scope="col">Center</th>
+                            <th scope="col">Distric</th>
                             </tr>
                         </thead>';
         $slNo = 1;
@@ -78,6 +62,7 @@ function displayTable($result)
                 <td>'.$row['weight'].'</td>
                 <td>'.$row['min_weight_kg'].'</td>
                 <td>'.$row['center_name'].'</td>
+                <td>'.$row['district_name'].'</td>
                 </tr>';
                 $slNo++;   
         }
