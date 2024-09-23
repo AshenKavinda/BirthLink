@@ -104,17 +104,23 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
     <script>
-        let userID = null;
         $(document).ready(function(){
-            let url = new URL(window.location.href);
-            let paras = new URLSearchParams(url.search);
-
-            userID = paras.get('uid');
-            displayBabyCards();
-           
+            $.ajax({
+                url: 'midwifeDash.php',
+                method: 'post',
+                data: {
+                action: 'verifyAuthentication'
+                },
+                success: function(response) {
+                    displayBabyCards(response.trim());
+                },
+                error: function() {
+                    window.location.href = "../../signIn/FormSignIn.html";
+                }
+            });
         });
 
-        function displayBabyCards()
+        function displayBabyCards(userID)
         {
             if(userID!=null){
                 $.ajax({
@@ -138,7 +144,7 @@
 
                 })
             } else {
-                alert("Invalied URL!")
+                alert("Invalied URL!");
             }
         }
 
