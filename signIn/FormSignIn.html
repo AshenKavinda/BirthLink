@@ -101,6 +101,9 @@
               openDashboard(response);
             },
             error: function(xhr,status,error) {
+              var respose = JSON.parse(xhr.responseText);
+                    var errorMessage = respose.error || "An unknown error occurred.";
+                    alert("Error: "+errorMessage);
                 $('#error').text("Invalid username or password");
             }
           });
@@ -109,6 +112,7 @@
 
       function openDashboard(type) {
         let vtype= type.trim();
+        alert(vtype);
         switch (vtype) {
           case 'midwife':
             window.location.href = "../dashboard/midwifedash/midwifedash.html";
