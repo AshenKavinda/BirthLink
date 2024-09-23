@@ -19,5 +19,5 @@ if (ini_get("session.use_cookies")) {
 
 // Finally, destroy the session.
 session_destroy();
-header('Location: ../index1.php?logout=yes') ;
+header('Location: ../signIn/FormSignIn.html') ;
 ?>
