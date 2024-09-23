@@ -63,7 +63,7 @@ function createBabyCard()
             while($row = mysqli_fetch_assoc($result))
             {
                 $card .= '<div class="col-md-3">
-                            <div class="card my-2" id="carid" style="height: 250px; background-image: url(\'../img/mother.png\');">
+                            <div class="card my-2" id="carid" onclick="viewBabyProfile(\'' . htmlspecialchars($row['pID']) . '\', \'' . htmlspecialchars($row['bID']) . '\')" style="height: 250px; background-image: url(\'../img/mother.png\');">
                                 <div class="card-body">
                                     <h4 class="card-title">Baby ID: '.$row['bID'].'</h4>
                                     <h6>Pregnancy ID: '.$row['pID'].'</h6>
@@ -77,7 +77,7 @@ function createBabyCard()
 
             while($row = mysqli_fetch_assoc($result2))
             {
-                $card .= '<div class="col-md-3">
+                $card .= '<div class="col-md-3" onclick="viewPregnancyProfile('.$row['pID'].')">
                             <div class="card my-2" id="carid" style="height: 250px;  background-image: url(\'../img/pregWoman.jpg\');">
                                 <div class="card-body">
                                     <h4 class="card-title">Pregnancy ID: '.$row['pID'].'</h4>
