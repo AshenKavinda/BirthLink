@@ -127,20 +127,20 @@
 
     <script>
         let userID = null;
-        let midID = null;
         $(document).ready(function(){
             let url = new URL(window.location.href);
             let paras = new URLSearchParams(url.search);
 
             userID = paras.get('uid');
-            midID = paras.get('midid');
             displayBabyCards();
            
         });
 
+        
+
         function displayBabyCards()
         {
-            if(userID!=null&&midID!= null){
+            if(userID!=null){
                 $.ajax({
                     url: 'pregnancyCardController.php',
                     method:'post',
@@ -166,6 +166,31 @@
             }
         }
 
+        function viewBabyProfile(pid,bid){
+
+            let url = new URL(window.location.href);
+            let paras = new URLSearchParams(url.search);
+
+            paras.set('bid',bid);
+            paras.set('pid',pid);
+
+            const newURL = "../dashboard/babyDashboard/babyDashboard.html?"+paras.toString();
+
+            window.open(newURL,'_self');
+        }
+
+        function viewPregnancyProfile(pid){
+
+            let url = new URL(window.location.href);
+            let paras = new URLSearchParams(url.search);
+
+            paras.set('pid',pid);
+
+            const newURL = "../../motherweb/pregDetails.html?"+paras.toString();
+
+            window.open(newURL,'_self');
+        }
+
         function add()
         {
             let pregDate = $('#pregnancyDate').val();
@@ -184,15 +209,14 @@
 
                     success: function()
                     {
-                        //alert("Pregnancy added successfully!");
                         displayBabyCards();
                         $('#pregnancyModal').modal('hide');
 
                     },
                     error: function(xhr,status,error) {
-                    var respose = JSON.parse(xhr.responseText);
-                    var errorMessage = respose.error || "An unknown error occurred.";
-                    alert("Error: "+errorMessage);
+                        var respose = JSON.parse(xhr.responseText);
+                        var errorMessage = respose.error || "An unknown error occurred.";
+                        alert("Error: "+errorMessage);
                     }       
                 });
 
