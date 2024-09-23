@@ -19,7 +19,9 @@ function setClinicDate(){
 
             
             global $midwife;
+
             $result = $midwife->set($_POST['firstDate'],$_POST['secondDate'],$_POST['mid']);
+
             if($result){
                 http_response_code(200);
                 exit();
@@ -54,6 +56,22 @@ function getClinicDate(){
         }    
 
     }catch (\Throwable $th) {
+        http_response_code(400);
+        echo json_encode(array('error' => $th->getMessage()));
+
+        exit();
+    }
+}
+
+function sendEmail(){
+    try {
+        global $midwife;
+        if(isset($_POST['mid'])){
+
+            $result = $midwife->sendEmail($_POST['mid']);
+
+        }    
+    } catch (\Throwable $th) {
         http_response_code(400);
         echo json_encode(array('error' => $th->getMessage()));
 

@@ -146,7 +146,7 @@ class Midwife extends User {
     public function set($firstDate,$seconddate,$mid){
 
         try{
-            $query = "UPDATE midwife SET day1='$firstDate', day2='$seconddate' WHERE uID = $mid";
+            $query = "UPDATE midwife SET day1='$firstDate', day2='$seconddate' WHERE uID = '$mid'";
             $result = mysqli_query($this->db->getConnection(),$query);
 
             if($result){
@@ -185,7 +185,13 @@ class Midwife extends User {
                 }
                 $midwife = $this->getUserWithMidwife($midID);
                 $massage = "First date :".$midwife['day1']."\n"."Second date :".$midwife['day2'];
-                $this->mailGun->send($emails,"Your Clinic Dates",$massage);
+                $respons = $this->mailGun->send($emails,"Your Clinic Dates",$massage);
+
+                if($respons != null){
+                    return $respons;
+                }else{
+                    return throw new Exception("Email Not send ");
+                }
             } else {
                 throw new Exception("Quary Error!");
             }

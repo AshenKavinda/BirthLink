@@ -11,7 +11,9 @@ body{
   padding: 0 10px;
   justify-content: center;
   min-height: 100vh;
-  background: #9B59B6;
+    /* background-color:  rgb(98, 90, 216); */
+    background: linear-gradient(135deg, #74ebd5 0%, #9face6 100%);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 .wrapper{
   width: 450px;
