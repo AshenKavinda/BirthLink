@@ -21,7 +21,7 @@ function displaySearch() {
     try {
         if (isset($_POST['date']) && isset($_POST['district'])) {
             global $report;
-            $result = $report->getAllMalnutritionByMonth($_POST['date'],$_POST['district']);
+            $result = $report->getPregnanciesByDistrictAndMonth($_POST['date'],$_POST['district']);
             displayTable($result); 
         } else {
             throw new Exception('No date found!');
@@ -40,13 +40,13 @@ function displayTable($result)
                         <thead>
                             <tr>
                             <th scope="col">No</th>
-                            <th scope="col">Baby ID</th>
-                            <th scope="col">Baby day</th>
+                            <th scope="col">Pregnancy Date</th>
+                            <th scope="col">Name</th>
+                            <th scope="col">NIC</th>
+                            <th scope="col">Address</th>
                             <th scope="col">Email</th>
-                            <th scope="col">Weight</th>
-                            <th scope="col">weight limit</th>
                             <th scope="col">Center</th>
-                            <th scope="col">Distric</th>
+                            <th scope="col">District</th>
                             </tr>
                         </thead>';
         $slNo = 1;
@@ -56,11 +56,11 @@ function displayTable($result)
     
                 $table.=' <tr>
                 <td>'.$slNo.'</td>
-                <td>'.$row['bID'].'</td>
-                <td>'.$row['bDay'].'</td>
+                <td>'.$row['preg_date'].'</td>
+                <td>'.$row['fName'].' '.$row['lName'].'</td>
+                <td>'.$row['nic'].'</td>
+                <td>'.$row['address'].'</td>
                 <td>'.$row['email'].'</td>
-                <td>'.$row['weight'].'</td>
-                <td>'.$row['min_weight_kg'].'</td>
                 <td>'.$row['center_name'].'</td>
                 <td>'.$row['district_name'].'</td>
                 </tr>';
