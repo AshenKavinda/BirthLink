@@ -183,9 +183,8 @@
 
 
         function addOfficer(){
-         
+          
           if(validateInputFeildAdd()){
-            
             $.ajax({
               url: "officerController.php",
                   type: 'post',
@@ -201,16 +200,16 @@
                       ocity: $('#city').val().trim(),
                       opass: $('#password').val().trim()
                   },
-                  success: function(data,response) {
-                      $('#displayTable').html(data);
-                      displayData();
-                      alert(response);
+                  success: function(response) {
+                    displayData();
                   },
                   error: function(xhr) {
-                      alert("Error fetching data: " + xhr.responseText);
+                    var respose = JSON.parse(xhr.responseText);
+                    var errorMessage = respose.error || "An unknown error occurred.";
+                    alert("Error: "+errorMessage);
                   }
                 
-            })
+            });
             // alert($('#checkbox').is(':checked'));
           }
           else{
@@ -342,80 +341,79 @@
       }
 
       function validateInputFeildAdd() {
-    
-      var firstName = $('#firstName').val().trim();
-      var lastName = $('#lastName').val().trim();
-      var NIC = $('#NIC').val().trim();
-      var email = $('#email').val().trim();
-      var phone = $('#phone').val().trim();
-      var inputAddress = $('#inputAddress').val().trim();
-      var inputAddress2 = $('#inputAddress2').val().trim();
-      var inputCity = $('#city').val().trim();
-      var password = $('#password').val().trim();
 
-      if (firstName === "") {
-        alert("First name cannot be empty.");
-        $('#firstName').focus();
-        return false;
-      }
-      if (lastName === "") {
-        alert("Last name cannot be empty.");
-        $('#lastName').focus();
-        return false;
-      }
-      if (NIC === "") {
-        alert("NIC cannot be empty.");
-        $('#NIC').focus();
-        return false;
-      }
-      if (email === "") {
-        alert("Email cannot be empty.");
-        $('#email').focus();
-        return false;
-      }
-      const regex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-      if (!regex.test(email)) {
-        alert("Email not valied.");
-        $('#email').focus();
-        return false;
-      }
-      if (datepicker === "") {
-        alert("Birth day cannot be empty.");
-        $('#datepicker').focus();
-        return false;
-      }
-      if (phone === "") {
-        alert("Phone number cannot be empty.");
-        $('#phone').focus();
-        return false;
-      }
-      if (isNaN(phone)) {
-        alert("Phone number should be numeric.");
-        $('#phone').focus();
-        return false;
-      }
-      if (inputAddress === "") {
-        alert("Address cannot be empty.");
-        $('#inputAddress').focus();
-        return false;
-      }
-      if (inputAddress2 === "") {
-        alert("Address 2 cannot be empty.");
-        $('#inputAddress2').focus();
-        return false;
-      }
-      if (inputCity === "") {
-        alert("City cannot be empty.");
-        $('#City').focus();
-        return false;
-      }
-      if (password === "") {
-        alert("Password cannot be empty.");
-        $('#password').focus();
-        return false;
-      }
+        var firstName = $('#firstName').val().trim();
+        var lastName = $('#lastName').val().trim();
+        var NIC = $('#NIC').val().trim();
+        var email = $('#email').val().trim();
+        var phone = $('#phone').val().trim();
+        var inputAddress = $('#inputAddress').val().trim();
+        var inputAddress2 = $('#inputAddress2').val().trim();
+        var inputCity = $('#city').val().trim();
+        var password = $('#password').val().trim();
 
-      return true;
+
+        if (firstName === "") {
+          alert("First name cannot be empty.");
+          $('#firstName').focus();
+          return false;
+        }
+        if (lastName === "") {
+          alert("Last name cannot be empty.");
+          $('#lastName').focus();
+          return false;
+        }
+        if (NIC === "") {
+          alert("NIC cannot be empty.");
+          $('#NIC').focus();
+          return false;
+        }
+
+        if (email === "") {
+          alert("Email cannot be empty.");
+          $('#email').focus();
+          return false;
+        }
+
+        const regex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+        if (!regex.test(email)) {
+          alert("Email not valied.");
+          $('#email').focus();
+          return false;
+        }
+
+        if (phone === "") {
+          alert("Phone number cannot be empty.");
+          $('#phone').focus();
+          return false;
+        }
+        
+        if (isNaN(phone)) {
+          alert("Phone number should be numeric.");
+          $('#phone').focus();
+          return false;
+        }
+        if (inputAddress === "") {
+          alert("Address cannot be empty.");
+          $('#inputAddress').focus();
+          return false;
+        }
+        if (inputAddress2 === "") {
+          alert("Address 2 cannot be empty.");
+          $('#inputAddress2').focus();
+          return false;
+        }
+        if (inputCity === "") {
+          alert("City cannot be empty.");
+          $('#City').focus();
+          return false;
+        }
+        if (password === "") {
+          alert("Password cannot be empty.");
+          $('#password').focus();
+          return false;
+        }
+        return true;
     }
 
     function validateInputFeildUpdate() {
