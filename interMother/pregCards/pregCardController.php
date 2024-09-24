@@ -30,7 +30,11 @@ function createBabyCard()
             $result2 = $pregnancy->displayPregnancy($_POST['userID']);
 
             $card = '';
-           
+
+            if($result == null && $result2 == null){
+                $card .= '<h1>hiiii</h1>';
+            }
+
             while($row = mysqli_fetch_assoc($result))
             {
                 $card .='<div class="col-md-3" onclick="viewBabyProfile(\'' . htmlspecialchars($row['pID']) . '\', \'' . htmlspecialchars($row['bID']) . '\')">
