@@ -4,7 +4,7 @@ require_once 'User.php';
 class Officer extends User {
     public function addOfficer($fname, $lname, $nic,$email,$contactNo, $address, $password) {
         try {
-            parent::addUser($fname, $lname, $nic, $contactNo, $email, $address, $password, "officer");
+            return parent::addUser($fname, $lname, $nic, $contactNo, $email, $address, $password, "officer");
         } catch (Exception $th) {
             throw new Exception($th->getMessage());
         }

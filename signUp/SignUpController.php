@@ -1,9 +1,9 @@
 <?php
 session_start();
 require_once '../models/Mother.php';
-require_once '../utils/MailerMailGun.php';
+require_once '../utils/Mailer.class.php';
 $mother = new Mother();
-$mailer = new MailerMailGun();
+$mailer = new Mailer();
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Get the action (function name) from the request
