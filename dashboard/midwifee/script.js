@@ -15,8 +15,9 @@ domReady(function () {
 
     // If QR code is found
     function onScanSuccess(decodeText, decodeResult) {
+        alert(decodeText);
         // Redirect to the URL contained in the QR code
-        window.location.href = decodeText;
+        window.location.href =  '../../interBaby/babyVaccine/babyVaccine.html?bid='+decodeText;
     }
 
     let htmlscanner = new Html5QrcodeScanner(
