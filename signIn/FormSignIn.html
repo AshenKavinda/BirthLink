@@ -16,7 +16,7 @@
       }
 
       #signin {
-      background-color: #007bff;
+      background-color: #920ccb;
       /* font-weight: 700; */
       color: #fff;
       transition: background-color 0.3s, transform 0.2s;
@@ -40,7 +40,7 @@
                      
           <div class="d-flex flex-column align-content-center justify-content-center gap-2">
 
-            <div class="text-center w-100" style="font-size: 3vw;color: #007bff;">Welcome!</div>
+            <div class="text-center w-100" style="font-size: 3vw;color: #920ccb;">Welcome!</div>
 
             <div class="row">
               <label for="username" class="col-form-label">Email</label>
@@ -59,14 +59,14 @@
             <div>
               <span id="error" class="float-start text-decoration-none fontSizeSignIn" style="color: #e13030;"></span><br>
               <a href="../fogotPassword/FromEmail.html" class="text-decoration-none fontSizeSignInFogot"
-              style="color: #007bff; font-size: 16px; cursor: pointer;">forgot password?</a>
+              style="color: #920ccb; font-size: 16px; cursor: pointer;">forgot password?</a>
             </div>
 
-            <button id="signin" type="submit" onclick="signIn()" class="btn w-100 py-2" style="background-color: #007bff;color: #fff;">Sign in</button>
+            <button id="signin" type="submit" onclick="signIn()" class="btn w-100 py-2" style="background-color: #920ccb;color: #fff;">Sign in</button>
           </div>
           
           <div class="mt-3">
-            <span>Don't have an account? <a href="../signUp/FormPersonalData.html" style="font-weight: 600;font-size: 16px; color: #007bff;text-decoration: none;">Sign-Up</a></span>
+            <span>Don't have an account? <a href="../signUp/FormPersonalData.html" style="font-weight: 600;font-size: 16px; color: #920ccb;text-decoration: none;">Sign-Up</a></span>
           </div>
           
         </div>
@@ -109,7 +109,7 @@
 
       function openDashboard(type) {
         let vtype= type.trim();
-        alert(vtype);
+
         switch (vtype) {
           case 'midwife':
             window.location.href = "../dashboard/midwifedash/midwifedash.html";
