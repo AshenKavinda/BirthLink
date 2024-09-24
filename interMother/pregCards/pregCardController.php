@@ -31,9 +31,9 @@ function createBabyCard()
 
             $card = '';
 
-            if($result == null && $result2 == null){
-                $card .= '<h1>hiiii</h1>';
-            }
+            // if($result == null && $result2 == null){
+            //     $card .= '<h1>hiiii</h1>';
+            // }
 
             while($row = mysqli_fetch_assoc($result))
             {
