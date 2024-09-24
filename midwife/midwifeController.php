@@ -1,6 +1,8 @@
 <?php
     require_once '../models/Midwife.php';
+    require_once '../utils/Mailer.class.php';
     $midwife = new Midwife();
+    $mailer = new Mailer();
     
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
@@ -21,6 +23,9 @@
                 global $midwife;
 
                 $address = $_POST['madd1']. ' ' .$_POST['madd2']. ' '.$_POST['mcity'];
+
+                $email = $_POST['oemail'];
+                $password = $_POST['opass'];
                  
                 $result = $midwife->addMidwife(
                     $_POST['mfname'],
@@ -32,6 +37,19 @@
                     $_POST['mpass'],
                     $_POST['center']
                 );
+
+                if ($result != null) {
+                    global $mailer;
+                    $massage = "Username: ".$email."\n"."Password: ".$password;
+                    $response = $mailer->send($email,"Your Log-In",$massage);
+                    if ($response) {
+                        http_response_code(200);
+                    } else {
+                        throw new Exception("Email Not Sended!");
+                    }
+                } else {
+                    throw new Exception("Database Error!");
+                }
             } else {
                 throw new Exception("System Error!");
             }

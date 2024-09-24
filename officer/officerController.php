@@ -1,6 +1,8 @@
 <?php
     require_once '../models/Officer.php';
+    require_once '../utils/Mailer.class.php';
     $officer = new Officer();
+    $mailer = new Mailer();
     
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
@@ -21,6 +23,9 @@
                 global $officer;
 
                 $address = $_POST['oadd1']. ' ' .$_POST['oadd2']. ' '.$_POST['ocity'];
+
+                $email = $_POST['oemail'];
+                $password = $_POST['opass'];
                  
                 $result = $officer->addOfficer(
                     $_POST['ofname'],
@@ -31,6 +36,19 @@
                     $address,
                     $_POST['opass']
                 );
+
+                if ($result != null) {
+                    global $mailer;
+                    $massage = "Username: ".$email."\n"."Password: ".$password;
+                    $response = $mailer->send($email,"Your Log-In",$massage);
+                    if ($response) {
+                        http_response_code(200);
+                    } else {
+                        throw new Exception("Email Not Sended!");
+                    }
+                } else {
+                    throw new Exception("Database Error!");
+                }
             } else {
                 throw new Exception("System Error!");
             }
