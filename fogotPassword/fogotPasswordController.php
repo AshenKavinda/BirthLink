@@ -2,7 +2,7 @@
 session_start();
 require_once '../utils/DB.php';
 require_once '../models/User.php';
-require_once '../utils/MailerMailGun.php';
+require_once '../utils/Mailer.class.php';
 $db = new DB();
 $user = new User($db);
 
@@ -103,7 +103,7 @@ function sendOTP() {
             $subject = "BirthLink OTP";
             $otp = mt_rand(10000,99999);
             $massege = "Your BirthLink fogot password OTP is ".$otp." .";
-            $mailer = new MailerMailGun();
+            $mailer = new Mailer();
             
             // $_SESSION['personalData']['otp'] = $otp; 
             // echo $_SESSION['personalData']['otp'];
