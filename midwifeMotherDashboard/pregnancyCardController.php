@@ -1,4 +1,5 @@
 <?php
+session_start();
 require_once '../models/pregnancy.php';
 require_once '../models/baby.php';
 $pregnancy = new pregnancy();
@@ -22,9 +23,9 @@ function add()
 {
     try {
 
-        if(isset($_POST['userID']) && isset($_POST['pregDate']) && isset($_POST['midID'])){
+        if(isset($_POST['userID']) && isset($_POST['pregDate'])){
             global $pregnancy;
-            $result = $pregnancy->add($_POST['userID'],$_POST['midID'],$_POST['pregDate']);
+            $result = $pregnancy->add($_POST['userID'],$_SESSION['uID'],$_POST['pregDate']);
 
             if($result)
             {

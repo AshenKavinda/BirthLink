@@ -201,7 +201,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
     <script>
-
+        let pid = null;
         $(document).ready(function(){
             $.ajax({
                 url: 'verify.php',
@@ -210,7 +210,15 @@
                 action: 'verifyAuthentication'
                 },
                 success: function() {
-                    loadPage(1);
+                    let url = new URL(window.location.href);
+                    let params = new URLSearchParams(url.search);
+                    let pidPara = params.get('pid');
+                    if (pidPara == null) {
+                        alert("Dashbord URL not valid!");
+                    }else{
+                        pid=pidPara;
+                        document.getElementById('main-content').src = "../../interPreg/note/pregNote.html?pid="+pid;
+                    }
                 },
                 error: function() {
                     window.location.href = "../../signIn/FormSignIn.html";
@@ -218,9 +226,9 @@
             });
         });
 
-        function loadPage(pid){
-            if (pid != null) {
-                switch (pid) {
+        function loadPage(type){
+            if (type != null) {
+                switch (type) {
                     case 1:
                         document.getElementById('main-content').src = "../../interPreg/note/pregNote.html?pid="+pid;
                         break;

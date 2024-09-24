@@ -220,8 +220,7 @@
         {
             let pregDate = $('#pregnancyDate').val();
 
-            if(userID!=null&&midID!= null){
-
+            if(userID!=null){
                 $.ajax({
                     url: 'pregnancyCardController.php',
                     type: 'POST',
@@ -229,7 +228,6 @@
                         action: 'add',
                         pregDate: pregDate,
                         userID: userID,
-                        midID:midID
                     },
 
                     success: function()
