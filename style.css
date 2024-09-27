@@ -90,7 +90,7 @@ html ::-webkit-scrollbar{
 #main{
     width: 100vw;
     height: 100vh;
-    background-image: linear-gradient(rgba(0,0,0,0.3),rgba(0,0,0,0)),url(../img/family.jpg);
+    background-image: linear-gradient(rgba(0,0,0,0.3),rgba(0,0,0,0)),url(img/family.jpg);
     background-repeat: no-repeat;
     background-size: cover;
     background-position: 88%;
@@ -282,7 +282,7 @@ html ::-webkit-scrollbar{
     font-family: 'Roboto', sans-serif; 
     font-weight: 800; 
     font-size: 5vw;
-    background-image: url(.../../../img/gradient.jpg);
+    background-image: url(img/gradient.jpg);
     background-size: cover;
     background-clip: text;
     -webkit-background-clip: text;
@@ -405,7 +405,7 @@ html ::-webkit-scrollbar{
 #contact {
     width: 100%;
     height: 100vh;
-    background-image: linear-gradient(rgba(0,0,0,0.3),rgba(0,0,0,0.3)), url(../img/contactadmin.jpg);
+    background-image: linear-gradient(rgba(0,0,0,0.3),rgba(0,0,0,0.3)), url(img/contactadmin.jpg);
     background-repeat: no-repeat;
     background-size: contain; /* Change from cover to contain */
     background-position: center; /* Center the image */

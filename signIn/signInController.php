@@ -27,13 +27,41 @@ function signIn() {
       if ($result) {
         $row = $user->getUserByEmail($_POST['username']);
         if ($row != false) {
-          if(isset($_SESSION['uID'])){
-            unset($_SESSION['uID']);
+
+          switch ($row['type']) {
+            case 'mother':
+              if(isset($_SESSION['mother'])){
+                unset($_SESSION['mother']);
+              }
+              $_SESSION['mother'] = $row['uID'];
+              break;
+            case 'midwife':
+              if(isset($_SESSION['midwife'])){
+                unset($_SESSION['midwife']);
+              }
+              $_SESSION['midwife'] = $row['uID'];
+              break;
+            case 'admin':
+              if(isset($_SESSION['admin'])){
+                unset($_SESSION['admin']);
+              }
+              $_SESSION['admin'] = $row['uID'];
+              break;
+            case 'officer':
+              if(isset($_SESSION['officer'])){
+                unset($_SESSION['officer']);
+              }
+              $_SESSION['officer'] = $row['uID'];
+              break;
+            default:
+              # code...
+              break;
           }
-          $_SESSION['uID'] = $row['uID'];
+
           $type = $row['type'];
           http_response_code(200);
           echo $type;
+          exit();
         }
         else {
           throw new Exception();

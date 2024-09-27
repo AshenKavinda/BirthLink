@@ -16,9 +16,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 function verifyAuthentication(){
     try {
-      if(isset($_SESSION['uID'])){
+      if(isset($_SESSION['officer'])){
         http_response_code(200);
-        echo $_SESSION['uID'];
+        echo $_SESSION['officer'];
         exit();
       }else{
         throw new Exception();
