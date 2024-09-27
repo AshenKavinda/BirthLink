@@ -24,8 +24,8 @@
 
                 $address = $_POST['madd1']. ' ' .$_POST['madd2']. ' '.$_POST['mcity'];
 
-                $email = $_POST['oemail'];
-                $password = $_POST['opass'];
+                $email = $_POST['memail'];
+                $password = $_POST['mpass'];
                  
                 $result = $midwife->addMidwife(
                     $_POST['mfname'],

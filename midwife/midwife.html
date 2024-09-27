@@ -217,11 +217,9 @@
                       mpass: $('#password').val().trim(),
                       center: $('#center').val()
                   },
-                  success: function(data,response) {
-                      $('#displayTable').html(data);
-                      displayData();
-                      alert(response);
-                      alert("Midwife added successfully!");
+                  success: function() {
+                    alert("Midwife added successfully!");
+                    displayData();
                   },
                   error: function(xhr) {
                       alert("Error fetching data: " + xhr.responseText);

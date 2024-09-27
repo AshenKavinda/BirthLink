@@ -18,7 +18,9 @@ class Midwife extends User {
 
 
             $quary = "INSERT INTO midwife(uID,centerID) VALUES ($uID,$center)";
-            $result = mysqli_query($this->db->getConnection(),$quary); 
+            $result = mysqli_query($this->db->getConnection(),$quary);
+            
+            return $uID;
             
         } catch (Exception $th) {
             throw new Exception($th->getMessage());
